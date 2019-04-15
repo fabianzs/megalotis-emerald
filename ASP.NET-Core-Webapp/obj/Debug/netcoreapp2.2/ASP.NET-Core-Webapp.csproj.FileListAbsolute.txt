@@ -1,0 +1,14 @@
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\bin\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.deps.json
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\bin\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.runtimeconfig.json
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\bin\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.runtimeconfig.dev.json
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\bin\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.dll
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\bin\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.pdb
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\obj\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.csprojAssemblyReference.cache
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\obj\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.csproj.CoreCompileInputs.cache
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\obj\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.RazorAssemblyInfo.cache
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\obj\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.RazorAssemblyInfo.cs
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\obj\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.AssemblyInfoInputs.cache
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\obj\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.AssemblyInfo.cs
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\obj\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.RazorTargetAssemblyInfo.cache
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\obj\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.dll
+C:\GreenFox\Big Project\megalotis-emerald\ASP.NET-Core-Webapp\obj\Debug\netcoreapp2.2\ASP.NET-Core-Webapp.pdb
