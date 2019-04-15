@@ -17,26 +17,13 @@ namespace ASP.NET_Core_Webapp.Controllers
 
         [HttpPost("pitches")]
         public IActionResult SavePitches(Pitch newPitch)
-        {
-            bool badgeNameCheck = false;
-            foreach (Pitch actual in pitches) {
-                if (actual.BadgeName.Equals(newPitch.BadgeName))
-                {
-                    badgeNameCheck = true;
-                }
-                else {
-                    badgeNameCheck = false;
-                }
-            }
-            Dictionary<string, object> message = new Dictionary<string,object>();
-            if (!badgeNameCheck) {
-                pitches.Add(newPitch);
-                message.Add("message", "Success");
+        {        
+            if (!pitches.Exists(e => e.BadgeName.Equals(newPitch.BadgeName))) {
+                pitches.Add(newPitch);               
                 return Created("" ,new { message = "Success" });
-            }
-            else {
-                return Created("", new { error = "Unauthorizied" });
-            }                
+            }else {
+             return Created("", new { error = "Unauthorizied" });
+            }                     
         }
     }
 }
