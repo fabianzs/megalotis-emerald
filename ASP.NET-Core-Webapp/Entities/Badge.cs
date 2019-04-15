@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ASP.NET_Core_Webapp.Entities
 {
@@ -11,6 +8,7 @@ namespace ASP.NET_Core_Webapp.Entities
         public string Version { get; set; }
         public string Name { get; set; }
         public string Tag { get; set; }
-        public Skill[] Levels { get; set; }
+        public ICollection<Skill> Levels { get; set; }
+
     }
 }
