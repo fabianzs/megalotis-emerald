@@ -13,13 +13,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             this.helloService = helloService;
         }
 
-        [HttpGet("hello")]
-        public IActionResult HelloWorld()
-        {
-            return Ok(helloService.HelloWorld());
-        }
-
-        [HttpPost("")]
-        public IActionResult 
+       
     }
 }
