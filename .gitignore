@@ -1,0 +1,43 @@
+
+.vs
+gitDefinition.xlsx
+.idea
+logs.txt
+week-02/day-2/Practice/
+week-02/day-4/out/
+week-02/day-4/src/Solution.java
+week-02/day-4/src/test.java
+week-11\day-4\TodoApiPractice
+Authentication _ 2019-01 Megalotis
+Botond_Balogh_Demo1.pptx
+Practiceo/
+definition.txt
+
+HomeBrew.pptx  
+LG Homebrew.docx
+presentation/
+
+out/
+.idea/
+*.iml
+### Java ###
+# Compiled class file
+*.class
+# Log file
+*.log
+# BlueJ files
+*.ctxt
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+Computer basics.docx
+myFirstWebsite/
+tuesday/
