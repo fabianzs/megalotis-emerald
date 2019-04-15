@@ -18,11 +18,5 @@ namespace ASP.NET_Core_Webapp.Controllers
         {
             return Ok(helloService.HelloWorld());
         }
-
-        //[HttpGet("pitches")]
-        //public IActionResult GetPitch()
-        //{
-
-        //}
     }
 }
