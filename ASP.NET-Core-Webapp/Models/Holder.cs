@@ -7,5 +7,8 @@ namespace ASP.NET_Core_Webapp.Models
 {
     public class Holder
     {
+        public string Name { get; set; }
+        public object Message { get; set; }
+        public bool PitchStatus { get; set; }
     }
 }
