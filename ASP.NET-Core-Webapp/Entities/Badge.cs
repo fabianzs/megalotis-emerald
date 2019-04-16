@@ -10,5 +10,10 @@ namespace ASP.NET_Core_Webapp.Entities
         public string Tag { get; set; }
         public ICollection<LevelEntity> Levels { get; set; }
 
+        public Badge()
+        {
+            this.Levels = new List<LevelEntity>();
+        }
+
     }
 }
