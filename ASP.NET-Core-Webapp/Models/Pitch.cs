@@ -13,6 +13,8 @@ namespace ASP.NET_Core_Webapp.Models
         public int OldLevel { get; set; }
         public int PitchedLevel { get; set; }
         public string PitchMessage { get; set; }
-        public Holder[] Holders { get; set; }
+        public List<string> Holders { get; set; }
     }
+
+
 }

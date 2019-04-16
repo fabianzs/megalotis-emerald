@@ -9,18 +9,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class PitchController : ControllerBase
     {
         List<Pitch> pitches = new List<Pitch>();
+
+
 
         [HttpPost("pitches")]
         public IActionResult SavePitches(Pitch newPitch)
         {        
             if (!pitches.Exists(e => e.BadgeName.Equals(newPitch.BadgeName))) {
                 pitches.Add(newPitch);               
-                return Created("" ,new { message = "Success" });
+                return Created("",new { message = "Success" });
             }else {
              return Created("", new { error = "Unauthorizied" });
             }                     
