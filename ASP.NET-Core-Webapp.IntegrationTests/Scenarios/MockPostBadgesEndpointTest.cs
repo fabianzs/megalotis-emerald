@@ -72,22 +72,5 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
-
-
-        [Fact]
-        public async Task MockPostBadges_AllFieldFilled_ShouldSuccesInBody()
-        {
-            List<string> holders = new List<string>() { "Laci", "Gábor", "Levente" };
-
-            Badge badge = new Badge() { Name = "test", Tag = "test", Version = "test" };
-
-            LevelEntity testlevel = new LevelEntity() { Description = "test", Holders = holders, Level = 2 };
-
-            badge.Levels.Add(testlevel);
-
-            var response = await testContext.Client.PostAsync("/badges?authorized=1", new StringContent(JsonConvert.SerializeObject(badge), Encoding.UTF8, "application/json"));
-
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-        }
     }
 }
