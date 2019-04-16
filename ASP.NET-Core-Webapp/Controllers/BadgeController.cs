@@ -8,18 +8,22 @@ namespace ASP.NET_Core_Webapp.Controllers
     public class BadgeController : Controller
     {
         [HttpPost]
-        public IActionResult RecieveBadge([FromBody] Badge badge, [FromQuery]int authorized)
+        public IActionResult RecieveBadge([FromBody]Badge badge, [FromQuery]int authorized)
         {
             List<string> holdersTest = new List<string>() { "Gazsi", "Géza" };
+            if (badge == null)
+            {
+                return StatusCode(404, new { error = "No message body" });
+            }
+
             if (authorized.Equals(1))
             {
                 if (badge.Levels == null || badge.Name == null || badge.Tag == null || badge.Version == null)
                 {
-
                     return NotFound(new { error = "Please provide all fields" });
                 }
 
-                badge.Levels.Add(new Skill() { Description = "New test skill added", Level = 500, Holders = holdersTest });
+                badge.Levels.Add(new LevelEntity() { Description = "New test skill added", Level = 500, Holders = holdersTest });
 
                 return Created("/badges", new { message = "Success" });
 

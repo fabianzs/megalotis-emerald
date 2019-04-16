@@ -8,7 +8,7 @@ namespace ASP.NET_Core_Webapp.Entities
         public string Version { get; set; }
         public string Name { get; set; }
         public string Tag { get; set; }
-        public ICollection<Skill> Levels { get; set; }
+        public ICollection<LevelEntity> Levels { get; set; }
 
     }
 }
