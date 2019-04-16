@@ -15,16 +15,14 @@ namespace ASP.NET_Core_Webapp.Controllers
     {
         List<Pitch> pitches = new List<Pitch>();
 
-
-
         [HttpPost("pitches")]
-        public IActionResult SavePitches(Pitch newPitch)
+        public IActionResult CreateNewPitch(Pitch newPitch)
         {        
             if (!pitches.Exists(e => e.BadgeName.Equals(newPitch.BadgeName))) {
                 pitches.Add(newPitch);               
                 return Created("",new { message = "Success" });
             }else {
-             return Created("", new { error = "Unauthorizied" });
+                return Unauthorized( new { error = "Unauthorizied" });
             }                     
         }
     }

@@ -14,6 +14,11 @@ namespace ASP.NET_Core_Webapp.Models
         public int PitchedLevel { get; set; }
         public string PitchMessage { get; set; }
         public List<string> Holders { get; set; }
+
+        public Pitch()
+        {
+            this.Holders = new List<string>();
+        }
     }
 
 
