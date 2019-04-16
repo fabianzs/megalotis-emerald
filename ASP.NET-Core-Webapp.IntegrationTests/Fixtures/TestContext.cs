@@ -13,7 +13,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
         public TestContext()
         {
             var builder = new WebHostBuilder()
-                .UseEnvironment("Testing")
+                .UseEnvironment("Testing") //not necessary
                 .UseStartup<Startup>();
 
             server = new TestServer(builder);
