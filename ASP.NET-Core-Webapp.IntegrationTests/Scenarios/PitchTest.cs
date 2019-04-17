@@ -47,17 +47,17 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType.ToString());
         }
 
-        [Fact]
-        public async Task Pitch_UserNotNull_NotEqual()
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");
-            var response = await testContext.Client.SendAsync(request);
+        //[Fact]
+        //public async Task Pitch_UserNotNull_NotEqual()
+        //{
+        //    var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");
+        //    var response = await testContext.Client.SendAsync(request);
 
-            response.EnsureSuccessStatusCode();
+        //    response.EnsureSuccessStatusCode();
 
-            Assert.Equal(new StringContent(JsonConvert.SerializeObject(new User()), Encoding.UTF8, "application/json").ToString(), response.Content.ReadAsStringAsync().Result);
-            //Assert.NotEqual("{\"myPitches\":null,\"pitchesToReview\":null}", response.Content.ReadAsStringAsync().Result);
+        //    Assert.Equal(new StringContent(JsonConvert.SerializeObject(new User()), Encoding.UTF8, "application/json"), response.Content.ReadAsStringAsync().Result);
+        //    //Assert.NotEqual("{\"myPitches\":null,\"pitchesToReview\":null}", response.Content.ReadAsStringAsync().Result);
 
-        }
+        //}
     }
 }
