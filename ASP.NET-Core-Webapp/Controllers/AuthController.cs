@@ -1,4 +1,5 @@
-﻿using ASP.NET_Core_Webapp.Services;
+﻿using ASP.NET_Core_Webapp.Helpers;
+using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Core_Webapp.Controllers
@@ -21,7 +22,8 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpGet("auth")]
         public IActionResult Authenticate(string code)
         {
-            return Ok("OK");
+            GoogleToken token = authService.GetToken(code);
+            return Ok(token);
         }
     }
 }
