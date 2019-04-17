@@ -52,12 +52,10 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");
             var response = await testContext.Client.SendAsync(request);
-            //JsonConvert.PopulateObject
-            User user = new User();
-            new StringContent(JsonConvert.SerializeObject(new User()));
 
             response.EnsureSuccessStatusCode();
-            Assert.Equal(new StringContent(JsonConvert.SerializeObject(new User())).ToString().ToCharArray(), response.Content.ReadAsStringAsync().Result);
+
+            Assert.NotEqual(new StringContent(JsonConvert.SerializeObject(new User())).ToString().ToCharArray(), response.Content.ReadAsStringAsync().Result);
             //Assert.NotEqual("{\"myPitches\":null,\"pitchesToReview\":null}", response.Content.ReadAsStringAsync().Result);
 
         }
