@@ -26,7 +26,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             var request = new HttpRequestMessage(HttpMethod.Post, "/badges?authorized=1");
 
             var response = await testContext.Client.PostAsync("/badges?authorized=1", new StringContent(JsonConvert.SerializeObject(new Badge() { Name = "test", Tag = "test", Version = "test", Levels = null }), Encoding.UTF8, "application/json"));
-
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
@@ -36,7 +35,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             var request = new HttpRequestMessage(HttpMethod.Post, "/badges?authorized=1");
 
             var response = await testContext.Client.PostAsync("/badges?authorized=1", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json"));
-
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
@@ -71,6 +69,17 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             var response = await testContext.Client.PostAsync("/badges?authorized=0", new StringContent(JsonConvert.SerializeObject(badge), Encoding.UTF8, "application/json"));
 
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task MockPostBadges_NotAllFieldFilledLevelsIsMissing_ShouldReturn404WithBody()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, "/badges?authorized=1");
+
+            var response = await testContext.Client.PostAsync("/badges?authorized=1", new StringContent(JsonConvert.SerializeObject(new Badge() { Name = "test", Tag = "test", Version = "test", Levels = null }), Encoding.UTF8, "application/json"));
+
+            Assert.Equal("{\"error\":\"Please provide all fields\"}",  response.Content.ReadAsStringAsync().Result);
+
         }
     }
 }
