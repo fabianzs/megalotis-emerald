@@ -13,9 +13,9 @@ namespace ASP.NET_Core_Webapp.Models
             public int OldLevel { get; set; }
             public int PitchedLevel { get; set; }
             public string PitchMessage { get; set; }
-            public Holder[] Holders { get; set; }
+            public ICollection<Holder> Holders { get; set; }
 
-        public Pitch(string username, string badgeName, int oldLevel, int pitchedLevel, string pitchMessage, Holder[] holders)
+        public Pitch(string username, string badgeName, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Holder> holders)
         {
             Timestamp = DateTime.Now;
             Username = username;

@@ -26,5 +26,14 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
+
+        [Theory]
+        [InlineData("/pitches")]
+        public async Task Pitch_GetPitchesInLineData_Return200(string url)
+        {
+            var request = url;
+            var response = await testContext.Client.GetAsync(request);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
     }
 }

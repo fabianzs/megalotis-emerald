@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 namespace ASP.NET_Core_Webapp.Models
 {
     public class User
-    {
-        public Pitch[] myPitches;
-        public Pitch[] pitchesToReview;
+    { 
+        public ICollection<Pitch> myPitches;
+        public ICollection<Pitch> pitchesToReview;
 
-        public User(Pitch[] myPitches, Pitch[] pitchesToReview)
+        public User(ICollection<Pitch> myPitches, ICollection<Pitch> pitchesToReview)
         {
             this.myPitches = myPitches;
             this.pitchesToReview = pitchesToReview;
