@@ -1,4 +1,6 @@
 ﻿using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
+using ASP.NET_Core_Webapp.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -34,6 +36,30 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             var request = url;
             var response = await testContext.Client.GetAsync(request);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task Pitch_ContentTypeJson_Success()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");
+            var response = await testContext.Client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType.ToString());
+        }
+
+        [Fact]
+        public async Task Pitch_UserNotNull_Success()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");
+            var response = await testContext.Client.SendAsync(request);
+            //JsonConvert.PopulateObject
+            User user = new User();
+            new StringContent(JsonConvert.SerializeObject(new User()));
+
+            response.EnsureSuccessStatusCode();
+            Assert.Equal(new StringContent(JsonConvert.SerializeObject(new User())).ToString().ToCharArray(), response.Content.ReadAsStringAsync().Result);
+            //Assert.NotEqual("{\"myPitches\":null,\"pitchesToReview\":null}", response.Content.ReadAsStringAsync().Result);
+
         }
     }
 }

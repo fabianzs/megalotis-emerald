@@ -15,5 +15,10 @@ namespace ASP.NET_Core_Webapp.Models
             this.myPitches = myPitches;
             this.pitchesToReview = pitchesToReview;
         }
+
+        public User()
+        {
+
+        }
     }
 }
