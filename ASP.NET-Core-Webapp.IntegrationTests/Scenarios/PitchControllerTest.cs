@@ -26,19 +26,32 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
             var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
-
+           
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]
-        public async Task CreateNewPitchFailTest()
+        public async Task CreateNewPitchIsNullTest()
+        {
+            
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
+            var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json"));
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+/*
+        [Fact]
+        public async Task CreateNewPitchPitchAlreadyExist()
         {
             Pitch pitch = new Pitch() { BadgeName = "English speaker", OldLevel = 2, PitchedLevel = 3, PitchMessage = "Hello World! My English is bloody gorgeous.", Holders = { "balazs.jozsef", "benedek.vamosi", "balazs.barna" } };
+
             var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
             var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
 
-
+           request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
+           response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
+*/
     }
 }

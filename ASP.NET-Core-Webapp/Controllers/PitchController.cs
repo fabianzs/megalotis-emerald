@@ -15,10 +15,17 @@ namespace ASP.NET_Core_Webapp.Controllers
     {
         List<Pitch> pitches = new List<Pitch>();
 
+        public PitchController() {
+            pitches.Add(new Pitch() { BadgeName = "C pro", OldLevel = 2, PitchedLevel = 3, PitchMessage = "Hello World! My English is bloody gorgeous.", Holders = { "balazs.jozsef", "benedek.vamosi", "balazs.barna" } });
+            pitches.Add(new Pitch() { BadgeName = "C++ pro", OldLevel = 2, PitchedLevel = 3, PitchMessage = "Hello World! My English is bloody gorgeous.", Holders = { "balazs.jozsef", "benedek.vamosi", "balazs.barna" } });
+            pitches.Add(new Pitch() { BadgeName = "Java pro", OldLevel = 2, PitchedLevel = 3, PitchMessage = "Hello World! My English is bloody gorgeous.", Holders = { "balazs.jozsef", "benedek.vamosi", "balazs.barna" } });
+            pitches.Add(new Pitch() { BadgeName = "C# pro", OldLevel = 2, PitchedLevel = 3, PitchMessage = "Hello World! My English is bloody gorgeous.", Holders = { "balazs.jozsef", "benedek.vamosi", "balazs.barna" } });
+        }
+
         [HttpPost("pitches")]
         public IActionResult CreateNewPitch(Pitch newPitch)
         {        
-            if (!pitches.Exists(e => e.BadgeName.Equals(newPitch.BadgeName))) {
+            if (!pitches.Exists(e => e.BadgeName.Equals(newPitch.BadgeName)) && !newPitch.Equals(null)) {
                 pitches.Add(newPitch);               
                 return Created("",new { message = "Success" });
             }else {
