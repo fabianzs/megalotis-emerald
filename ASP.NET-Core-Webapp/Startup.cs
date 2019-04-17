@@ -48,6 +48,8 @@ namespace ASP.NET_Core_Webapp
                             ClockSkew = TimeSpan.Zero
                         };
                     });
+
+            services.AddSingleton<IAuthService, AuthService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
