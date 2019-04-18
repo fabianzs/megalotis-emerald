@@ -1,26 +1,12 @@
-<<<<<<< HEAD
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using ASP.NET_Core_Webapp.Entities;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-=======
-﻿using ASP.NET_Core_Webapp.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
->>>>>>> origin/Mock_Post_Badges_Endpoint
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
     public class BadgeController : Controller
     {
-<<<<<<< HEAD
+
         [HttpGet("mybadges")]
         public IActionResult MyBadges()
         {
@@ -30,11 +16,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Ok(new { badges = badges });
 
         }
-        
-    }
-}
-=======
-       
         [HttpPost("badges")]
         public IActionResult RecieveBadge([FromBody]Badge badge, [FromQuery]int authorized)
         {
@@ -60,6 +41,6 @@ namespace ASP.NET_Core_Webapp.Controllers
 
             //    return StatusCode(401, new { error = "Unauthorized" });
         }
+        
     }
 }
->>>>>>> origin/Mock_Post_Badges_Endpoint
