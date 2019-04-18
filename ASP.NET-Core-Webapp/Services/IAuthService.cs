@@ -10,6 +10,7 @@ namespace ASP.NET_Core_Webapp.Services
     {
         string GetGoogleLogin();
         GoogleToken GetToken(string code);
-        bool ValidateToken(string id_token);
+        TokenInfo ValidateToken(string id_token);
+        string CreateJwtToken(string sub, string email);
     }
 }

@@ -1,10 +1,15 @@
 ﻿using ASP.NET_Core_Webapp.Helpers;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.Services
@@ -13,10 +18,12 @@ namespace ASP.NET_Core_Webapp.Services
     public class AuthService : IAuthService
     {
         private readonly IConfiguration configuration;
+        private readonly AppSettings appSettings;
 
-        public AuthService(IConfiguration configuration)
+        public AuthService(IConfiguration configuration, IOptions<AppSettings> appSettings)
         {
             this.configuration = configuration;
+            this.appSettings = appSettings.Value;
         }
 
         public string GetGoogleLogin()
@@ -46,14 +53,33 @@ namespace ASP.NET_Core_Webapp.Services
             return token;
         }
 
-        public bool ValidateToken(string id_token)
+        public TokenInfo ValidateToken(string id_token)
         {
             var client = new HttpClient();
             var req = new HttpRequestMessage(HttpMethod.Get, "https://oauth2.googleapis.com/tokeninfo?id_token=" + id_token);
             HttpResponseMessage response = client.SendAsync(req).Result;
             string res = response.Content.ReadAsStringAsync().Result;
-            TokenInfo token = JsonConvert.DeserializeObject<TokenInfo>(res);
-            return token.email_verified;
+            TokenInfo tokenInfo = JsonConvert.DeserializeObject<TokenInfo>(res);
+            return tokenInfo;
+        }
+
+        public string CreateJwtToken(string sub, string email)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                     new Claim(ClaimTypes.NameIdentifier, sub),
+                     new Claim(ClaimTypes.Email, email)
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(5),
+
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Secret)), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var securetoken = tokenHandler.WriteToken(token);
+            return securetoken;
         }
     }
 }

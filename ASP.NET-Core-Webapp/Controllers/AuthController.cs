@@ -23,8 +23,18 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult Authenticate(string code)
         {
             GoogleToken token = authService.GetToken(code);
-            bool isValid = authService.ValidateToken(token.id_token);
-            return Ok(isValid);
+            TokenInfo tokenInfo = authService.ValidateToken(token.id_token);
+            bool isValid = tokenInfo.email_verified;
+            if (isValid)
+            {
+                var tokenstring = authService.CreateJwtToken(tokenInfo.sub, tokenInfo.email);
+
+                return Ok(tokenstring);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }
