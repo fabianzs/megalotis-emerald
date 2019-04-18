@@ -4,10 +4,9 @@ using System.Collections.Generic;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
-    [Route("badges")]
     public class BadgeController : Controller
     {
-        [HttpPost]
+        [HttpPost("badges")]
         public IActionResult RecieveBadge([FromBody]Badge badge, [FromQuery]int authorized)
         {
             List<string> holdersTest = new List<string>() { "Gazsi", "Géza" };
@@ -26,10 +25,8 @@ namespace ASP.NET_Core_Webapp.Controllers
                 badge.Levels.Add(new LevelEntity() { Description = "New test skill added", Level = 500, Holders = holdersTest });
 
                 return Created("/badges", new { message = "Success" });
-
             }
             else
-
                 return StatusCode(401, new { error = "Unauthorized" });
         }
     }
