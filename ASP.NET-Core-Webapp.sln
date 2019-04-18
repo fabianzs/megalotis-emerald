@@ -5,9 +5,9 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP.NET-Core-Webapp", "ASP.NET-Core-Webapp\ASP.NET-Core-Webapp.csproj", "{3ABF80C8-4FDE-4C13-9641-9D6B6A2831AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP.NET-Core-Webapp.UnitTests", "ASP.NET-Core-Webapp.UnitTests\ASP.NET-Core-Webapp.UnitTests.csproj", "{BB8B6667-9281-404F-B528-E4C391CB35A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP.NET-Core-Webapp.UnitTests", "ASP.NET-Core-Webapp.UnitTests\ASP.NET-Core-Webapp.UnitTests.csproj", "{BB8B6667-9281-404F-B528-E4C391CB35A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP.NET-Core-Webapp.IntegrationTests", "ASP.NET-Core-Webapp.IntegrationTests\ASP.NET-Core-Webapp.IntegrationTests.csproj", "{3DFEDF61-125D-49DF-A928-C3B9ECFB13FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ASP.NET-Core-Webapp.IntegrationTests", "ASP.NET-Core-Webapp.IntegrationTests\ASP.NET-Core-Webapp.IntegrationTests.csproj", "{3DFEDF61-125D-49DF-A928-C3B9ECFB13FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

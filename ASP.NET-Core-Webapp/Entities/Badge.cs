@@ -9,6 +9,9 @@ namespace ASP.NET_Core_Webapp.Entities
     {
         public string Name { get; set; }
         public int Level { get; set; }
+        public string Tag { get; set; }
+        public string Version { get; set; }
+        
 
         public Badge(string name, int level)
         {
