@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ASP.NET_Core_Webapp.Entities;
-using Microsoft.AspNetCore.Authorization;
+﻿using ASP.NET_Core_Webapp.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
-    
+
     public class PitchController : Controller
     {
         //[AllowAnonymous]
