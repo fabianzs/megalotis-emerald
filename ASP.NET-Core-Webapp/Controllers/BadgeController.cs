@@ -1,5 +1,4 @@
-﻿using ASP.NET_Core_Webapp.Entities;
-using Microsoft.AspNetCore.Authorization;
+using ASP.NET_Core_Webapp.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -7,7 +6,16 @@ namespace ASP.NET_Core_Webapp.Controllers
 {
     public class BadgeController : Controller
     {
-       
+
+        [HttpGet("mybadges")]
+        public IActionResult MyBadges()
+        {
+            List<Badge> badges = new List<Badge>();
+
+            badges.Add(new Badge("test", 4));
+            return Ok(new { badges = badges });
+
+        }
         [HttpPost("badges")]
         public IActionResult RecieveBadge([FromBody]Badge badge, [FromQuery]int authorized)
         {
@@ -33,5 +41,6 @@ namespace ASP.NET_Core_Webapp.Controllers
 
             //    return StatusCode(401, new { error = "Unauthorized" });
         }
+        
     }
 }
