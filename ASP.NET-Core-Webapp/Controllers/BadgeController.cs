@@ -16,6 +16,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Ok(new { badges = badges });
 
         }
+
         [HttpPost("badges")]
         public IActionResult RecieveBadge([FromBody]Badge badge, [FromQuery]int authorized)
         {
