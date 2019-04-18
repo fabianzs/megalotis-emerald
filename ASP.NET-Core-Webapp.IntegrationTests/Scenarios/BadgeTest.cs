@@ -34,7 +34,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         {
             var response = await testContext.Client.GetAsync("/mybadges");
             response.EnsureSuccessStatusCode();
-            Assert.Equal("{\"badges\":[{\"name\":\"test\",\"level\":4,\"tag\":null,\"version\":null}]}",
+            Assert.Equal("{\"badges\":[{\"name\":\"test\",\"levels\":[],\"tag\":null,\"version\":null}]}",
                 response.Content.ReadAsStringAsync().Result);
         }
 
