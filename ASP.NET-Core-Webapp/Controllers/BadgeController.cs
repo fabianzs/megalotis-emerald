@@ -1,4 +1,5 @@
 ﻿using ASP.NET_Core_Webapp.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -6,6 +7,7 @@ namespace ASP.NET_Core_Webapp.Controllers
 {
     public class BadgeController : Controller
     {
+       
         [HttpPost("badges")]
         public IActionResult RecieveBadge([FromBody]Badge badge, [FromQuery]int authorized)
         {
@@ -15,8 +17,8 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return StatusCode(404, new { error = "No message body" });
             }
 
-            if (authorized.Equals(1))
-            {
+            //if (authorized.Equals(1))
+            //{
                 if (badge.Levels == null || badge.Name == null || badge.Tag == null || badge.Version == null)
                 {
                     return NotFound(new { error = "Please provide all fields" });
@@ -25,10 +27,11 @@ namespace ASP.NET_Core_Webapp.Controllers
                 badge.Levels.Add(new LevelEntity() { Description = "New test skill added", Level = 500, Holders = holdersTest });
 
                 return Created("/badges", new { message = "Success" });
-            }
-            else
 
-                return StatusCode(401, new { error = "Unauthorized" });
+            //}
+            //else
+
+            //    return StatusCode(401, new { error = "Unauthorized" });
         }
     }
 }
