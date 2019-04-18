@@ -12,7 +12,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         {
             List<Badge> badges = new List<Badge>();
 
-            badges.Add(new Badge("test", 4));
+            badges.Add(new Badge("test"));
             return Ok(new { badges = badges });
 
         }
