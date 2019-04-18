@@ -45,5 +45,15 @@ namespace ASP.NET_Core_Webapp.Services
             GoogleToken token = JsonConvert.DeserializeObject<GoogleToken>(res);
             return token;
         }
+
+        public bool ValidateToken(string id_token)
+        {
+            var client = new HttpClient();
+            var req = new HttpRequestMessage(HttpMethod.Get, "https://oauth2.googleapis.com/tokeninfo?id_token=" + id_token);
+            HttpResponseMessage response = client.SendAsync(req).Result;
+            string res = response.Content.ReadAsStringAsync().Result;
+            TokenInfo token = JsonConvert.DeserializeObject<TokenInfo>(res);
+            return token.email_verified;
+        }
     }
 }
