@@ -46,9 +46,5 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             response.EnsureSuccessStatusCode();
             Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType.ToString());
         }
-
-
-
-
     }
 }
