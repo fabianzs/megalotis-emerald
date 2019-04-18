@@ -44,7 +44,7 @@ namespace ASP.NET_Core_Webapp
                             ValidateAudience = false,
                             ValidateIssuerSigningKey = true,
                             ValidateLifetime = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("AppSettings").Get<AppSettings>().Secret)),
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("AppSettings").Get<AppSettings>().Secret)),
                             ClockSkew = TimeSpan.Zero
                         };
                     });

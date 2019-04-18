@@ -1,5 +1,6 @@
 ﻿using ASP.NET_Core_Webapp.Helpers;
 using ASP.NET_Core_Webapp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Core_Webapp.Controllers
@@ -34,6 +35,13 @@ namespace ASP.NET_Core_Webapp.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [Authorize("Bearer")]
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            return Ok("You are authorized");
         }
     }
 }
