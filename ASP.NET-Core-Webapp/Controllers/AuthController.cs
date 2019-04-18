@@ -28,7 +28,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             if (isValid)
             {
                 var tokenstring = authService.CreateJwtToken(tokenInfo.sub, tokenInfo.email);
-
                 return Ok(tokenstring);
             }
             else
