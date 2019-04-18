@@ -1,4 +1,27 @@
-.vs
+ASP.NET-Core-Webapp/[Bb]in/
+ASP.NET-Core-Webapp/[Oo]bj/
+ASP.NET-Core-Webapp/[Ll]og/
+ASP.NET-Core-Webapp/[Dd]ebug/
+ASP.NET-Core-Webapp/[Dd]ebugPublic/
+ASP.NET-Core-Webapp/[Rr]elease/
+ASP.NET-Core-Webapp/[Rr]eleases/
+
+ASP.NET-Core-Webapp.UnitTests/[Bb]in/
+ASP.NET-Core-Webapp.UnitTests/[Oo]bj/
+ASP.NET-Core-Webapp.UnitTests/[Ll]og/
+ASP.NET-Core-Webapp.UnitTests/[Dd]ebug/
+ASP.NET-Core-Webapp.UnitTests/[Dd]ebugPublic/
+ASP.NET-Core-Webapp.UnitTests/[Rr]elease/
+ASP.NET-Core-Webapp.UnitTests/[Rr]eleases/
+
+ASP.NET-Core-Webapp.IntegrationTests/[Bb]in/
+ASP.NET-Core-Webapp.IntegrationTests/[Oo]bj/
+ASP.NET-Core-Webapp.IntegrationTests/[Ll]og/
+ASP.NET-Core-Webapp.IntegrationTests/[Dd]ebug/
+ASP.NET-Core-Webapp.IntegrationTests/[Dd]ebugPublic/
+ASP.NET-Core-Webapp.IntegrationTests/[Rr]elease/
+ASP.NET-Core-Webapp.IntegrationTests/[Rr]eleases/
+
 .idea/
 *.iml
 
@@ -346,4 +369,3 @@ ASALocalRun/
 
 # MSBuild Binary and Structured Log
 *.binlog
-
