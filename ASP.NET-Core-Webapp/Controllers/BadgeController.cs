@@ -27,6 +27,7 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return Created("/badges", new { message = "Success" });
             }
             else
+
                 return StatusCode(401, new { error = "Unauthorized" });
         }
     }
