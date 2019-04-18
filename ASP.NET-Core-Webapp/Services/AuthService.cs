@@ -18,12 +18,10 @@ namespace ASP.NET_Core_Webapp.Services
     public class AuthService : IAuthService
     {
         private readonly IConfiguration configuration;
-        private readonly AppSettings appSettings;
 
-        public AuthService(IConfiguration configuration, IOptions<AppSettings> appSettings)
+        public AuthService(IConfiguration configuration)
         {
             this.configuration = configuration;
-            this.appSettings = appSettings.Value;
         }
 
         public string GetGoogleLogin()
@@ -75,7 +73,7 @@ namespace ASP.NET_Core_Webapp.Services
             //    }),
             //    Expires = DateTime.UtcNow.AddMinutes(5),
 
-            //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Secret)), SecurityAlgorithms.HmacSha256Signature)
+            //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:Jwt:Secret"])), SecurityAlgorithms.HmacSha256Signature)
             //};
             //var token = tokenHandler.CreateToken(tokenDescriptor);
             //var securetoken = tokenHandler.WriteToken(token);
@@ -84,7 +82,7 @@ namespace ASP.NET_Core_Webapp.Services
                 claims: new Claim[] { new Claim("OpenID", sub), new Claim("Email", email) },
                 notBefore: DateTime.UtcNow,
                 expires: DateTime.UtcNow.AddMinutes(5),
-                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Secret)), SecurityAlgorithms.HmacSha256Signature)
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:Jwt:Secret"])), SecurityAlgorithms.HmacSha256Signature)
                 );
             string securetoken = new JwtSecurityTokenHandler().WriteToken(token);
 

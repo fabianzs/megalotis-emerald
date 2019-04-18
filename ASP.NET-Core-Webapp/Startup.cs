@@ -27,7 +27,6 @@ namespace ASP.NET_Core_Webapp
             services.AddMvc();
             services.AddScoped<IHelloService, HelloService>();
 
-            services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
             services.AddAuthorization(auth =>
                     {
                         auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
@@ -44,7 +43,7 @@ namespace ASP.NET_Core_Webapp
                             ValidateAudience = false,
                             ValidateIssuerSigningKey = true,
                             ValidateLifetime = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("AppSettings").Get<AppSettings>().Secret)),
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:Jwt:Secret"])),
                             ClockSkew = TimeSpan.Zero
                         };
                     });
