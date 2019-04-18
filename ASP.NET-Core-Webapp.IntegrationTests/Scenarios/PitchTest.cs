@@ -1,5 +1,4 @@
 ﻿using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
-using ASP.NET_Core_Webapp.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
