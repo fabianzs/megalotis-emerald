@@ -54,10 +54,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 
             response.EnsureSuccessStatusCode();
 
-            //Assert.Equal(new StringContent(JsonConvert.SerializeObject(new User()), Encoding.UTF8, "application/json"), response.Content.ReadAsStringAsync().Result);
             Assert.NotEqual("{\"myPitches\":null,\"pitchesToReview\":null}", response.Content.ReadAsStringAsync().Result);
-
-
         }
     }
 }
