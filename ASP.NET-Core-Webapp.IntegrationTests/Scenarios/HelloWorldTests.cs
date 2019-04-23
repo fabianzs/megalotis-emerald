@@ -31,6 +31,5 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal("Hello World!", await response.Content.ReadAsStringAsync());
         }
-
     }
 }
