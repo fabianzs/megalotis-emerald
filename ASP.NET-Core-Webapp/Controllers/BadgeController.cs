@@ -14,7 +14,6 @@ namespace ASP.NET_Core_Webapp.Controllers
 
             badges.Add(new Badge("test"));
             return Ok(new { badges = badges });
-
         }
 
         [HttpPost("badges")]
