@@ -28,7 +28,7 @@ namespace ASP.NET_Core_Webapp.Services
         {
             string base_url = "https://accounts.google.com/o/oauth2/v2/auth";
             string scope = "email+openid";
-            string redirect_uri = "http://localhost:5001/auth";
+            string redirect_uri = configuration.GetValue<string>("AppSettings:Authentication endpoint");
             string response_type = "code";
             string client_id = configuration["Authentication:Google:ClientId"];
             return $"{base_url}?scope={scope}&redirect_uri={redirect_uri}&response_type={response_type}&client_id={client_id}";
@@ -40,7 +40,7 @@ namespace ASP.NET_Core_Webapp.Services
             dict.Add(new KeyValuePair<string, string>("code", code));
             dict.Add(new KeyValuePair<string, string>("client_id", configuration["Authentication:Google:ClientId"]));
             dict.Add(new KeyValuePair<string, string>("client_secret", configuration["Authentication:Google:ClientSecret"]));
-            dict.Add(new KeyValuePair<string, string>("redirect_uri", "http://localhost:5001/auth"));
+            dict.Add(new KeyValuePair<string, string>("redirect_uri", configuration.GetValue<string>("AppSettings:Authentication endpoint")));
             dict.Add(new KeyValuePair<string, string>("grant_type", "authorization_code"));
             var client = new HttpClient();
             var req = new HttpRequestMessage(HttpMethod.Post, "https://www.googleapis.com/oauth2/v4/token");
@@ -63,21 +63,6 @@ namespace ASP.NET_Core_Webapp.Services
 
         public string CreateJwtToken(string sub, string email)
         {
-            //var tokenHandler = new JwtSecurityTokenHandler();
-            //var tokenDescriptor = new SecurityTokenDescriptor
-            //{
-            //    Subject = new ClaimsIdentity(new Claim[]
-            //    {
-            //         new Claim(ClaimTypes.NameIdentifier, sub),
-            //         new Claim(ClaimTypes.Email, email)
-            //    }),
-            //    Expires = DateTime.UtcNow.AddMinutes(5),
-
-            //    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:Jwt:Secret"])), SecurityAlgorithms.HmacSha256Signature)
-            //};
-            //var token = tokenHandler.CreateToken(tokenDescriptor);
-            //var securetoken = tokenHandler.WriteToken(token);
-
             JwtSecurityToken token = new JwtSecurityToken(
                 claims: new Claim[] { new Claim("OpenID", sub), new Claim("Email", email) },
                 notBefore: DateTime.UtcNow,
