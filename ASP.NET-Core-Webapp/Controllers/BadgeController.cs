@@ -19,8 +19,6 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpPost("badges")]
         public IActionResult RecieveBadge([FromBody]Badge badge)
         {
-            //List<string> holdersTest = new List<string>() { "Gazsi", "Géza" };
-
             if (badge == null)
             {
                 return StatusCode(404, new { error = "No message body" });
@@ -29,9 +27,6 @@ namespace ASP.NET_Core_Webapp.Controllers
                 {
                     return NotFound(new { error = "Please provide all fields" });
                 }
-
-              //  badge.Levels.Add(new BadgeLevel() { Description = "New test skill added", Level = 500, Holders = holdersTest });
-
                 return Created("/badges", new { message = "Success" });
         }
     }
