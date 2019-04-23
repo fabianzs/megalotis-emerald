@@ -10,10 +10,10 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpGet("mybadges")]
         public IActionResult MyBadges()
         {
-            List<Badge> badges = new List<Badge>();
+            List<Badge> badgesList = new List<Badge>();
 
-            badges.Add(new Badge("test"));
-            return Ok(new { badges = badges });
+            badgesList.Add(new Badge("test"));
+            return Ok(new { badges = badgesList });
         }
 
         [HttpPost("badges")]
@@ -25,8 +25,6 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return StatusCode(404, new { error = "No message body" });
             }
 
-            //if (authorized.Equals(1))
-            //{
                 if (badge.Levels == null || badge.Name == null || badge.Tag == null || badge.Version == null)
                 {
                     return NotFound(new { error = "Please provide all fields" });
@@ -35,11 +33,6 @@ namespace ASP.NET_Core_Webapp.Controllers
                 badge.Levels.Add(new LevelEntity() { Description = "New test skill added", Level = 500, Holders = holdersTest });
 
                 return Created("/badges", new { message = "Success" });
-
-            //}
-            //else
-
-            //    return StatusCode(401, new { error = "Unauthorized" });
         }
         
     }

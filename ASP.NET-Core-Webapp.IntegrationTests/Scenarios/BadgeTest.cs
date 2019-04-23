@@ -1,11 +1,6 @@
-﻿using ASP.NET_Core_Webapp.Entities;
-using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
