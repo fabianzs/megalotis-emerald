@@ -8,7 +8,6 @@ namespace ASP.NET_Core_Webapp.Controllers
 
     public class PitchController : Controller
     {
-        //[AllowAnonymous]
         [HttpGet("pitches")]
         public Object GetPitch()
         {
@@ -23,7 +22,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             Pitch pitch3 = new Pitch("Boti", "Macro", 1, 2, "I have been improving", Holders);
             
             User user = new User(new List<Pitch>{ pitch, pitch2, pitch3 }, new List<Pitch>{ pitch, pitch3 });
-            //user = null;
+
             if(user != null)
             {
                 return user;
