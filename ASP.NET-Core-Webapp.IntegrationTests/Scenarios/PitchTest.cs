@@ -23,13 +23,13 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task Pitch_GetPitches_Return200()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");
+            var request = new HttpRequestMessage(HttpMethod.Get, "/api/pitches");
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Theory]
-        [InlineData("/pitches")]
+        [InlineData("/api/pitches")]
         public async Task Pitch_GetPitchesInLineData_Return200(string url)
         {
             var request = url;
@@ -40,7 +40,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task Pitch_ContentTypeJson_Success()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");
+            var request = new HttpRequestMessage(HttpMethod.Get, "/api/pitches");
             var response = await testContext.Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
             Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType.ToString());
@@ -49,7 +49,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task Pitch_UserNotNull_NotEqual()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");
+            var request = new HttpRequestMessage(HttpMethod.Get, "/api/pitches");
             var response = await testContext.Client.SendAsync(request);
 
             response.EnsureSuccessStatusCode();
