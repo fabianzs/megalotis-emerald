@@ -13,9 +13,15 @@ namespace ASP.NET_Core_Webapp.Entities
         public int OldLevel { get; set; }
         public int PitchedLevel { get; set; }
         public string PitchMessage { get; set; }
+<<<<<<< HEAD
         public List<string> Holders { get; set; }
 
         public Pitch()
+=======
+        public ICollection<Review> Holders { get; set; }
+
+        public Pitch(string username, string badgeName, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)
+>>>>>>> 8619cfc... Rename Holder class to Review and fix fields
         {
             
         }

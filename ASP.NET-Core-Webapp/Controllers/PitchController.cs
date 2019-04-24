@@ -13,6 +13,15 @@ namespace ASP.NET_Core_Webapp.Controllers
     [ApiController]
     public class PitchController : ControllerBase
     {
+<<<<<<< HEAD
+=======
+         readonly List<Review> Holders = new List<Review>{
+            new Review("Szabi", "Good", true),
+            new Review("Zsófi", "Good", true),
+            new Review("Laci", "Good", true),
+            };
+
+>>>>>>> 8619cfc... Rename Holder class to Review and fix fields
         List<Pitch> pitches = new List<Pitch>();
 
         public PitchController() {

@@ -19,6 +19,15 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             this.testContext = testContext;
         }
 
+<<<<<<< HEAD
+=======
+        readonly List<Review> Holders = new List<Review>{
+            new Review("Szabi", "Good", true),
+            new Review("Zsófi", "Good", true),
+            new Review("Laci", "Good", true),
+            };
+
+>>>>>>> 8619cfc... Rename Holder class to Review and fix fields
         [Fact]
         public async Task CreateNewPitchSuccessTest()
         {
