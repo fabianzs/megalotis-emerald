@@ -10,11 +10,7 @@ namespace ASP.NET_Core_Webapp.Entities
         public string Email { get; set; }
         public string OpenId { get; set; }
 
-        public User(ICollection<Pitch> myPitches, ICollection<Pitch> pitchesToReview)
-        {
-            this.myPitches = myPitches;
-            this.pitchesToReview = pitchesToReview;
-        }
+        
 
         public User()
         {

@@ -28,7 +28,14 @@ namespace ASP.NET_Core_Webapp.Entities
         public Pitch(string username, string badgeName, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)
 >>>>>>> 8619cfc... Rename Holder class to Review and fix fields
         {
+<<<<<<< HEAD
             
+=======
+            TimeStamp = DateTime.Now;
+            PitchedLevel = pitchedLevel;
+            PitchMessage = pitchMessage;
+            Holders = holders;
+>>>>>>> e4a59ec... Fix User fields and fix some constructor
         }
     }
 
