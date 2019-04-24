@@ -1,5 +1,5 @@
-﻿using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
-using ASP.NET_Core_Webapp.Entities;
+﻿using ASP.NET_Core_Webapp.Entities;
+using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
