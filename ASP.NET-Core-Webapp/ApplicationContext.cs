@@ -1,7 +1,7 @@
 ﻿using ASP.NET_Core_Webapp.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace ASP.NET_Core_Webapp.Data
+namespace ASP.NET_Core_Webapp
 {
     public class ApplicationContext : DbContext
     {
@@ -11,13 +11,8 @@ namespace ASP.NET_Core_Webapp.Data
         public DbSet<BadgeLevel> BadgeLevels { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Badge> Badges { get; set; }
-        public DbSet<Holder> Holders { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
 
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-
-        }
     }
 }

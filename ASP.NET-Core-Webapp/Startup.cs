@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
+using ASP.NET_Core_Webapp.SeedData;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -26,6 +28,9 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            Seed seedTest = new Seed();
+            seedTest.writeAllRows();
+
             services.AddCors();
             services.AddMvc();
             services.AddScoped<IHelloService, HelloService>();
@@ -52,17 +57,17 @@ namespace ASP.NET_Core_Webapp
                     });
             // After ApplicationContext is ready, remove comment backslashes!!!
 
-            //if (env.IsDevelopment())
+            if (env.IsDevelopment())
 
-            //{
-            //    services.AddDbContext<ApplicationContext>(builder =>
-            //            builder.UseInMemoryDatabase("InMemoryDatabase"));
-            //}
-            //if (env.IsProduction())
-            //{
-            //    services.AddDbContext<ApplicationContext>(builder =>
-            //            builder.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
-            //}
+            {
+                services.AddDbContext<ApplicationContext>(builder =>
+                        builder.UseInMemoryDatabase("InMemoryDatabase"));
+            }
+            if (env.IsProduction())
+            {
+                services.AddDbContext<ApplicationContext>(builder =>
+                        builder.UseSqlServer(configuration.GetConnectionString("ProductionConnection")));
+            }
 
             services.AddSingleton<IAuthService, AuthService>();
         }
