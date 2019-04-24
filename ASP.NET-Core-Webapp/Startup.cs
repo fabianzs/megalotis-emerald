@@ -50,6 +50,7 @@ namespace ASP.NET_Core_Webapp
                             ClockSkew = TimeSpan.Zero
                         };
                     });
+            // After ApplicationContext is ready, remove comment backslashes!!!
 
             //if (env.IsDevelopment())
 
