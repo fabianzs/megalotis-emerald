@@ -17,10 +17,7 @@ namespace ASP.NET_Core_Webapp.Entities
 
         public Pitch(string username, string badgeName, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)
         {
-            Timestamp = DateTime.Now;
-            Username = username;
-            BadgeName = badgeName;
-            OldLevel = oldLevel;
+            TimeStamp = DateTime.Now;
             PitchedLevel = pitchedLevel;
             PitchMessage = pitchMessage;
             Holders = holders;
