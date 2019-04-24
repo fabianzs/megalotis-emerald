@@ -1,15 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using ASP.NET_Core_Webapp.Entities;
 namespace ASP.NET_Core_Webapp.SeedData
 {
     public class Seed
     {
+        public ApplicationContext ApplicationContext { get; set; }
         public string Json { get; set; }
         public string Json2 { get; set; }
         public DataSet DataSet { get; set; }
@@ -71,7 +68,7 @@ namespace ASP.NET_Core_Webapp.SeedData
 
         public void FillDataBase()
         {
-
+            
         }
     }
 }
