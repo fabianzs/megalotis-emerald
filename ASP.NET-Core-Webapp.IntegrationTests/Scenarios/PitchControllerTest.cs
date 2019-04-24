@@ -20,10 +20,10 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             this.testContext = testContext;
         }
 
-        readonly List<Holder> Holders = new List<Holder>{
-            new Holder("Szabi", "Good", true),
-            new Holder("Zsófi", "Good", true),
-            new Holder("Laci", "Good", true),
+        readonly List<Review> Holders = new List<Review>{
+            new Review("Szabi", "Good", true),
+            new Review("Zsófi", "Good", true),
+            new Review("Laci", "Good", true),
             };
 
         [Fact]

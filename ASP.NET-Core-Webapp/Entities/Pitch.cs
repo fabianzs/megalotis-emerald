@@ -11,9 +11,9 @@ namespace ASP.NET_Core_Webapp.Entities
         public int OldLevel { get; set; }
         public int PitchedLevel { get; set; }
         public string PitchMessage { get; set; }
-        public ICollection<Holder> Holders { get; set; }
+        public ICollection<Review> Holders { get; set; }
 
-        public Pitch(string username, string badgeName, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Holder> holders)
+        public Pitch(string username, string badgeName, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)
         {
             Timestamp = DateTime.Now;
             Username = username;
