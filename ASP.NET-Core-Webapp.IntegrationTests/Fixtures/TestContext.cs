@@ -9,6 +9,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
     {
         private TestServer server;
         public HttpClient Client { get; set; }
+        public int number { get; set; }
 
         public TestContext()
         {
@@ -18,6 +19,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
 
             server = new TestServer(builder);
             Client = server.CreateClient();
+            number++;
         }
 
         public void Dispose()
