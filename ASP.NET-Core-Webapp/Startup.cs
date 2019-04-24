@@ -16,10 +16,12 @@ namespace ASP.NET_Core_Webapp
     public class Startup
     {
         private readonly IConfiguration configuration;
+        private readonly IHostingEnvironment env;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             this.configuration = configuration;
+            this.env = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -48,6 +50,18 @@ namespace ASP.NET_Core_Webapp
                             ClockSkew = TimeSpan.Zero
                         };
                     });
+
+            if (env.IsDevelopment())
+
+            {
+                services.AddDbContext<ApplicationContext>(builder =>
+                        builder.UseInMemoryDatabase("InMemoryDatabase"));
+            }
+            if (env.IsProduction())
+            {
+                services.AddDbContext<ApplicationContext>(builder =>
+                        builder.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
+            }
 
             services.AddSingleton<IAuthService, AuthService>();
         }
