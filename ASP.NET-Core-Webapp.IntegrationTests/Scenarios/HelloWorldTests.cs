@@ -11,10 +11,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
     {
         private readonly TestContext testContext;
 
-        public HelloWorldTests(TestContext testContext)
-        {
-            this.testContext = testContext;
-        }
+        
         
         [Fact]
         public async Task Hello_Should_ReturnOK()

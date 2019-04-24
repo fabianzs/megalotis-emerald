@@ -2,7 +2,7 @@
 
 namespace ASP.NET_Core_Webapp.Entities
 {
-    public class LevelEntity
+    public class BadgeLevel
     {
         public int Level { get; set; }
         public string Description { get; set; }
