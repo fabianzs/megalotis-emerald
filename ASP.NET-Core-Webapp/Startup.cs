@@ -51,17 +51,17 @@ namespace ASP.NET_Core_Webapp
                         };
                     });
 
-            if (env.IsDevelopment())
+            //if (env.IsDevelopment())
 
-            {
-                services.AddDbContext<ApplicationContext>(builder =>
-                        builder.UseInMemoryDatabase("InMemoryDatabase"));
-            }
-            if (env.IsProduction())
-            {
-                services.AddDbContext<ApplicationContext>(builder =>
-                        builder.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
-            }
+            //{
+            //    services.AddDbContext<ApplicationContext>(builder =>
+            //            builder.UseInMemoryDatabase("InMemoryDatabase"));
+            //}
+            //if (env.IsProduction())
+            //{
+            //    services.AddDbContext<ApplicationContext>(builder =>
+            //            builder.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
+            //}
 
             services.AddSingleton<IAuthService, AuthService>();
         }
