@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -46,6 +48,22 @@ namespace ASP.NET_Core_Webapp
                             ValidateLifetime = true,
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:Jwt:Secret"])),
                             ClockSkew = TimeSpan.Zero
+                        };
+                        options.Events = new JwtBearerEvents()
+                        {
+                            OnAuthenticationFailed = c =>
+                            {
+                                c.NoResult();
+                                c.Response.StatusCode = 401;
+                                c.Response.ContentType = "application/json";
+                                c.Response.WriteAsync(JsonConvert.SerializeObject(new CustomErrorMessage("Unauthorized"))).Wait();
+                                return Task.CompletedTask;
+                            },
+                            OnChallenge = c =>
+                            {
+                                c.HandleResponse();
+                                return Task.CompletedTask;
+                            }
                         };
                     });
 
