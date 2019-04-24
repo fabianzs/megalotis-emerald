@@ -1,11 +1,6 @@
-﻿using ASP.NET_Core_Webapp.Entities;
-using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -34,7 +29,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         {
             var response = await testContext.Client.GetAsync("/mybadges");
             response.EnsureSuccessStatusCode();
-            Assert.Equal("{\"badges\":[{\"name\":\"test\",\"level\":4,\"tag\":null,\"version\":null}]}",
+            Assert.Equal("{\"badges\":[{\"name\":\"test\",\"levels\":[],\"tag\":null,\"version\":null}]}",
                 response.Content.ReadAsStringAsync().Result);
         }
 
@@ -46,9 +41,5 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             response.EnsureSuccessStatusCode();
             Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType.ToString());
         }
-
-
-
-
     }
 }

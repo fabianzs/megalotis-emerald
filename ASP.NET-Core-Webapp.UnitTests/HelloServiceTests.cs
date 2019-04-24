@@ -29,17 +29,6 @@ namespace ASP.NET_Core_Webapp.UnitTests
         {
             Assert.NotEqual("Yo Mate!", helloService.HelloWorld());
         }
-
-        [Fact]
-        public void Badgesendpoint()
-        {
-            List<Badge> badges = new List<Badge>();
-            List<Badge> badgess = new List<Badge>();
-
-            badges.Add(new Badge("test",2));
-
-            Assert.NotEqual(badges, controller.MyBadges());
-        }
     }
 }
 
