@@ -1,4 +1,5 @@
 ﻿using ASP.NET_Core_Webapp.Entities;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -13,18 +14,20 @@ namespace ASP.NET_Core_Webapp.SeedData
         public StreamReader StreamReader { get; set; }
         public ApplicationContext DataBase { get; set; }
         public SeedObject SeedObject { get; set; }
+        public IConfiguration Configuration { get; set; }
 
-        public SeedV2(ApplicationContext applicationContext)
+        public SeedV2(ApplicationContext applicationContext, IConfiguration configuration)
         {
+            this.Configuration = configuration;
             this.DataBase = applicationContext;
-            this.StreamReader = new StreamReader(@"C:\Users\laszl\Documents\Programozás\greenfox\megem_project\megalotis-emerald\ASP.NET-Core-Webapp\SeedData\SeedData.json");
+            this.StreamReader = new StreamReader(Configuration["SeedLocation:FileLocation"]);
             Json2 = StreamReader.ReadToEnd();
             this.SeedObject = JsonConvert.DeserializeObject<SeedObject>(Json2);
         }
 
         public SeedV2()
         {
-            this.StreamReader = new StreamReader(@"C:\Users\laszl\Documents\Programozás\greenfox\megem_project\megalotis-emerald\ASP.NET-Core-Webapp\SeedData\SeedData.json");
+            this.StreamReader = new StreamReader(Configuration["SeedLocation:FileLocation"]);
             Json2 = StreamReader.ReadToEnd();
             this.SeedObject = JsonConvert.DeserializeObject<SeedObject>(Json2);
         }

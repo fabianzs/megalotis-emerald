@@ -79,14 +79,14 @@ namespace ASP.NET_Core_Webapp
             {
                 app.UseDeveloperExceptionPage();
                 //Seed seedData = new Seed(applicationContext);
-                SeedV2 seedDataFromObject = new SeedV2(applicationContext);
+                SeedV2 seedDataFromObject = new SeedV2(applicationContext, configuration);
                 //seedData.FillDatabase();
                 seedDataFromObject.FillDatabaseFromObject();
             }
             if (env.IsProduction())
             {
                // Seed seedData = new Seed(applicationContext);
-                SeedV2 seedDataFromObject = new SeedV2(applicationContext);
+                SeedV2 seedDataFromObject = new SeedV2(applicationContext, configuration);
 
                 //seedData.FillDatabase();
                 seedDataFromObject.FillDatabaseFromObject();
