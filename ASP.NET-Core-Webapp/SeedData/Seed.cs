@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.Entities;
-namespace ASP.NET_Core_Webapp.SeedData
+namespace ASP.NET_Core_Webapp.Entities
 {
     public class Seed
     {
@@ -102,27 +102,25 @@ namespace ASP.NET_Core_Webapp.SeedData
         //    Console.WriteLine(Json2);
         //}
 
-        public void FillDatabase() 
+        public void FillDatabase()
         {
+            //levels is a datatable
+
             foreach (DataRow row in Library.Rows)
             {
-                
                 var listOfLevels = row.Table.Columns.Cast<DataColumn>().Select(x => x.ColumnName).ToList();
-                foreach (var item in listOfLevels)
-                {
-                    Console.WriteLine(item);
-                }
-                Badge badge = new Badge() {Version = row[0].ToString(), Name = row[1].ToString(), Tag = row[2].ToString(), };
+
+                Badge badge = new Badge() { Version = row[0].ToString(), Name = row[1].ToString(), Tag = row[2].ToString() };
                 DataBase.Add(badge);
             }
             foreach (DataRow row in Users.Rows)
             {
-                User user = new User() {Name = row[0].ToString(), Picture = row[2].ToString() };
+                User user = new User() { Name = row[0].ToString(), Picture = row[2].ToString() };
                 DataBase.Add(user);
             }
             foreach (DataRow row in Pitches.Rows)
             {
-                Pitch pitch = new Pitch() {TimeStamp = DateTime.Parse(row[6].ToString()), PitchMessage = row[4].ToString(), PitchedLevel = int.Parse(row[3].ToString()) };
+                Pitch pitch = new Pitch() { TimeStamp = DateTime.Parse(row[6].ToString()), PitchMessage = row[4].ToString(), PitchedLevel = int.Parse(row[3].ToString()) };
                 DataBase.Add(pitch);
             }
             DataBase.SaveChanges();

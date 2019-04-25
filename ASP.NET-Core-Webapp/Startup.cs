@@ -12,6 +12,7 @@ using System;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using ASP.NET_Core_Webapp.SeedData;
+using ASP.NET_Core_Webapp.Entities;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -77,11 +78,19 @@ namespace ASP.NET_Core_Webapp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                //Seed seedData = new Seed(applicationContext);
+                SeedV2 seedDataFromObject = new SeedV2(applicationContext);
+                //seedData.FillDatabase();
+                seedDataFromObject.FillDatabaseFromObject();
             }
             if (env.IsProduction())
             {
-                Seed seedData = new Seed(applicationContext);
-                seedData.FillDatabase();
+               // Seed seedData = new Seed(applicationContext);
+                SeedV2 seedDataFromObject = new SeedV2(applicationContext);
+
+                //seedData.FillDatabase();
+                seedDataFromObject.FillDatabaseFromObject();
+
             }
 
             app.UseMvc(routes =>
