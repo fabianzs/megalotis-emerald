@@ -19,6 +19,7 @@ namespace ASP.NET_Core_Webapp
     {
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment env;
+        private readonly ApplicationContext applicationContext;
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
@@ -29,7 +30,6 @@ namespace ASP.NET_Core_Webapp
         public void ConfigureServices(IServiceCollection services)
         {
             Seed seedTest = new Seed();
-            seedTest.writeAllRows();
 
             services.AddCors();
             services.AddMvc();
@@ -72,11 +72,16 @@ namespace ASP.NET_Core_Webapp
             services.AddSingleton<IAuthService, AuthService>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            if (env.IsProduction())
+            {
+                Seed seedData = new Seed(applicationContext);
+                seedData.FillDatabase();
             }
 
             app.UseMvc(routes =>
