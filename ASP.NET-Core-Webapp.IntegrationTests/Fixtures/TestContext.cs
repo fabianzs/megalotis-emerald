@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using ASP.NET_Core_Webapp.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using System;
 using System.Net.Http;
@@ -9,7 +10,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
     {
         private TestServer server;
         public HttpClient Client { get; set; }
-        public int number { get; set; }
+        public AuthService AuthService { get; set; }
 
         public TestContext()
         {
@@ -19,7 +20,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
 
             server = new TestServer(builder);
             Client = server.CreateClient();
-            number++;
+            AuthService = server.Host.Services.GetService(typeof(AuthService)) as AuthService;
         }
 
         public void Dispose()
