@@ -27,7 +27,7 @@ namespace ASP.NET_Core_Webapp.Services
         public string GetGoogleLogin()
         {
             string base_url = "https://accounts.google.com/o/oauth2/v2/auth";
-            string scope = "email+openid";
+            string scope = "openid%20email%20profile";
             string redirect_uri = configuration.GetValue<string>("AppSettings:Authentication endpoint");
             string response_type = "code";
             string client_id = configuration["Authentication:Google:ClientId"];
@@ -61,10 +61,10 @@ namespace ASP.NET_Core_Webapp.Services
             return tokenInfo;
         }
 
-        public string CreateJwtToken(string sub, string email)
+        public string CreateJwtToken(string sub, string name, string email, string picture)
         {
             JwtSecurityToken token = new JwtSecurityToken(
-                claims: new Claim[] { new Claim("OpenID", sub), new Claim("Email", email) },
+                claims: new Claim[] { new Claim("OpenID", sub), new Claim("Name", name), new Claim("Email", email), new Claim("Picture", picture) },
                 notBefore: DateTime.UtcNow,
                 expires: DateTime.UtcNow.AddMinutes(5),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:Jwt:Secret"])), SecurityAlgorithms.HmacSha256Signature)
@@ -73,5 +73,6 @@ namespace ASP.NET_Core_Webapp.Services
 
             return securetoken;
         }
+
     }
 }
