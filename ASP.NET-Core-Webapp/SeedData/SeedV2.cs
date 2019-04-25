@@ -1,11 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using ASP.NET_Core_Webapp.Entities;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using ASP.NET_Core_Webapp.Entities;
 
 namespace ASP.NET_Core_Webapp.SeedData
 {
@@ -62,13 +58,15 @@ namespace ASP.NET_Core_Webapp.SeedData
 
             for (int i = 0; i < pitchList.Length; i++)
             {
-                Entities.BadgeLevel badgeLevel = new BadgeLevel() { };
+                BadgeLevel badgeLevel = new BadgeLevel() { };
                 Entities.Pitch pitchToAdd = new Entities.Pitch() { };
+
+                pitchToAdd.Badge = new Entities.Badge() { Name = pitchList[i].badgeName };
+
+                DataBase.Add(pitchToAdd);
             }
 
             DataBase.SaveChanges();
         }
-
-        
     }
 }
