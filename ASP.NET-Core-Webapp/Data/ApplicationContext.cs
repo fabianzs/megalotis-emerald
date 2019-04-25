@@ -21,7 +21,7 @@ namespace ASP.NET_Core_Webapp.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            
         }
     }
 }
