@@ -29,7 +29,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             var badgeNames = applicationContext.Pitches.Include(a => a.Badge).Select(e => e.Badge.BadgeId);
             long newPitchBadgeId = newPitch.Badge.BadgeId;
 
-            if (!badgeNames.Equals(newPitchBadgeId) && !newPitch.Equals(null)) {
+            if (!badgeNames.Com(newPitchBadgeId) && !newPitch.Equals(null)) {
                 applicationContext.Add(newPitch);
                 applicationContext.SaveChanges();
                 return Created("", new { message = "Success" });
@@ -47,7 +47,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             }
             applicationContext.Update(pitch);
             applicationContext.SaveChanges();
-            return Ok(new { message = "Success" });
+            return Ok();
         }
     }
 }
