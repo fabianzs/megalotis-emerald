@@ -23,4 +23,8 @@
     <ProjectReference Include="..\ASP.NET-Core-Webapp\ASP.NET-Core-Webapp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 </Project>

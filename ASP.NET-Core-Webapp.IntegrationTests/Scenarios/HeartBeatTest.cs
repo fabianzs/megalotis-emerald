@@ -41,13 +41,15 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task HeartBeat_Authorized_ReturnOK()
         {
-            var tokenstring = testContext.AuthService.CreateJwtToken("1234", "balogh.botond8@gmail.com");
-            var request = new HttpRequestMessage(HttpMethod.Get, "/heartbeat");
+            var tokenstring = testContext.AuthServiceContext.CreateJwtToken("1234", "balogh.botond8@gmail.com");
+            var request = new HttpRequestMessage(HttpMethod.Get, "heartbeat");
             request.Headers.Authorization = new AuthenticationHeaderValue("Authorization", tokenstring);
 
 
             var response = await testContext.Client.SendAsync(request);
+            //var response = await testContext.Client.GetAsync("heartbeat",);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            //Assert.True(true);0
         }
     }
 }
