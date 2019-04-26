@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Http;
-using ASP.NET_Core_Webapp.Helpers;
+using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -24,6 +24,11 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<ApplicationContext>(builder =>
+                builder
+                .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
             services.AddCors();
             services.AddMvc();
             services.AddScoped<IHelloService, HelloService>();
@@ -50,6 +55,8 @@ namespace ASP.NET_Core_Webapp
                     });
 
             services.AddSingleton<IAuthService, AuthService>();
+
+            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
