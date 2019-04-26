@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.Entities;
+using ASP.NET_Core_Webapp.Data;
+
 namespace ASP.NET_Core_Webapp.Entities
 {
     public class Seed

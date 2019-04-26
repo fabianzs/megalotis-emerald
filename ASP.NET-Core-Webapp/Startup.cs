@@ -1,4 +1,6 @@
 using ASP.NET_Core_Webapp.Data;
+using ASP.NET_Core_Webapp.Entities;
+using ASP.NET_Core_Webapp.SeedData;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -10,9 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
-using ASP.NET_Core_Webapp.SeedData;
-using ASP.NET_Core_Webapp.Entities;
+using ASP.NET_Core_Webapp.Data;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -30,8 +30,6 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var variables = Environment.GetEnvironmentVariables();
-            string connectionString = Environment.GetEnvironmentVariable("Test_ConnectionString");
             Seed seedTest = new Seed();
 
             services.AddCors();
@@ -68,7 +66,7 @@ namespace ASP.NET_Core_Webapp
             if (env.IsProduction())
             {
                 services.AddDbContext<ApplicationContext>(builder =>
-                        builder.UseSqlServer(Environment.GetEnvironmentVariable("Test_Variable")));
+                        builder.UseSqlServer(configuration.GetConnectionString("ProductionConnection")));
             }
 
             services.AddSingleton<IAuthService, AuthService>();
@@ -81,17 +79,13 @@ namespace ASP.NET_Core_Webapp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //Seed seedData = new Seed(applicationContext);
                 SeedV2 seedDataFromObject = new SeedV2(applicationContext, configuration);
-                //seedData.FillDatabase();
                 seedDataFromObject.FillDatabaseFromObject();
             }
             if (env.IsProduction())
             {
-                // Seed seedData = new Seed(applicationContext);
                 SeedV2 seedDataFromObject = new SeedV2(applicationContext, configuration);
 
-                //seedData.FillDatabase();
                 seedDataFromObject.FillDatabaseFromObject();
 
             }

@@ -8,6 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190426075735_test.cs" />
+    <Compile Remove="Migrations\20190426075735_test.Designer.cs" />
+    <Compile Remove="Migrations\20190426133423_ProductionMigration5.cs" />
+    <Compile Remove="Migrations\20190426133423_ProductionMigration5.Designer.cs" />
+    <Compile Remove="Migrations\20190426134250_ProductionMigration6.cs" />
+    <Compile Remove="Migrations\20190426134250_ProductionMigration6.Designer.cs" />
+    <Compile Remove="Migrations\20190426134355_ProductionMigration7.cs" />
+    <Compile Remove="Migrations\20190426134355_ProductionMigration7.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.2.0" />

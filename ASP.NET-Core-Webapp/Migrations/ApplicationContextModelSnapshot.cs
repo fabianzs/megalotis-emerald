@@ -158,7 +158,7 @@ namespace ASP.NET_Core_Webapp.Migrations
                         .HasForeignKey("BadgeLevelId");
 
                     b.HasOne("ASP.NET_Core_Webapp.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Pitches")
                         .HasForeignKey("UserId");
                 });
 
