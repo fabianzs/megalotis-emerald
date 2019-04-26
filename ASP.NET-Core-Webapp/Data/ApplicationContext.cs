@@ -16,12 +16,15 @@ namespace ASP.NET_Core_Webapp.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Badge> Badges { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<UserLevel> UserLevels { get; set; }
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Entity<UserLevel>()
+               .HasKey(sc => new { sc.BadgeLevelId, sc.UserId });
+            modelBuilder.Entity<Pitch>().Property(s => s.TimeStamp).HasColumnName("Created");
         }
     }
 }

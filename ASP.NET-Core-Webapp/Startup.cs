@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using ASP.NET_Core_Webapp.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -24,6 +26,11 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<ApplicationContext>(builder =>
+                builder
+                .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
             services.AddCors();
             services.AddMvc();
             services.AddScoped<IHelloService, HelloService>();
@@ -50,6 +57,8 @@ namespace ASP.NET_Core_Webapp
                     });
 
             services.AddSingleton<IAuthService, AuthService>();
+
+            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
