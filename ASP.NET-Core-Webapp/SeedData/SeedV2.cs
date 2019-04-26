@@ -57,17 +57,17 @@ namespace ASP.NET_Core_Webapp.SeedData
                 DataBase.Add(userToAdd);
             }
 
-            var pitchList = SeedObject.pitches;
+            //var pitchList = SeedObject.pitches;
 
-            for (int i = 0; i < pitchList.Length; i++)
-            {
-                BadgeLevel badgeLevel = new BadgeLevel() { };
-                Entities.Pitch pitchToAdd = new Entities.Pitch() { };
+            //for (int i = 0; i < pitchList.Length; i++)
+            //{
+            //    BadgeLevel badgeLevel = new BadgeLevel() { };
+            //    Entities.Pitch pitchToAdd = new Entities.Pitch() { };
 
-                pitchToAdd.Badge = new Entities.Badge() { Name = pitchList[i].badgeName };
+            //    pitchToAdd.Badge = new Entities.Badge() { Name = pitchList[i].badgeName };
 
-                DataBase.Add(pitchToAdd);
-            }
+            //    DataBase.Add(pitchToAdd);
+            //}
 
             DataBase.SaveChanges();
         }

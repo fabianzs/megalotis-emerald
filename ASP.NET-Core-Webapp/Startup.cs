@@ -30,6 +30,8 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var variables = Environment.GetEnvironmentVariables();
+            string connectionString = Environment.GetEnvironmentVariable("Test_ConnectionString");
             Seed seedTest = new Seed();
 
             services.AddCors();
@@ -56,7 +58,6 @@ namespace ASP.NET_Core_Webapp
                             ClockSkew = TimeSpan.Zero
                         };
                     });
-            // After ApplicationContext is ready, remove comment backslashes!!!
 
             if (env.IsDevelopment())
 
@@ -67,7 +68,7 @@ namespace ASP.NET_Core_Webapp
             if (env.IsProduction())
             {
                 services.AddDbContext<ApplicationContext>(builder =>
-                        builder.UseSqlServer(configuration.GetConnectionString("ProductionConnection")));
+                        builder.UseSqlServer(Environment.GetEnvironmentVariable("Test_Variable")));
             }
 
             services.AddSingleton<IAuthService, AuthService>();
@@ -85,7 +86,7 @@ namespace ASP.NET_Core_Webapp
             }
             if (env.IsProduction())
             {
-               // Seed seedData = new Seed(applicationContext);
+                // Seed seedData = new Seed(applicationContext);
                 SeedV2 seedDataFromObject = new SeedV2(applicationContext, configuration);
 
                 //seedData.FillDatabase();
