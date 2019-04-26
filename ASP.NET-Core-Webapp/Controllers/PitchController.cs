@@ -1,12 +1,12 @@
-
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
@@ -27,9 +27,10 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpGet("pitches")]
         public Object GetPitch(HttpRequest request)
         {
-            var openID = authService.GetOpenIdFromJwtToken(request);
-            //var pitch = app.Users
-            return StatusCode(401, new { error = "Unauthorizied" });
+            string openId = authService.GetOpenIdFromJwtToken(Request);
+            var user = app.Users.Include(u => u.Pitches).FirstOrDefault(u => u.OpenId == openId);
+            var pitches = user.Pitches.Select(x => new { x.PitchId, x.TimeStamp, x.PitchedLevel, x.PitchMessage }).ToList();
+            return Accepted(pitches);
         }
 
         [HttpPost("pitches")]
