@@ -1,8 +1,5 @@
 ﻿using ASP.NET_Core_Webapp.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace ASP.NET_Core_Webapp.Services
 {
@@ -12,5 +9,6 @@ namespace ASP.NET_Core_Webapp.Services
         GoogleToken GetToken(string code);
         TokenInfo ValidateToken(string id_token);
         string CreateJwtToken(string sub, string email);
+        string GetOpenIdFromJwtToken(HttpRequest request);
     }
 }
