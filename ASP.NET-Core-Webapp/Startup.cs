@@ -32,6 +32,9 @@ namespace ASP.NET_Core_Webapp
         {
             Seed seedTest = new Seed();
 
+            var connstr = Environment.GetEnvironmentVariable("ConnectionString");
+            var allvariables = Environment.GetEnvironmentVariables();
+
             services.AddCors();
             services.AddMvc();
             services.AddScoped<IHelloService, HelloService>();
@@ -66,7 +69,7 @@ namespace ASP.NET_Core_Webapp
             if (env.IsProduction())
             {
                 services.AddDbContext<ApplicationContext>(builder =>
-                        builder.UseSqlServer(configuration.GetConnectionString("ProductionConnection")));
+                        builder.UseSqlServer(connstr));
             }
 
             services.AddSingleton<IAuthService, AuthService>();
