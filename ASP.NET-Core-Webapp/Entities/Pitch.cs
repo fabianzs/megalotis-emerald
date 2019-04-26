@@ -17,7 +17,7 @@ namespace ASP.NET_Core_Webapp.Entities
 
         public Pitch()
         {
-            this.Holders = new List<string>();
+            
         }
     }
 

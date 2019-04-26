@@ -24,13 +24,18 @@ namespace ASP.NET_Core_Webapp.Controllers
 
         [HttpPost("pitches")]
         public IActionResult CreateNewPitch(Pitch newPitch)
-        {        
+        {
             if (!pitches.Exists(e => e.BadgeName.Equals(newPitch.BadgeName)) && !newPitch.Equals(null)) {
-                pitches.Add(newPitch);               
-                return Created("",new { message = "Success" });
-            }else {
-                return Unauthorized( new { error = "Unauthorizied" });
-            }                     
+                pitches.Add(newPitch);
+                return Created("", new { message = "Success" });
+            } else {
+                return Unauthorized(new { error = "Unauthorizied" });
+            }
+        }
+
+        [HttpPut("")]
+        public IActionResult EditPitch(Pitch pitch) {
+
         }
     }
 }
