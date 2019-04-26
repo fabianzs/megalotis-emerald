@@ -33,7 +33,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             bool isValid = tokenInfo.email_verified;
             if (isValid)
             {
-                if(applicationContext.Users.Where(u => u.OpenId.Equals(tokenInfo.sub)).FirstOrDefault() == null)
+                if(applicationContext.Users.FirstOrDefault(u => u.OpenId.Equals(tokenInfo.sub)) == null)
                 {
                     User user = new User
                     {
