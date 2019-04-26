@@ -12,5 +12,12 @@ namespace ASP.NET_Core_Webapp.Entities
         public string Picture { get; set; }
         public string Email { get; set; }
         public string OpenId { get; set; }
+        public virtual ICollection<UserLevel> UserLevels { get; set; }
+        public ICollection<Pitch> Pitches { get; set; }
+
+        public User()
+        {
+
+        }
     }
 }

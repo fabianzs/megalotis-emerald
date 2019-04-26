@@ -17,5 +17,17 @@ namespace ASP.NET_Core_Webapp.Entities
 
         public ICollection<Review> Holders { get; set; }
 
+        public Pitch()
+        {
+
+        }
+
+        public Pitch(string username, string badgeName, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)
+        {
+            TimeStamp = DateTime.Now;
+            PitchedLevel = pitchedLevel;
+            PitchMessage = pitchMessage;
+            Holders = holders;
+        }
     }
 }
