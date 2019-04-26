@@ -9,13 +9,10 @@ namespace ASP.NET_Core_Webapp.UnitTests
     public class HelloServiceTests
     {
         private IHelloService helloService;
-        private BadgeController controller;
-
 
         public HelloServiceTests()
         {
             this.helloService = new HelloService();
-            this.controller = new BadgeController();
         }
 
         [Fact]
