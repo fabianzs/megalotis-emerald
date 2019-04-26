@@ -69,7 +69,7 @@ namespace ASP.NET_Core_Webapp
             if (env.IsProduction())
             {
                 services.AddDbContext<ApplicationContext>(builder =>
-                        builder.UseSqlServer(connstr));
+                        builder.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionString")));
             }
 
             services.AddSingleton<IAuthService, AuthService>();
