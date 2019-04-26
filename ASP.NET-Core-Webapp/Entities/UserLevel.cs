@@ -9,7 +9,6 @@ namespace ASP.NET_Core_Webapp.Entities
     {
         public long UserId { get; set; }
         public User User { get; set; }
-
         public long BadgeLevelId { get; set; }
         public BadgeLevel Badgelevel { get; set; }
     }

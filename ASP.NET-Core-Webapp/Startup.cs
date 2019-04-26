@@ -1,17 +1,15 @@
-using Microsoft.AspNetCore.Http;
-using ASP.NET_Core_Webapp.Helpers;
+using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
-using ASP.NET_Core_Webapp.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET_Core_Webapp
 {
