@@ -10,34 +10,18 @@ namespace ASP.NET_Core_Webapp.Entities
         public long PitchId { get; set; }
         public DateTime TimeStamp { get; set; }
         public int PitchedLevel { get; set; }
-        public string PitchMessage { get; set; }
-<<<<<<< HEAD
-<<<<<<< HEAD
-        public List<string> Holders { get; set; }
-
-        public Pitch()
-=======
-=======
+        public string PitchMessage { get; set; }        
         public User User { get; set; }
         public Badge Badge { get; set; }
         public BadgeLevel BadgeLevel { get; set; }
-
->>>>>>> be1db76... Fix Pitch fields
         public ICollection<Review> Holders { get; set; }
 
-        public Pitch(string username, string badgeName, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)
->>>>>>> 8619cfc... Rename Holder class to Review and fix fields
+        public Pitch(User user, Badge badge, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)
         {
-<<<<<<< HEAD
-            
-=======
             TimeStamp = DateTime.Now;
             PitchedLevel = pitchedLevel;
             PitchMessage = pitchMessage;
             Holders = holders;
->>>>>>> e4a59ec... Fix User fields and fix some constructor
         }
     }
-
-
 }
