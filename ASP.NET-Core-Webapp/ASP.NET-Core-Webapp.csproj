@@ -16,6 +16,10 @@
     <Compile Remove="Migrations\20190426134250_ProductionMigration6.Designer.cs" />
     <Compile Remove="Migrations\20190426134355_ProductionMigration7.cs" />
     <Compile Remove="Migrations\20190426134355_ProductionMigration7.Designer.cs" />
+    <Compile Remove="Migrations\20190427212237_ProductionMigration6.cs" />
+    <Compile Remove="Migrations\20190427212237_ProductionMigration6.Designer.cs" />
+    <Compile Remove="Migrations\20190427212441_ProductionMigration7.cs" />
+    <Compile Remove="Migrations\20190427212441_ProductionMigration7.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
