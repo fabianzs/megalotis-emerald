@@ -68,7 +68,7 @@ namespace ASP.NET_Core_Webapp
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseSqlServer(configuration.GetConnectionString("environmentString")));
             }
-
+            
             services.AddSingleton<IAuthService, AuthService>();
 
 
