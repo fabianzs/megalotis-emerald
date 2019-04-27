@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
-using ASP.NET_Core_Webapp.Data;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -30,9 +29,7 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Seed seedTest = new Seed();
 
-            var connstr = Environment.GetEnvironmentVariable("ConnectionString");
             var allvariables = Environment.GetEnvironmentVariables();
 
             services.AddCors();
@@ -69,12 +66,12 @@ namespace ASP.NET_Core_Webapp
             if (env.IsProduction())
             {
                 services.AddDbContext<ApplicationContext>(builder =>
-                        builder.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionString")));
+                        builder.UseSqlServer(configuration.GetConnectionString("environmentString")));
             }
 
             services.AddSingleton<IAuthService, AuthService>();
 
-            
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
