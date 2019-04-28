@@ -43,6 +43,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             {
                 return NotFound(new { error = "Please provide all fields" });
             }
+
             Badge badge = new Badge()
             {
                 Name = badgeDTO.Name,
@@ -53,7 +54,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             foreach (BadgeLevelDTO bl in badgeDTO.Levels)
             {
                 BadgeLevel newBadgeLevel = new BadgeLevel() { Level = bl.Level, Description = bl.Description, UserLevels = new List<UserLevel>() };
-                
                 foreach (string holder in bl.Holders)
                 {
                     UserLevel newUserLevel = new UserLevel() { Badgelevel = newBadgeLevel, User = applicationContext.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.Badgelevel).ThenInclude(blvl => blvl.Badge).FirstOrDefault(u => u.Name.Equals(holder)) };
@@ -65,7 +65,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             applicationContext.SaveChanges();
             return Created("/badges", new { message = "Success" });
         }
-
 
         [Authorize("Bearer")]
         [HttpGet("mybadgesmock")]
@@ -86,11 +85,11 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return StatusCode(404, new { error = "No message body" });
             }
 
-                if (badge.Levels == null || badge.Name == null || badge.Tag == null || badge.Version == null)
-                {
-                    return NotFound(new { error = "Please provide all fields" });
-                }
-                return Created("/badges", new { message = "Success" });
+            if (badge.Levels == null || badge.Name == null || badge.Tag == null || badge.Version == null)
+            {
+                return NotFound(new { error = "Please provide all fields" });
+            }
+            return Created("/badges", new { message = "Success" });
         }
 
         public void InitializeDb(User user)
