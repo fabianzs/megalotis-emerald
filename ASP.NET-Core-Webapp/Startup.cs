@@ -36,6 +36,17 @@ namespace ASP.NET_Core_Webapp
             services.AddMvc();
             services.AddScoped<IHelloService, HelloService>();
 
+            if (env.IsDevelopment())
+
+            {
+                services.AddDbContext<ApplicationContext>(builder =>
+                        builder.UseInMemoryDatabase("InMemoryDatabase"));
+            }
+            if (env.IsProduction())
+            {
+                services.AddDbContext<ApplicationContext>(builder =>
+                        builder.UseSqlServer(configuration.GetConnectionString("environmentString")));
+            }
             services.AddAuthorization(auth =>
                     {
                         auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
@@ -56,22 +67,7 @@ namespace ASP.NET_Core_Webapp
                             ClockSkew = TimeSpan.Zero
                         };
                     });
-
-            if (env.IsDevelopment())
-
-            {
-                services.AddDbContext<ApplicationContext>(builder =>
-                        builder.UseInMemoryDatabase("InMemoryDatabase"));
-            }
-            if (env.IsProduction())
-            {
-                services.AddDbContext<ApplicationContext>(builder =>
-                        builder.UseSqlServer(configuration.GetConnectionString("environmentString")));
-            }
-            
             services.AddSingleton<IAuthService, AuthService>();
-
-
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
