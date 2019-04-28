@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Diagnostics;
 using System.Text;
 
 namespace ASP.NET_Core_Webapp
@@ -31,19 +32,20 @@ namespace ASP.NET_Core_Webapp
         {
 
             var allvariables = Environment.GetEnvironmentVariables();
-
+            
             services.AddCors();
             services.AddMvc();
             services.AddScoped<IHelloService, HelloService>();
 
             if (env.IsDevelopment())
-
+                
             {
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseInMemoryDatabase("InMemoryDatabase"));
             }
             if (env.IsProduction())
             {
+                Debugger.Launch();
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseSqlServer(configuration.GetConnectionString("environmentString")));
             }
