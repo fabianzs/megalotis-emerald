@@ -31,6 +31,42 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Ok(new Dictionary<string, object>() { { "badges", user.UserLevels.Select(ul => new { ul.Badgelevel.Badge.Name, ul.Badgelevel.Level }) } });
         }
 
+        [HttpPost("badges")]
+        public IActionResult RecieveBadge([FromBody]BadgeDTO badgeDTO)
+        {
+            if (badgeDTO == null)
+            {
+                return StatusCode(404, new { error = "No message body" });
+            }
+
+            if (badgeDTO.Levels == null || badgeDTO.Name == null || badgeDTO.Tag == null || badgeDTO.Version == null)
+            {
+                return NotFound(new { error = "Please provide all fields" });
+            }
+            Badge badge = new Badge()
+            {
+                Name = badgeDTO.Name,
+                Version = badgeDTO.Version,
+                Tag = badgeDTO.Tag,
+            };
+
+            foreach (BadgeLevelDTO bl in badgeDTO.Levels)
+            {
+                BadgeLevel newBadgeLevel = new BadgeLevel() { Level = bl.Level, Description = bl.Description, UserLevels = new List<UserLevel>() };
+                
+                foreach (string holder in bl.Holders)
+                {
+                    UserLevel newUserLevel = new UserLevel() { Badgelevel = newBadgeLevel, User = applicationContext.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.Badgelevel).ThenInclude(blvl => blvl.Badge).FirstOrDefault(u => u.Name.Equals(holder)) };
+                    newBadgeLevel.UserLevels.Add(newUserLevel);
+                }
+                badge.Levels.Add(newBadgeLevel);
+            }
+            applicationContext.Badges.Add(badge);
+            applicationContext.SaveChanges();
+            return Created("/badges", new { message = "Success" });
+        }
+
+
         [Authorize("Bearer")]
         [HttpGet("mybadgesmock")]
         public IActionResult MyBadgesMock()
