@@ -13,6 +13,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using ASP.NET_Core_Webapp.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -28,8 +30,11 @@ namespace ASP.NET_Core_Webapp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddMvc();
-            services.AddScoped<IHelloService, HelloService>();
+            services.AddMvc().AddJsonOptions(
+            options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
+            services.AddDbContext<ApplicationContext>(
+                builder => builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAuthorization(auth =>
                     {
@@ -68,6 +73,7 @@ namespace ASP.NET_Core_Webapp
                         };
                     });
 
+            services.AddScoped<IHelloService, HelloService>();
             services.AddSingleton<IAuthService, AuthService>();
         }
 

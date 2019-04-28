@@ -23,8 +23,8 @@ namespace ASP.NET_Core_Webapp.Controllers
         }
 
         [Authorize("Bearer")]
-        [HttpGet("mybadgesdb")]
-        public IActionResult MyBadgesdb()
+        [HttpGet("mybadges")]
+        public IActionResult MyBadges()
         {
             string openId = authService.GetOpenIdFromJwtToken(Request);
             //User _user = applicationContext.Users.FirstOrDefault(u => u.OpenId == openId);
@@ -33,9 +33,9 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Ok(new Dictionary<string, object>() { { "badges", user.UserLevels.Select(ul => new { ul.Badgelevel.Badge.Name, ul.Badgelevel.Level }) } });
         }
 
-
-        [HttpGet("mybadges")]
-        public IActionResult MyBadges()
+        [Authorize("Bearer")]
+        [HttpGet("mybadgesmock")]
+        public IActionResult MyBadgesMock()
         {
             List<Badge> badgesList = new List<Badge>();
 
@@ -43,8 +43,9 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Ok(new { badges = badgesList });
         }
 
-        [HttpPost("badges")]
-        public IActionResult RecieveBadge([FromBody]Badge badge)
+        [Authorize("Bearer")]
+        [HttpPost("badgesmock")]
+        public IActionResult RecieveBadgeMock([FromBody]Badge badge)
         {
             if (badge == null)
             {
