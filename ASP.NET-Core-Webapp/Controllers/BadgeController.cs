@@ -3,9 +3,7 @@ using ASP.NET_Core_Webapp.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.EntityFrameworkCore;
 

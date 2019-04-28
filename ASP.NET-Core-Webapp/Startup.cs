@@ -1,4 +1,3 @@
-using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -11,10 +10,10 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 using ASP.NET_Core_Webapp.Data;
-using Microsoft.EntityFrameworkCore;
+using ASP.NET_Core_Webapp.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -31,15 +30,11 @@ namespace ASP.NET_Core_Webapp
         {
 
             services.AddDbContext<ApplicationContext>(builder =>
-                builder
-                .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors();
-            services.AddMvc().AddJsonOptions(
-            options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-
-            services.AddDbContext<ApplicationContext>(
-                builder => builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddMvc().AddJsonOptions(options =>
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddAuthorization(auth =>
                     {
@@ -80,8 +75,6 @@ namespace ASP.NET_Core_Webapp
 
             services.AddScoped<IHelloService, HelloService>();
             services.AddSingleton<IAuthService, AuthService>();
-
-            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
