@@ -41,7 +41,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         {
             Badge badge = new Badge() { Name = "test", Tag = "test", Version = "test" };
             List<string> holders = new List<string>() { "Laci", "Gábor", "Levente" };
-            BadgeLevel testlevel = new BadgeLevel() { Description = "test", Holders = holders, Level = 2 };
+            BadgeLevel testlevel = new BadgeLevel() { Description = "test" };
 
             badge.Levels.Add(testlevel);
 
