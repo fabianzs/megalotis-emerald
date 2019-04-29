@@ -17,7 +17,7 @@ namespace ASP.NET_Core_Webapp.Entities
 
         public Pitch()
         {
-
+            TimeStamp = DateTime.Now;
         }
 
         public Pitch(string username, string badgeName, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)
