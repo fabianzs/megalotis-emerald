@@ -29,7 +29,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             var badgeNames = applicationContext.Pitches.Include(a => a.Badge).Select(e => e.Badge.BadgeId);
             long newPitchBadgeId = newPitch.Badge.BadgeId;
 
-            if (!badgeNames.Com(newPitchBadgeId) && !newPitch.Equals(null)) {
+            if (!badgeNames.Contains(newPitchBadgeId) && !newPitch.Equals(null)) {
                 applicationContext.Add(newPitch);
                 applicationContext.SaveChanges();
                 return Created("", new { message = "Success" });
@@ -43,6 +43,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult EditPitch(long id, Pitch pitch) {
             if (id != pitch.PitchId)
             {
+                //bad requestre átírni a body ba nem kell id + teszt -> updatelte, vagy nem üres, vagy nincs ilyen id, dot in memory databaset megnézni 
                 return Unauthorized(new { error = "Unauthorizied" });
             }
             applicationContext.Update(pitch);
