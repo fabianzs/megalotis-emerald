@@ -10,11 +10,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
     public class HelloWorldTests
     {
         private readonly TestContext testContext;
-
-        public HelloWorldTests(TestContext testContext)
-        {
-            this.testContext = testContext;
-        }
         
         [Fact]
         public async Task Hello_Should_ReturnOK()
@@ -31,6 +26,5 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal("Hello World!", await response.Content.ReadAsStringAsync());
         }
-
     }
 }

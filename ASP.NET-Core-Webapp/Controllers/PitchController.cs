@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,12 +14,19 @@ namespace ASP.NET_Core_Webapp.Controllers
 {
     [Route("api")]
     [ApiController]
-    public class PitchController : ControllerBase
+    public class PitchController : Controller
     {
         private readonly ApplicationContext applicationContext;
 
-        public PitchController(ApplicationContext application) {
+        public PitchController(ApplicationContext application)
+        {
             applicationContext = application;
+        }
+
+        [HttpGet("pitches")]
+        public Object GetPitch()
+        {
+            return StatusCode(401, new { error = "Unauthorizied" });
         }
 
         [Authorize("Bearer")]

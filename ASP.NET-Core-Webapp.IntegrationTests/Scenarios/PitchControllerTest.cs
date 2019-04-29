@@ -21,6 +21,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         }
 
         readonly List<Review> Holders = new List<Review>{
+
             new Review( "Good", true),
             new Review( "Good", true),
             new Review( "Good", true),

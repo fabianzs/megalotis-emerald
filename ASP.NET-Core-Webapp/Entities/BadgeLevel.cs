@@ -9,5 +9,7 @@ namespace ASP.NET_Core_Webapp.Entities
         public string Description { get; set; }
         public Badge Badge { get; set; }
         public ICollection<User> Holders { get; set; }
+        public virtual ICollection<UserLevel> UserLevels { get; set; }
+       
     }
 }

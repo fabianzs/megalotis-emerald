@@ -13,7 +13,8 @@ namespace ASP.NET_Core_Webapp.Entities
         public User User { get; set; }
         public Pitch Pitch { get; set; }
 
-        public Review(string message, bool status) {
+        public Review(string message, bool status)
+        {
             this.Message = message;
             this.Status = status;
         }
