@@ -19,7 +19,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task MyBadges_Should_Return_ReturnOk()
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "/mybadges");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "/mybadgesmock");
             HttpResponseMessage response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -27,7 +27,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task MyBadges_Should_Return_Badge_In_Proer_Format()
         {
-            var response = await testContext.Client.GetAsync("/mybadges");
+            var response = await testContext.Client.GetAsync("/mybadgesmock");
             response.EnsureSuccessStatusCode();
             Assert.Equal("{\"badges\":[{\"name\":\"test\",\"levels\":[],\"tag\":null,\"version\":null}]}",
                 response.Content.ReadAsStringAsync().Result);
@@ -36,7 +36,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task Pitch_ContentTypeJson_Success()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/mybadges");
+            var request = new HttpRequestMessage(HttpMethod.Get, "/mybadgesmock");
             var response = await testContext.Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
             Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType.ToString());

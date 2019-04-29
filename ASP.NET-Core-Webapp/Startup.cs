@@ -19,7 +19,7 @@ namespace ASP.NET_Core_Webapp
 {
     public class Startup
     {
-        private readonly IConfiguration configuration;
+        private IConfiguration configuration;
 
         public Startup(IConfiguration configuration)
         {
@@ -31,6 +31,9 @@ namespace ASP.NET_Core_Webapp
 
             services.AddDbContext<ApplicationContext>(builder =>
                 builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            //services.AddDbContext<ApplicationContext>(builder =>
+            //    builder.UseInMemoryDatabase("development"));
 
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
@@ -79,6 +82,13 @@ namespace ASP.NET_Core_Webapp
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+            .AddUserSecrets<Startup>()
+            .AddEnvironmentVariables();
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -96,6 +106,8 @@ namespace ASP.NET_Core_Webapp
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+
+            configuration = builder.Build();
         }
     }
 }
