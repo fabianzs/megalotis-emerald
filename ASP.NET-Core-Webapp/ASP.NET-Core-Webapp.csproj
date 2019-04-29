@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <Compile Remove="ApplicationContext.cs" />
+    <Compile Remove="Migrations\20190429075223_InitialVersion.cs" />
+    <Compile Remove="Migrations\20190429075223_InitialVersion.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

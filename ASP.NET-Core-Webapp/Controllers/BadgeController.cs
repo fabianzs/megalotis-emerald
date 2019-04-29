@@ -94,9 +94,9 @@ namespace ASP.NET_Core_Webapp.Controllers
 
         public void InitializeDb(User user)
         {
-            UserLevel userlevel1 = new UserLevel() { Badgelevel = new BadgeLevel() { Level = 2, Badge = new Badge("English speaker") }, User = user };
-            UserLevel userlevel2 = new UserLevel() { Badgelevel = new BadgeLevel() { Level = 3, Badge = new Badge("Java developer") }, User = user };
-            UserLevel userlevel3 = new UserLevel() { Badgelevel = new BadgeLevel() { Level = 1, Badge = new Badge("Stress management") }, User = user };
+            UserLevel userlevel1 = new UserLevel() { Badgelevel = new BadgeLevel() { Level = 2, Description = "I am an upper-intermediate speaker", Badge = new Badge("English speaker") }, User = user };
+            UserLevel userlevel2 = new UserLevel() { Badgelevel = new BadgeLevel() { Level = 3, Description = "I can write some working code", Badge = new Badge("Java developer") }, User = user };
+            UserLevel userlevel3 = new UserLevel() { Badgelevel = new BadgeLevel() { Level = 1, Description = "I easily freak out", Badge = new Badge("Stress management") }, User = user };
             user.UserLevels = new List<UserLevel>();
             user.UserLevels.Add(userlevel1);
             user.UserLevels.Add(userlevel2);
