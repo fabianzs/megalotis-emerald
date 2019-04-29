@@ -1,5 +1,6 @@
 ﻿using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -57,6 +58,8 @@ namespace ASP.NET_Core_Webapp.SeedData
                     levelList.Add(badgeLevel);
                 }
                 Entities.Badge badgeToAdd = new Entities.Badge() { Name = badgesList[i].name, Tag = badgesList[i].tag, Version = badgesList[i].version, Levels = levelList };
+                DataBase.Add(badgeToAdd);
+                DataBase.SaveChanges();
 
                 var holders = badgesList[i].levels;
                 foreach (var item in holders)
@@ -71,6 +74,28 @@ namespace ASP.NET_Core_Webapp.SeedData
                             DataBase.SaveChanges();
                         }
                         DataBase.SaveChanges();
+                    }
+                }
+
+                foreach (var badge in badgesList)
+                {
+                    foreach (var level in badge.levels)
+                    {
+                        foreach (var user in level.holders)
+                        {
+                            UserLevel userLevel = new UserLevel();
+                            BadgeLevel badgeLevelNew = new BadgeLevel();
+                            badgeLevelNew = DataBase.BadgeLevels.Where(x => x.Description == level.description).FirstOrDefault();
+                            userLevel.User = DataBase.Users.Where(x => x.Name == user).FirstOrDefault();
+                            userLevel.Badgelevel = badgeLevelNew;
+
+                            if (DataBase.UserLevels.Where(x=>x.UserId == userLevel.UserId).FirstOrDefault()==null && DataBase.UserLevels.Where(x => x.BadgeLevelId == userLevel.BadgeLevelId).FirstOrDefault() == null)
+                            {
+
+                            }
+                            DataBase.Add(userLevel);
+                            DataBase.SaveChanges();
+                        }
                     }
                 }
 
@@ -112,6 +137,8 @@ namespace ASP.NET_Core_Webapp.SeedData
                 DataBase.Add(pitchToAdd);
                 DataBase.SaveChanges();
             }
+
+
 
             DataBase.SaveChanges();
         }
