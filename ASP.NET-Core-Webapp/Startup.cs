@@ -45,7 +45,7 @@ namespace ASP.NET_Core_Webapp
             }
             if (env.IsProduction())
             {
-                Debugger.Launch();
+                //Debugger.Launch();
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseSqlServer(configuration.GetConnectionString("environmentString")));
             }

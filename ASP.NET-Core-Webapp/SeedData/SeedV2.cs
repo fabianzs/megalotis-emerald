@@ -2,8 +2,10 @@
 using ASP.NET_Core_Webapp.Entities;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace ASP.NET_Core_Webapp.SeedData
 {
@@ -48,6 +50,7 @@ namespace ASP.NET_Core_Webapp.SeedData
                 Entities.Badge badgeToAdd = new Entities.Badge() { Name = badgesList[i].name, Tag = badgesList[i].tag, Version = badgesList[i].version, Levels = levelList };
 
                 DataBase.Add(badgeToAdd);
+                DataBase.SaveChanges();
             }
 
             var userList = SeedObject.users;
@@ -56,19 +59,41 @@ namespace ASP.NET_Core_Webapp.SeedData
             {
                 Entities.User userToAdd = new Entities.User() { Name = userList[i].name, Picture = userList[i].pic, OpenId = userList[i].tokenAuth };
                 DataBase.Add(userToAdd);
+                DataBase.SaveChanges();
             }
 
-            //var pitchList = SeedObject.pitches;
+            var pitchList = SeedObject.pitches;
 
-            //for (int i = 0; i < pitchList.Length; i++)
-            //{
-            //    BadgeLevel badgeLevel = new BadgeLevel() { };
-            //    Entities.Pitch pitchToAdd = new Entities.Pitch() { };
+            for (int i = 0; i < pitchList.Length; i++)
+            {
+                Entities.Pitch pitchToAdd = new Entities.Pitch() { };
+                
+                Entities.User userToAdd = new Entities.User();
+                userToAdd = DataBase.Users.Where(x => x.Name == pitchList[i].username).FirstOrDefault();
+                if (userToAdd == null)
+                {
+                    Entities.User newUser = new Entities.User() { Name = pitchList[i].username };
+                    //DataBase.Add(newUser);
+                    pitchToAdd.User = newUser;
+                    DataBase.SaveChanges();
+                }
+                else
+                {
+                pitchToAdd.User = userToAdd;
+                DataBase.SaveChanges();
+                }
 
-            //    pitchToAdd.Badge = new Entities.Badge() { Name = pitchList[i].badgeName };
 
-            //    DataBase.Add(pitchToAdd);
-            //}
+                Entities.Badge badgeToAdd = new Entities.Badge();
+                badgeToAdd = DataBase.Badges.Where(x => x.Name == pitchList[i].badgeName).FirstOrDefault();
+                pitchToAdd.Badge = badgeToAdd;
+
+                pitchToAdd.TimeStamp = DateTime.ParseExact(pitchList[i].timestamp, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                pitchToAdd.PitchMessage = pitchList[i].pitchMessage;
+
+                DataBase.Add(pitchToAdd);
+                DataBase.SaveChanges();
+            }
 
             DataBase.SaveChanges();
         }
