@@ -38,6 +38,15 @@ namespace ASP.NET_Core_Webapp.SeedData
 
         public void FillDatabaseFromObject()
         {
+            var userList = SeedObject.users;
+
+            for (int i = 0; i < userList.Length; i++)
+            {
+                Entities.User userToAdd = new Entities.User() { Name = userList[i].name, Picture = userList[i].pic, OpenId = userList[i].tokenAuth };
+                DataBase.Add(userToAdd);
+                DataBase.SaveChanges();
+            }
+
             var badgesList = SeedObject.library;
             for (int i = 0; i < badgesList.Length; i++)
             {
@@ -49,27 +58,36 @@ namespace ASP.NET_Core_Webapp.SeedData
                 }
                 Entities.Badge badgeToAdd = new Entities.Badge() { Name = badgesList[i].name, Tag = badgesList[i].tag, Version = badgesList[i].version, Levels = levelList };
 
+                var holders = badgesList[i].levels;
+                foreach (var item in holders)
+                {
+                    foreach (var user in item.holders)
+                    {
+                        Entities.User userToAddFromBadges = new Entities.User();
+                        userToAddFromBadges.Name = user;
+                        if (DataBase.Users.Where(x => x.Name == user).FirstOrDefault() == null)
+                        {
+                            DataBase.Add(userToAddFromBadges);
+                            DataBase.SaveChanges();
+                        }
+                        DataBase.SaveChanges();
+                    }
+                }
+
                 DataBase.Add(badgeToAdd);
                 DataBase.SaveChanges();
             }
 
-            var userList = SeedObject.users;
-
-            for (int i = 0; i < userList.Length; i++)
-            {
-                Entities.User userToAdd = new Entities.User() { Name = userList[i].name, Picture = userList[i].pic, OpenId = userList[i].tokenAuth };
-                DataBase.Add(userToAdd);
-                DataBase.SaveChanges();
-            }
 
             var pitchList = SeedObject.pitches;
 
             for (int i = 0; i < pitchList.Length; i++)
             {
                 Entities.Pitch pitchToAdd = new Entities.Pitch() { };
-                
+
                 Entities.User userToAdd = new Entities.User();
                 userToAdd = DataBase.Users.Where(x => x.Name == pitchList[i].username).FirstOrDefault();
+
                 if (userToAdd == null)
                 {
                     Entities.User newUser = new Entities.User() { Name = pitchList[i].username };
@@ -79,8 +97,8 @@ namespace ASP.NET_Core_Webapp.SeedData
                 }
                 else
                 {
-                pitchToAdd.User = userToAdd;
-                DataBase.SaveChanges();
+                    pitchToAdd.User = userToAdd;
+                    DataBase.SaveChanges();
                 }
 
 
