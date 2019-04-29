@@ -21,9 +21,15 @@ namespace ASP.NET_Core_Webapp
     {
         private IConfiguration configuration;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            this.configuration = configuration;
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+            .AddUserSecrets<Startup>()
+            .AddEnvironmentVariables();
+            this.configuration = builder.Build(); ;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -82,12 +88,7 @@ namespace ASP.NET_Core_Webapp
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            var builder = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-            .AddUserSecrets<Startup>()
-            .AddEnvironmentVariables();
+            
             
             if (env.IsDevelopment())
             {
@@ -106,8 +107,6 @@ namespace ASP.NET_Core_Webapp
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader());
-
-            configuration = builder.Build();
         }
     }
 }
