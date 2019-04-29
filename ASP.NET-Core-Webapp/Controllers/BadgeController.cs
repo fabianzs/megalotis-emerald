@@ -44,24 +44,7 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return NotFound(new { error = "Please provide all fields" });
             }
 
-            Badge badge = new Badge()
-            {
-                Name = badgeDTO.Name,
-                Version = badgeDTO.Version,
-                Tag = badgeDTO.Tag,
-            };
-
-            foreach (BadgeLevelDTO bl in badgeDTO.Levels)
-            {
-                BadgeLevel newBadgeLevel = new BadgeLevel() { Level = bl.Level, Description = bl.Description, UserLevels = new List<UserLevel>() };
-                foreach (string holder in bl.Holders)
-                {
-                    UserLevel newUserLevel = new UserLevel() { Badgelevel = newBadgeLevel, User = applicationContext.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.Badgelevel).ThenInclude(blvl => blvl.Badge).FirstOrDefault(u => u.Name.Equals(holder)) };
-                    newBadgeLevel.UserLevels.Add(newUserLevel);
-                }
-                badge.Levels.Add(newBadgeLevel);
-            }
-            applicationContext.Badges.Add(badge);
+            applicationContext.Badges.Add(badgeDTO.CreateBadge(applicationContext, badgeDTO));
             applicationContext.SaveChanges();
             return Created("/badges", new { message = "Success" });
         }
