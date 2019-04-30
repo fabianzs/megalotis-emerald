@@ -110,8 +110,24 @@ namespace ASP.NET_Core_Webapp.SeedData
 
                 pitchToAdd.TimeStamp = DateTime.ParseExact(pitchList[i].timestamp, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                 pitchToAdd.PitchMessage = pitchList[i].pitchMessage;
-
                 DataBase.Add(pitchToAdd);
+
+                // Add reviews:
+                List<Review> reviews = new List<Review>();
+                foreach (var holderReview in pitchList[i].holders)
+                {
+                    Review review = new Review(holderReview.message, holderReview.pitchStatus);
+
+                    reviews.Add(review);
+                    DataBase.SaveChanges();
+
+                    review.User = DataBase.Users.Where(x => x.Name == holderReview.name).FirstOrDefault();
+                    review.Pitch = DataBase.Pitches.Where(x => x.PitchMessage == holderReview.message).FirstOrDefault();
+
+                    DataBase.Reviews.Add(review);
+                    DataBase.SaveChanges();
+                }
+
                 DataBase.SaveChanges();
 
 
