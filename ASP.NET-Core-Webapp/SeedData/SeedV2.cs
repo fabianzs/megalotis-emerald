@@ -86,9 +86,22 @@ namespace ASP.NET_Core_Webapp.SeedData
             for (int i = 0; i < pitchList.Length; i++)
             {
                 Entities.Pitch pitchToAdd = new Entities.Pitch() { };
-
+                // Add user:
                 Entities.User userToAdd = new Entities.User();
                 userToAdd = DataBase.Users.Where(x => x.Name == pitchList[i].username).FirstOrDefault();
+                // Add reviews:
+                foreach (var holderReview in pitchList[i].holders)
+                {
+                    Review review = new Review(holderReview.message, holderReview.pitchStatus);
+                    pitchToAdd.Holders.Add(review);
+                    DataBase.SaveChanges();
+
+                    review.User = DataBase.Users.Where(x => x.Name == holderReview.name).FirstOrDefault();
+                    review.Pitch = DataBase.Pitches.Where(x => x.PitchMessage == holderReview.message).FirstOrDefault();
+
+                    DataBase.Reviews.Add(review);
+                    DataBase.SaveChanges();
+                }
 
                 if (userToAdd == null)
                 {
@@ -103,30 +116,16 @@ namespace ASP.NET_Core_Webapp.SeedData
                     DataBase.SaveChanges();
                 }
 
-
-                Entities.Badge badgeToAdd = new Entities.Badge();
+                Entities.Badge badgeToAdd;
                 badgeToAdd = DataBase.Badges.Where(x => x.Name == pitchList[i].badgeName).FirstOrDefault();
                 pitchToAdd.Badge = badgeToAdd;
 
                 pitchToAdd.TimeStamp = DateTime.ParseExact(pitchList[i].timestamp, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                 pitchToAdd.PitchMessage = pitchList[i].pitchMessage;
+                pitchToAdd.Badge = DataBase.Badges.Where(x => x.Name == pitchList[i].badgeName).FirstOrDefault();
+                pitchToAdd.BadgeLevel = DataBase.BadgeLevels.Where(x => x.Badge.Name == pitchList[i].badgeName).FirstOrDefault();
                 DataBase.Add(pitchToAdd);
 
-                // Add reviews:
-                List<Review> reviews = new List<Review>();
-                foreach (var holderReview in pitchList[i].holders)
-                {
-                    Review review = new Review(holderReview.message, holderReview.pitchStatus);
-
-                    reviews.Add(review);
-                    DataBase.SaveChanges();
-
-                    review.User = DataBase.Users.Where(x => x.Name == holderReview.name).FirstOrDefault();
-                    review.Pitch = DataBase.Pitches.Where(x => x.PitchMessage == holderReview.message).FirstOrDefault();
-
-                    DataBase.Reviews.Add(review);
-                    DataBase.SaveChanges();
-                }
 
                 DataBase.SaveChanges();
 

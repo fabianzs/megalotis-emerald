@@ -1,5 +1,4 @@
 using ASP.NET_Core_Webapp.Data;
-using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.SeedData;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Diagnostics;
 using System.Text;
 
 namespace ASP.NET_Core_Webapp
