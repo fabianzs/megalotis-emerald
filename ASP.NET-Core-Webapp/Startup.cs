@@ -47,7 +47,8 @@ namespace ASP.NET_Core_Webapp
             {
                 //Debugger.Launch();
                 services.AddDbContext<ApplicationContext>(builder =>
-                        builder.UseSqlServer(configuration.GetConnectionString("environmentString")));
+                        builder.UseSqlServer(configuration.GetConnectionString("environmentString"))
+                        .EnableSensitiveDataLogging(true));
             }
             services.AddAuthorization(auth =>
                     {

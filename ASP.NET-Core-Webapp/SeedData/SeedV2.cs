@@ -1,6 +1,5 @@
 ﻿using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -115,34 +114,31 @@ namespace ASP.NET_Core_Webapp.SeedData
                 DataBase.Add(pitchToAdd);
                 DataBase.SaveChanges();
 
-                //var badgesList = SeedObject.library;
-                //for (int i = 0; i < badgesList.Length; i++)
-                //{
-                    //foreach (var badge in badgesList)
-                    //{
-                    //    foreach (var level in badge.levels)
-                    //    {
-                    //        foreach (var user in level.holders)
-                    //        {
-                    //            UserLevel userLevel = new UserLevel();
-                    //            BadgeLevel badgeLevelNew = new BadgeLevel();
-                    //            badgeLevelNew = DataBase.BadgeLevels.Where(x => x.Description == level.description).FirstOrDefault();
-                    //            userLevel.User = DataBase.Users.Where(x => x.Name == user).FirstOrDefault();
-                    //            userLevel.Badgelevel = badgeLevelNew;
 
-                    //            if (DataBase.UserLevels.Where(x=>x.UserId == userLevel.UserId).FirstOrDefault()==null && DataBase.UserLevels.Where(x => x.BadgeLevelId == userLevel.BadgeLevelId).FirstOrDefault() == null)
-                    //            {
 
-                    //            }
-                    //            DataBase.Add(userLevel);
-                    //            DataBase.SaveChanges();
-                    //        }
-                    //    }
-                    //}
+                var badgesList2 = SeedObject.library;
 
-                    // DataBase.Add(badgeToAdd);
-                    //DataBase.SaveChanges();
-                //}
+                foreach (var badge in badgesList2)
+                {
+                    foreach (var level in badge.levels)
+                    {
+                        foreach (var user in level.holders)
+                        {
+                            UserLevel userLevel = new UserLevel();
+
+                            BadgeLevel badgeLevelNew = DataBase.BadgeLevels.Where(x => x.Description == level.description).FirstOrDefault();
+
+                            userLevel.User = DataBase.Users.Where(x => x.Name == user).FirstOrDefault();
+                            userLevel.Badgelevel = badgeLevelNew;
+
+                            if (DataBase.UserLevels.Count(x => x.BadgeLevelId == userLevel.Badgelevel.BadgeLevelId && x.UserId == userLevel.User.UserId) == 0)
+                            {
+                                DataBase.Add(userLevel);
+                                DataBase.SaveChanges();
+                            }
+                        }
+                    }
+                }
             }
         }
     }
