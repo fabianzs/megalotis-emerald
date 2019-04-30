@@ -76,12 +76,12 @@ namespace ASP.NET_Core_Webapp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                SeedV2 seedDataFromObject = new SeedV2(applicationContext, configuration);
+                Seed seedDataFromObject = new Seed(applicationContext, configuration);
                 seedDataFromObject.FillDatabaseFromObject();
             }
             if (env.IsProduction())
             {
-                SeedV2 seedDataFromObject = new SeedV2(applicationContext, configuration);
+                Seed seedDataFromObject = new Seed(applicationContext, configuration);
 
                 seedDataFromObject.FillDatabaseFromObject();
 
