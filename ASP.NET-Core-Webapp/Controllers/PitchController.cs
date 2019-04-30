@@ -10,8 +10,6 @@ using System.Linq;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
-    [Route("api")]
-    [ApiController]
     public class PitchController : Controller
     {
         ApplicationContext app;
@@ -25,7 +23,7 @@ namespace ASP.NET_Core_Webapp.Controllers
 
         [Authorize("Bearer")]
         [HttpGet("pitches")]
-        public Object GetPitch(HttpRequest request)
+        public IActionResult GetPitch()
         {
             string openId = authService.GetOpenIdFromJwtToken(Request);
             var user = app.Users.Include(u => u.Pitches).FirstOrDefault(u => u.OpenId == openId);
@@ -37,6 +35,12 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult CreateNewPitch(Pitch newPitch)
         {
                 return Created("", new { message = "Success" });
+        }
+
+        [HttpGet("test2")]
+        public IActionResult TestingTest()
+        {
+            return Ok();
         }
     }
 }
