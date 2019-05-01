@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Helpers;
 using Microsoft.AspNetCore.Http;
+using ASP.NET_Core_Webapp.Configurations;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -29,17 +30,15 @@ namespace ASP.NET_Core_Webapp
             .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
             .AddUserSecrets<Startup>()
             .AddEnvironmentVariables();
-            this.configuration = builder.Build(); ;
+            this.configuration = builder.Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddDbContext<ApplicationContext>(builder =>
-                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
             //services.AddDbContext<ApplicationContext>(builder =>
             //    builder.UseInMemoryDatabase("development"));
+            services.AddDbContext<ApplicationContext>(builder =>
+                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
@@ -86,10 +85,36 @@ namespace ASP.NET_Core_Webapp
             services.AddSingleton<IAuthService, AuthService>();
         }
 
+        public void ConfigureTestingServices(IServiceCollection services)
+        {
+            //services.AddDbContext<ApplicationContext>(builder =>
+            //    builder.UseInMemoryDatabase("development"));
+            services.AddDbContext<ApplicationContext>(builder =>
+                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddCors();
+            services.AddMvc().AddJsonOptions(options =>
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "Bearer";
+                options.DefaultChallengeScheme = "Bearer";
+            }).AddTestAuth(o => { });
+
+            services.AddScoped<IHelloService, HelloService>();
+            services.AddSingleton<IAuthService, MockAuthService > ();
+        }
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
