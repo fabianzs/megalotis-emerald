@@ -18,7 +18,6 @@ namespace ASP.NET_Core_Webapp
     {
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment env;
-        private readonly ApplicationContext applicationContext;
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
@@ -69,6 +68,7 @@ namespace ASP.NET_Core_Webapp
                         };
                     });
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddScoped<SlackService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)

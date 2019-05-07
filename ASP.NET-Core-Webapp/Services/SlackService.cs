@@ -7,11 +7,16 @@ using System.Net.Http.Headers;
 
 namespace ASP.NET_Core_Webapp.Services
 {
-    public static class SlackService
+    public class SlackService
     {
-        private static readonly IConfiguration configuration;
+        private readonly IConfiguration configuration;
 
-        public static void SendEmail(string email, string messageToSend)
+        public SlackService(IConfiguration config)
+        {
+            this.configuration = config;
+        }
+
+        public void SendEmail(string email, string messageToSend)
         {
             var Client = new HttpClient();
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", configuration["SlackToken"]);
