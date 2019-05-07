@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
@@ -22,12 +23,13 @@ namespace ASP.NET_Core_Webapp.Services
         public AuthService(IConfiguration configuration)
         {
             this.configuration = configuration;
+            
         }
 
         public string GetGoogleLogin()
         {
             string base_url = "https://accounts.google.com/o/oauth2/v2/auth";
-            string scope = "email+openid";
+            string scope = "openid%20email%20profile%20https://www.googleapis.com/auth/spreadsheets.readonly";
             string redirect_uri = configuration.GetValue<string>("AppSettings:Authentication endpoint");
             string response_type = "code";
             string client_id = configuration["Authentication:Google:ClientId"];
@@ -48,6 +50,7 @@ namespace ASP.NET_Core_Webapp.Services
             HttpResponseMessage response = client.SendAsync(req).Result;
             string res = response.Content.ReadAsStringAsync().Result;
             GoogleToken token = JsonConvert.DeserializeObject<GoogleToken>(res);
+            WriteAccesTokeToFile(token.access_token);
             return token;
         }
 
@@ -72,6 +75,11 @@ namespace ASP.NET_Core_Webapp.Services
             string securetoken = new JwtSecurityTokenHandler().WriteToken(token);
 
             return securetoken;
+        }
+
+        public void WriteAccesTokeToFile(string accesToken)
+        {
+            File.WriteAllText("AccesToken.txt", accesToken);
         }
     }
 }
