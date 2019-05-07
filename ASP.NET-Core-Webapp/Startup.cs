@@ -1,4 +1,5 @@
 using ASP.NET_Core_Webapp.Data;
+using ASP.NET_Core_Webapp.SeedData;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -16,23 +17,37 @@ namespace ASP.NET_Core_Webapp
     public class Startup
     {
         private readonly IConfiguration configuration;
+        private readonly IHostingEnvironment env;
+        private readonly ApplicationContext applicationContext;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             this.configuration = configuration;
+            this.env = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<ApplicationContext>(builder =>
-                builder
-                .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
+            var allvariables = Environment.GetEnvironmentVariables();
+            
             services.AddCors();
             services.AddMvc();
             services.AddScoped<IHelloService, HelloService>();
 
+            if (env.IsDevelopment())
+                
+            {
+                services.AddDbContext<ApplicationContext>(builder =>
+                        builder.UseInMemoryDatabase("InMemoryDatabase"));
+            }
+            if (env.IsProduction())
+            {
+                //Debugger.Launch();
+                services.AddDbContext<ApplicationContext>(builder =>
+                        builder.UseSqlServer(configuration.GetConnectionString("environmentString"))
+                        .EnableSensitiveDataLogging(true));
+            }
             services.AddAuthorization(auth =>
                     {
                         auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
@@ -53,17 +68,23 @@ namespace ASP.NET_Core_Webapp
                             ClockSkew = TimeSpan.Zero
                         };
                     });
-
             services.AddSingleton<IAuthService, AuthService>();
-
-            
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                Seed seedDataFromObject = new Seed(applicationContext, configuration);
+                seedDataFromObject.FillDatabaseFromObject();
+            }
+            if (env.IsProduction())
+            {
+                Seed seedDataFromObject = new Seed(applicationContext, configuration);
+
+                seedDataFromObject.FillDatabaseFromObject();
+
             }
 
             app.UseMvc(routes =>
