@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using ASP.NET_Core_Webapp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
     [Route("api")]
+    [Authorize("Bearer")]
     [ApiController]
     public class PitchController : Controller
     {
@@ -40,7 +42,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             {
                 slackService.SendEmail(reviewer, "You have been assigned to 1 pitch to make a review.");
             }
-
 
             return Created("", new { message = "Success" });
         }
