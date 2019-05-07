@@ -50,7 +50,7 @@ namespace ASP.NET_Core_Webapp.Services
             HttpResponseMessage response = client.SendAsync(req).Result;
             string res = response.Content.ReadAsStringAsync().Result;
             GoogleToken token = JsonConvert.DeserializeObject<GoogleToken>(res);
-            WriteAccesTokeToFile(token.access_token);
+            WriteAccesTokenToFile(token.access_token);
             return token;
         }
 
@@ -77,7 +77,7 @@ namespace ASP.NET_Core_Webapp.Services
             return securetoken;
         }
 
-        public void WriteAccesTokeToFile(string accesToken)
+        public void WriteAccesTokenToFile(string accesToken)
         {
             File.WriteAllText("AccesToken.txt", accesToken);
         }

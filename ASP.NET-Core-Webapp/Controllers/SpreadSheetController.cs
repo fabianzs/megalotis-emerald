@@ -2,28 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ASP.NET_Core_Webapp.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
-    
-    [ApiController]
-    public class SpreadSheetController : ControllerBase
+    public class SpreadsheetController : Controller
     {
-        GoogleSheetService GoogleSheetService;
-
-        public SpreadSheetController(GoogleSheetService googleSheetService)
+        [HttpGet("spreadsheet")]
+        public Object SpreadSheet()
         {
-            GoogleSheetService = googleSheetService;
+           // Console.WriteLine(ReadAccesTokenFromFile());
+            return ReadAccesTokenFromFile();
         }
 
-        [HttpGet("spreadsheet")]
-        public IActionResult test(FromBodyAttribute link)
+        private string ReadAccesTokenFromFile()
         {
-            var teszt = GoogleSheetService.AccesTokenPublic;
-            return Redirect("https://sheets.googleapis.com/v4/spreadsheets/1oW7QEQVR_-aX3UYgN2n03UUB2GDAFqhE_DPRgPuukAI/values/Munkalap1");
+            return System.IO.File.ReadAllText("AccesToken.txt");
         }
     }
 }
