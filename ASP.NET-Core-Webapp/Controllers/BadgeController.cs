@@ -24,11 +24,11 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return StatusCode(404, new { error = "No message body" });
             }
 
-                if (badge.Levels == null || badge.Name == null || badge.Tag == null || badge.Version == null)
-                {
-                    return NotFound(new { error = "Please provide all fields" });
-                }
-                return Created("/badges", new { message = "Success" });
+            if (badge.Levels == null || badge.Name == null || badge.Tag == null || badge.Version == null)
+            {
+                return NotFound(new { error = "Please provide all fields" });
+            }
+            return Created("/badges", new { message = "Success" });
         }
     }
 }
