@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
@@ -14,12 +15,12 @@ namespace ASP.NET_Core_Webapp.Controllers
     [ApiController]
     public class PitchController : Controller
     {
-        ApplicationContext app;
+        ApplicationContext ApplicationContext;
         private readonly SlackService slackService;
 
         public PitchController(ApplicationContext app, SlackService ss)
         {
-            this.app = app;
+            this.ApplicationContext = app;
             this.slackService = ss;
         }
 
@@ -32,15 +33,24 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpPost("pitches")]
         public IActionResult CreateNewPitch(Pitch newPitch)
         {
-            List<string> reviewers = new List<string>();
-            string reviewer1 = "laszlo.molnar25@gmail.com";
-            string reviewer2 = "balogh.botond8@gmail.com";
-            reviewers.Add(reviewer1);
-            reviewers.Add(reviewer2);
 
-            foreach (var reviewer in reviewers)
+            Pitch pitchToAdd = new Pitch() { Badge = newPitch.Badge, BadgeLevel = newPitch.BadgeLevel, Holders = newPitch.Holders, PitchedLevel = newPitch.PitchedLevel, PitchMessage = newPitch.PitchMessage, TimeStamp = DateTime.Now, User = newPitch.User };
+            
+            ApplicationContext.Add(pitchToAdd);
+            ApplicationContext.SaveChanges();
+
+            List<User> users = new List<User>();
+
+            var holders2 = pitchToAdd.Holders.Select(x => new User() {Email = x.User.Email, Name = x.User.Name }).ToList();
+            //List<string> reviewers = new List<string>();
+            //string reviewer1 = "laszlo.molnar25@gmail.com";
+            //string reviewer2 = "balogh.botond8@gmail.com";
+            //reviewers.Add(reviewer1);
+            //reviewers.Add(reviewer2);
+
+            foreach (var user in holders2)
             {
-                slackService.SendEmail(reviewer, "You have been assigned to 1 pitch to make a review.");
+                slackService.SendEmail(user.Email, "Testmessage from pitch post....");
             }
 
             return Created("", new { message = "Success" });
