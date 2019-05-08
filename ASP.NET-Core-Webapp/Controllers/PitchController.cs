@@ -31,26 +31,25 @@ namespace ASP.NET_Core_Webapp.Controllers
         }
 
         [HttpPost("pitches")]
-        public IActionResult CreateNewPitch(Pitch newPitch)
+        public IActionResult CreateNewPitch(SeedData.Pitch newPitch)
         {
-
-            Pitch pitchToAdd = new Pitch() { Badge = newPitch.Badge, BadgeLevel = newPitch.BadgeLevel, Holders = newPitch.Holders, PitchedLevel = newPitch.PitchedLevel, PitchMessage = newPitch.PitchMessage, TimeStamp = DateTime.Now, User = newPitch.User };
+            List<string> emails = new List<string>();
+            foreach (var holder in newPitch.holders)
+            {
+                var email = ApplicationContext.Users.FirstOrDefault(x => x.Name == holder.name).Email;
+                emails.Add(email);
+            }
             
-            ApplicationContext.Add(pitchToAdd);
-            ApplicationContext.SaveChanges();
 
-            List<User> users = new List<User>();
-
-            var holders2 = pitchToAdd.Holders.Select(x => new User() {Email = x.User.Email, Name = x.User.Name }).ToList();
             //List<string> reviewers = new List<string>();
             //string reviewer1 = "laszlo.molnar25@gmail.com";
             //string reviewer2 = "balogh.botond8@gmail.com";
             //reviewers.Add(reviewer1);
             //reviewers.Add(reviewer2);
 
-            foreach (var user in holders2)
+            foreach (var email in emails)
             {
-                slackService.SendEmail(user.Email, "Testmessage from pitch post....");
+                slackService.SendEmail(email, "Testmessage from pitch post....");
             }
 
             return Created("", new { message = "Success" });
