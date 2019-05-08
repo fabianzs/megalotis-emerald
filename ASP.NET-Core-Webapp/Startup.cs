@@ -14,21 +14,29 @@ using Newtonsoft.Json;
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Helpers;
 using Microsoft.AspNetCore.Http;
+using ASP.NET_Core_Webapp.Configurations;
 
 namespace ASP.NET_Core_Webapp
 {
     public class Startup
     {
-        private readonly IConfiguration configuration;
+        private IConfiguration configuration;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            this.configuration = configuration;
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+            .AddUserSecrets<Startup>()
+            .AddEnvironmentVariables();
+            this.configuration = builder.Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //services.AddDbContext<ApplicationContext>(builder =>
+            //    builder.UseInMemoryDatabase("development"));
             services.AddDbContext<ApplicationContext>(builder =>
                 builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
@@ -37,11 +45,11 @@ namespace ASP.NET_Core_Webapp
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddAuthorization(auth =>
-                    {
-                        auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
-                            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-                            .RequireAuthenticatedUser().Build());
-                    });
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -77,6 +85,36 @@ namespace ASP.NET_Core_Webapp
             services.AddSingleton<IAuthService, AuthService>();
         }
 
+        public void ConfigureTestingServices(IServiceCollection services)
+        {
+            //NEED TO BE CHANGED FOR INMEMORYDATABASE ONCE SEED DATA IS AVAILABLE!
+
+            //services.AddDbContext<ApplicationContext>(builder =>
+            //    builder.UseInMemoryDatabase("development"));
+            services.AddDbContext<ApplicationContext>(builder =>
+                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddCors();
+            services.AddMvc().AddJsonOptions(options =>
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "Bearer";
+                options.DefaultChallengeScheme = "Bearer";
+            }).AddTestAuth(o => { });
+
+            services.AddScoped<IHelloService, HelloService>();
+            services.AddSingleton<IAuthService, MockAuthService>();
+        }
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -85,11 +123,11 @@ namespace ASP.NET_Core_Webapp
             }
 
             app.UseMvc(routes =>
-                {
-                    routes.MapRoute(
-                        name: "default",
-                        template: "{controller=Auth}/{action=Login}");
-                });
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Auth}/{action=Login}");
+            });
 
             app.UseAuthentication();
             app.UseCors(x => x

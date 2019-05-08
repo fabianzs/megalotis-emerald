@@ -15,6 +15,11 @@ namespace ASP.NET_Core_Webapp.Entities
         public string Tag { get; set; }
         public ICollection<BadgeLevelDTO> Levels { get; set; }
 
+        public BadgeDTO()
+        {
+            Levels = new List<BadgeLevelDTO>();
+        }
+
         public Badge CreateBadge(ApplicationContext applicationContext, BadgeDTO badgeDTO)
         {
             Badge badge = new Badge()
