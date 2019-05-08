@@ -39,20 +39,16 @@ namespace ASP.NET_Core_Webapp.Controllers
                 var email = ApplicationContext.Users.FirstOrDefault(x => x.Name == holder.name).Email;
                 emails.Add(email);
             }
-            
-
-            //List<string> reviewers = new List<string>();
-            //string reviewer1 = "laszlo.molnar25@gmail.com";
-            //string reviewer2 = "balogh.botond8@gmail.com";
-            //reviewers.Add(reviewer1);
-            //reviewers.Add(reviewer2);
 
             foreach (var email in emails)
             {
+                if (email != null)
+                {
                 slackService.SendEmail(email, "Testmessage from pitch post....");
+                }
             }
 
-            return Created("", new { message = "Success" });
+            return Created("", new { messageSentTo = emails});
         }
     }
 }
