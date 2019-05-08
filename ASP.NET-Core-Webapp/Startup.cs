@@ -69,6 +69,7 @@ namespace ASP.NET_Core_Webapp
                         };
                     });
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<GoogleSheetService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
