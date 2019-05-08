@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
@@ -33,22 +34,64 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpPost("pitches")]
         public IActionResult CreateNewPitch(SeedData.Pitch newPitch)
         {
+            Entities.Pitch pitchToAdd = new Entities.Pitch() { };
+            // Add user:
+            Entities.User userToAdd = new Entities.User();
+            userToAdd = ApplicationContext.Users.Where(x => x.Name == newPitch.username).FirstOrDefault();
+            // Add reviews:
+            foreach (var holderReview in newPitch.holders)
+            {
+                Review review = new Review(holderReview.message, holderReview.pitchStatus);
+                pitchToAdd.Holders.Add(review);
+                ApplicationContext.SaveChanges();
+
+                review.User = ApplicationContext.Users.Where(x => x.Name == holderReview.name).FirstOrDefault();
+                review.Pitch = ApplicationContext.Pitches.Where(x => x.PitchMessage == holderReview.message).FirstOrDefault();
+
+                ApplicationContext.Reviews.Add(review);
+                ApplicationContext.SaveChanges();
+            }
+
+            if (userToAdd == null)
+            {
+                User newUser = new User() { Name = newPitch.username };
+                //ApplicationContext.Add(newUser);
+                pitchToAdd.User = newUser;
+                ApplicationContext.SaveChanges();
+            }
+            else
+            {
+                pitchToAdd.User = userToAdd;
+                ApplicationContext.SaveChanges();
+            }
+
+            Badge badgeToAdd;
+            badgeToAdd = ApplicationContext.Badges.Where(x => x.Name == newPitch.badgeName).FirstOrDefault();
+            pitchToAdd.Badge = badgeToAdd;
+
+            pitchToAdd.TimeStamp = DateTime.ParseExact(newPitch.timestamp, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            pitchToAdd.PitchMessage = newPitch.pitchMessage;
+            pitchToAdd.Badge = ApplicationContext.Badges.Where(x => x.Name == newPitch.badgeName).FirstOrDefault();
+            pitchToAdd.BadgeLevel = ApplicationContext.BadgeLevels.Where(x => x.Badge.Name == newPitch.badgeName).FirstOrDefault();
+            ApplicationContext.Add(pitchToAdd);
+
+            ApplicationContext.SaveChanges();
+
             List<string> emails = new List<string>();
             foreach (var holder in newPitch.holders)
             {
                 var email = ApplicationContext.Users.FirstOrDefault(x => x.Name == holder.name).Email;
-                emails.Add(email);
+                if (email != null)
+                {
+                    emails.Add(email);
+                }
             }
 
             foreach (var email in emails)
             {
-                if (email != null)
-                {
-                slackService.SendEmail(email, "Testmessage from pitch post....");
-                }
+                slackService.SendEmail(email, $"You have 1 new pitch! Pitch message: {newPitch.pitchMessage}");
             }
-
-            return Created("", new { messageSentTo = emails});
+            return Created("", new {messageSentTo=emails, pitches = ApplicationContext.Pitches.Select(x=>x.PitchMessage).ToList() });
         }
     }
 }

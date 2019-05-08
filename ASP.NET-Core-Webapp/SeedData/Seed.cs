@@ -40,7 +40,8 @@ namespace ASP.NET_Core_Webapp.SeedData
 
             for (int i = 0; i < userList.Length; i++)
             {
-                Entities.User userToAdd = new Entities.User() { Name = userList[i].name, Picture = userList[i].pic, OpenId = userList[i].tokenAuth };
+                Entities.User userToAdd = new Entities.User() { Name = userList[i].name, Picture = userList[i].pic, OpenId = userList[i].tokenAuth, Email=userList[i].email };
+                
                 DataBase.Add(userToAdd);
                 DataBase.SaveChanges();
             }
