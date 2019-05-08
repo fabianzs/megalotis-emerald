@@ -69,7 +69,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             badgeToAdd = ApplicationContext.Badges.Where(x => x.Name == newPitch.badgeName).FirstOrDefault();
             pitchToAdd.Badge = badgeToAdd;
 
-            pitchToAdd.TimeStamp = DateTime.ParseExact(newPitch.timestamp, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            pitchToAdd.TimeStamp = DateTime.Now;
             pitchToAdd.PitchMessage = newPitch.pitchMessage;
             pitchToAdd.Badge = ApplicationContext.Badges.Where(x => x.Name == newPitch.badgeName).FirstOrDefault();
             pitchToAdd.BadgeLevel = ApplicationContext.BadgeLevels.Where(x => x.Badge.Name == newPitch.badgeName).FirstOrDefault();
@@ -91,7 +91,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             {
                 slackService.SendEmail(email, $"You have 1 new pitch! Pitch message: {newPitch.pitchMessage}");
             }
-            return Created("", new {messageSentTo=emails, pitches = ApplicationContext.Pitches.Select(x=>x.PitchMessage).ToList() });
+            return Created("", new {messageSentTo=emails, pitches = ApplicationContext.Pitches.Select(x=>x.PitchMessage).ToList(), pitchToAddTimeStamp = pitchToAdd.TimeStamp });
         }
     }
 }
