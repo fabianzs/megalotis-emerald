@@ -19,7 +19,7 @@ namespace ASP.NET_Core_Webapp.Services
         public void SendEmail(string email, string messageToSend)
         {
             var Client = new HttpClient();
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", configuration["SlackToken"]);
+            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", configuration["SlackBotToken"]);
             //Create an email user lookup request:
             var emailLookupRequest = new HttpRequestMessage(HttpMethod.Post, "https://slack.com/api/users.lookupByEmail");
 
