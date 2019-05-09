@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
@@ -19,11 +18,12 @@ namespace ASP.NET_Core_Webapp.Services
     public class AuthService : IAuthService
     {
         private readonly IConfiguration configuration;
+        private readonly GoogleSheetService googleSheetService;
 
-        public AuthService(IConfiguration configuration)
+        public AuthService(IConfiguration configuration, GoogleSheetService googleSheetService)
         {
             this.configuration = configuration;
-            
+            this.googleSheetService = googleSheetService;
         }
 
         public string GetGoogleLogin()
@@ -50,7 +50,8 @@ namespace ASP.NET_Core_Webapp.Services
             HttpResponseMessage response = client.SendAsync(req).Result;
             string res = response.Content.ReadAsStringAsync().Result;
             GoogleToken token = JsonConvert.DeserializeObject<GoogleToken>(res);
-            WriteAccesTokenToFile(token.access_token);
+            googleSheetService.AccesToken = token.access_token;
+            // WriteAccesTokenToFile(token.access_token);
             return token;
         }
 
@@ -75,11 +76,6 @@ namespace ASP.NET_Core_Webapp.Services
             string securetoken = new JwtSecurityTokenHandler().WriteToken(token);
 
             return securetoken;
-        }
-
-        public void WriteAccesTokenToFile(string accesToken)
-        {
-            File.WriteAllText("AccesToken.txt", accesToken);
         }
     }
 }
