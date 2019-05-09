@@ -51,7 +51,6 @@ namespace ASP.NET_Core_Webapp.Services
             string res = response.Content.ReadAsStringAsync().Result;
             GoogleToken token = JsonConvert.DeserializeObject<GoogleToken>(res);
             googleSheetService.AccesToken = token.access_token;
-            // WriteAccesTokenToFile(token.access_token);
             return token;
         }
 
