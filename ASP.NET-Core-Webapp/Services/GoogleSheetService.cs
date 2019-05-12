@@ -31,27 +31,23 @@ namespace ASP.NET_Core_Webapp.Services
 
         public void FillUpDataBaseFromSpreadSheet()
         {
-            //this.SeedObject = JsonConvert.DeserializeObject<SeedObject>(Json2);
-            Badge t = JsonConvert.DeserializeObject<Badge>(GetBadgesFromStyleSheet());
-           // applictionContext.Add
+            SpreadSheet spreadSheet = JsonConvert.DeserializeObject<SpreadSheet>(GetBadgesFromStyleSheet());
+            foreach (string[] spreadSheetBadge in spreadSheet.Values)
+            {
+                //Entities.User userToAdd = new Entities.User() { Name = userList[i].name, Picture = userList[i].pic, OpenId = userList[i].tokenAuth };
+                //DataBase.Add(userToAdd);
+                //DataBase.SaveChanges();
+                Badge badgeToAdd = new Badge { Version = spreadSheetBadge[0], Name = spreadSheetBadge[1], Tag = spreadSheetBadge[2] };
+                applictionContext.Add(badgeToAdd);
+                applictionContext.SaveChanges();
+            }
+            Console.WriteLine(string.Join(",,",applictionContext.Badges.Where(b => b.Name.Equals("test")).ToList()));
         }
 
         public string GetBadgesFromStyleSheet()
         {
             var dict = new List<KeyValuePair<string, string>>();
             dict.Add(new KeyValuePair<string, string>("Authorization", $"Bearer {StaticAccesToken}"));
-            //dict.Add(new KeyValuePair<string, string>("client_id", configuration["Authentication:Google:ClientId"]));
-            //dict.Add(new KeyValuePair<string, string>("client_secret", configuration["Authentication:Google:ClientSecret"]));
-            //dict.Add(new KeyValuePair<string, string>("redirect_uri", configuration.GetValue<string>("AppSettings:Authentication endpoint")));
-            //dict.Add(new KeyValuePair<string, string>("grant_type", "authorization_code"));
-            //var client = new HttpClient();
-            //var req = new HttpRequestMessage(HttpMethod.Post, "https://www.googleapis.com/oauth2/v4/token");
-            //req.Content = new FormUrlEncodedContent(dict);
-            //HttpResponseMessage response = client.SendAsync(req).Result;
-            //string res = response.Content.ReadAsStringAsync().Result;
-            //GoogleToken token = JsonConvert.DeserializeObject<GoogleToken>(res);
-            //googleSheetService.AccesToken = token.access_token;
-            //return token;
             var req = new HttpRequestMessage(HttpMethod.Get, MakeGoogleSheetApiURL());
             req.Headers.Add("Authorization", $"Bearer {StaticAccesToken}");
             HttpResponseMessage response = new HttpClient().SendAsync(req).Result;
@@ -64,7 +60,6 @@ namespace ASP.NET_Core_Webapp.Services
             string baseURL = configuration["GoogleSheet:GoogleSheetApiBaseURL"];
             string spreadSheetID = configuration["GoogleSheet:SpreadSheetID"];
             string range = configuration["GoogleSheet:Range"];
-           // return $"{baseURL}{spreadSheetID}/values/{range}?access_token={StaticAccesToken}";
             return $"{baseURL}{spreadSheetID}/values/{range}";
         }
 

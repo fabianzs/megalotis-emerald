@@ -23,5 +23,12 @@ namespace ASP.NET_Core_Webapp.Entities
             this.Name = name;
             this.Levels = new List<BadgeLevel>();
         }
+
+        public Badge(string version, string name, string tag)
+        {
+            Name = name;
+            Tag = tag;
+            Version = version;
+        }
     }
 }
