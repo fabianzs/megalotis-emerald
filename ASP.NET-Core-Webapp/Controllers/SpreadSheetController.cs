@@ -21,7 +21,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         public Object SpreadSheet()
         {
             googleSheetService.FillUpDataBaseFromSpreadSheet();
-            return googleSheetService.GetBadgesFromStyleSheet();
+            return googleSheetService.ReturnBadgesSpreadSheetContent();
         }
 
 
