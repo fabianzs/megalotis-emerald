@@ -54,7 +54,6 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult MyBadgesMock()
         {
             List<Badge> badgesList = new List<Badge>();
-
             badgesList.Add(new Badge("test"));
             return Ok(new { badges = badgesList });
         }

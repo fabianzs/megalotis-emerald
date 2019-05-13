@@ -3,7 +3,6 @@ using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.Services;
 using System.Collections.Generic;
 using Xunit;
-
 namespace ASP.NET_Core_Webapp.UnitTests
 {
     public class HelloServiceTests
@@ -18,7 +17,7 @@ namespace ASP.NET_Core_Webapp.UnitTests
         [Fact]
         public void HelloWorldReturnIsValid()
         {
-            Assert.Equal("Hello World!", helloService.HelloWorld());
+            Assert.Equal("Hello World!", helloService.HelloWorld());/        
         }
 
         [Fact]
