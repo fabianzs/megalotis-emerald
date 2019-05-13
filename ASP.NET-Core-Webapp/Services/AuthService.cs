@@ -1,4 +1,5 @@
 ﻿using ASP.NET_Core_Webapp.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -64,10 +65,10 @@ namespace ASP.NET_Core_Webapp.Services
             return tokenInfo;
         }
 
-        public string CreateJwtToken(string sub, string email)
+        public string CreateJwtToken(string sub, string name, string email, string picture)
         {
             JwtSecurityToken token = new JwtSecurityToken(
-                claims: new Claim[] { new Claim("OpenID", sub), new Claim("Email", email) },
+                claims: new Claim[] { new Claim("OpenID", sub), new Claim("Name", name), new Claim("Email", email), new Claim("Picture", picture) },
                 notBefore: DateTime.UtcNow,
                 expires: DateTime.UtcNow.AddMinutes(5),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:Jwt:Secret"])), SecurityAlgorithms.HmacSha256Signature)
@@ -75,6 +76,14 @@ namespace ASP.NET_Core_Webapp.Services
             string securetoken = new JwtSecurityTokenHandler().WriteToken(token);
 
             return securetoken;
+        }
+
+        public string GetOpenIdFromJwtToken(HttpRequest request)
+        {
+            string tokenString = request.Headers["Authorization"];
+            string token = tokenString.Split(" ")[1];
+            JwtSecurityToken jwtToken = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
+            return jwtToken.Claims.First(claim => claim.Type == "OpenID").Value;
         }
     }
 }
