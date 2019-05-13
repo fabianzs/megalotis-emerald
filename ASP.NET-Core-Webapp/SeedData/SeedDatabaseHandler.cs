@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace ASP.NET_Core_Webapp.SeedData
 {
-    public class Seed
+    public class SeedDatabaseHandler
     {
         public ApplicationContext ApplicationContext { get; set; }
         public string Json2 { get; set; }
@@ -18,7 +18,7 @@ namespace ASP.NET_Core_Webapp.SeedData
         public SeedObject SeedObject { get; set; }
         public IConfiguration Configuration { get; set; }
 
-        public Seed(ApplicationContext applicationContext, IConfiguration configuration)
+        public SeedDatabaseHandler(ApplicationContext applicationContext, IConfiguration configuration)
         {
             this.Configuration = configuration;
             this.DataBase = applicationContext;
@@ -27,7 +27,7 @@ namespace ASP.NET_Core_Webapp.SeedData
             this.SeedObject = JsonConvert.DeserializeObject<SeedObject>(Json2);
         }
 
-        public Seed()
+        public SeedDatabaseHandler()
         {
             this.StreamReader = new StreamReader(Configuration["SeedLocation:FileLocation"]);
             Json2 = StreamReader.ReadToEnd();

@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.Services
 {
@@ -16,7 +17,7 @@ namespace ASP.NET_Core_Webapp.Services
             this.configuration = config;
         }
 
-        public void SendEmail(string email, string messageToSend)
+        public async Task SendEmail(string email, string messageToSend)
         {
             var Client = new HttpClient();
             Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", configuration["SlackBotToken"]);
@@ -28,13 +29,13 @@ namespace ASP.NET_Core_Webapp.Services
             list.Add(new KeyValuePair<string, string>("email", email));
 
             emailLookupRequest.Content = new FormUrlEncodedContent(list);
-            var response = Client.SendAsync(emailLookupRequest).Result;
+            var response = await Client.SendAsync(emailLookupRequest);
 
             EmailLookupResponse responseObject = new EmailLookupResponse();
 
             //Deserialize the response (first create a string from the request's content, 
             //then deserialize it.
-            responseObject = JsonConvert.DeserializeObject<EmailLookupResponse>(response.Content.ReadAsStringAsync().Result);
+            responseObject = JsonConvert.DeserializeObject<EmailLookupResponse>(await response.Content.ReadAsStringAsync());
 
             //Create the post message request:
             var postMessageRequest = new HttpRequestMessage(HttpMethod.Post, "https://slack.com/api/chat.postMessage");

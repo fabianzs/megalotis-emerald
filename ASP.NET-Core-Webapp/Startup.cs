@@ -47,6 +47,7 @@ namespace ASP.NET_Core_Webapp
                         builder.UseSqlServer(configuration.GetConnectionString("environmentString"))
                         .EnableSensitiveDataLogging(true));
             }
+
             services.AddAuthorization(auth =>
                     {
                         auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
@@ -76,12 +77,12 @@ namespace ASP.NET_Core_Webapp
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                Seed seedDataFromObject = new Seed(applicationContext, configuration);
+                SeedDatabaseHandler seedDataFromObject = new SeedDatabaseHandler(applicationContext, configuration);
                 seedDataFromObject.FillDatabaseFromObject();
             }
             if (env.IsProduction())
             {
-                Seed seedDataFromObject = new Seed(applicationContext, configuration);
+                SeedDatabaseHandler seedDataFromObject = new SeedDatabaseHandler(applicationContext, configuration);
 
                 seedDataFromObject.FillDatabaseFromObject();
 
