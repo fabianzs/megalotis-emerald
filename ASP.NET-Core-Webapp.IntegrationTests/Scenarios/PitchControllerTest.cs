@@ -58,5 +58,27 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
+        [Fact]
+        public async Task PitchUpdateTest()
+        {
+            Pitch pitch = new Pitch(new User(), new Badge(), 2, 3, "Hello World! My English is bloody gorgeous.", Holders);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitch");
+            var response = await testContext.Client.PostAsync("/api/pitch", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PitchExistsTest()
+        {
+            Pitch pitch = new Pitch(new User(), new Badge(), 2, 3, "Hello World! My English is bloody gorgeous.", Holders);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitch");
+            var response = await testContext.Client.PostAsync("/api/pitch", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
+
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
     }
 }

@@ -14,6 +14,11 @@ namespace ASP.NET_Core_Webapp.Entities
         public BadgeLevel BadgeLevel { get; set; }
         public ICollection<Review> Holders { get; set; }
 
+        public Pitch()
+        {
+            this.Holders = new List<Review>();
+        }
+
         public Pitch(User user, Badge badge, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)
         {
             TimeStamp = DateTime.Now;

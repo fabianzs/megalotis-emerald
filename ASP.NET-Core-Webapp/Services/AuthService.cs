@@ -1,4 +1,5 @@
 ﻿using ASP.NET_Core_Webapp.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -72,6 +73,14 @@ namespace ASP.NET_Core_Webapp.Services
             string securetoken = new JwtSecurityTokenHandler().WriteToken(token);
 
             return securetoken;
+        }
+
+        public string GetOpenIdFromJwtToken(HttpRequest request)
+        {
+            string tokenString = request.Headers["Authorization"];
+            string token = tokenString.Split(" ")[1];
+            JwtSecurityToken jwtToken = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
+            return jwtToken.Claims.First(claim => claim.Type == "OpenID").Value;
         }
     }
 }

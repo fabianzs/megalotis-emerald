@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
+using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,12 @@ namespace ASP.NET_Core_Webapp.Controllers
     public class PitchController : Controller
     {
         private readonly ApplicationContext applicationContext;
+        private readonly IAuthService authService;
 
-        public PitchController(ApplicationContext application)
+        public PitchController(ApplicationContext application, AuthService authService)
         {
             applicationContext = application;
+            this.authService = authService;
         }
 
         [HttpGet("pitches")]
@@ -44,18 +47,24 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return Unauthorized(new { error = "Unauthorizied" });
             }
         }
-
+       
+        // notificiton-hoz: elfodagva-> ha a user pitchének a holderében a rewiwerek statusa true;
+        // servicebe ksizervezni a logikát
         [Authorize("Bearer")]
-        [HttpPut("pitch/{id}")]
-        public IActionResult EditPitch(long id, Pitch pitch) {
-            if (id != pitch.PitchId)
-            {
-                //bad requestre Ã¡tÃ­rni a body ba nem kell id + teszt -> updatelte, vagy nem Ã¼res, vagy nincs ilyen id, dot in memory databaset megnÃ©zni 
-                return Unauthorized(new { error = "Unauthorizied" });
-            }
-            applicationContext.Update(pitch);
-            applicationContext.SaveChanges();
-            return Ok();
+        [HttpPut("pitch")]
+        public IActionResult EditPitch(Pitch pitch) {
+
+            string openId = authService.GetOpenIdFromJwtToken(Request);
+        
+            User user = applicationContext.Users.Include(a => a.Pitches).FirstOrDefault(u => u.OpenId == openId);
+            List<long> userPitchId = user.Pitches.Select(p => p.PitchId).ToList();
+           
+            if (applicationContext.Pitches.Select(e => e.PitchId).Contains(pitch.PitchId) && userPitchId.Contains(pitch.PitchId) ) {
+                applicationContext.Update(pitch);
+                applicationContext.SaveChanges();
+                return Ok();
+            }       
+            return BadRequest();
         }
     }
 }
