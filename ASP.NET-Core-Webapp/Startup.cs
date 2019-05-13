@@ -70,7 +70,6 @@ namespace ASP.NET_Core_Webapp
                     });
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<GoogleSheetService>();
-            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)

@@ -29,9 +29,9 @@ namespace ASP.NET_Core_Webapp.Services
             this.configuration = configuration;
         }
 
-        public void FillUpDataBaseFromSpreadSheet()
+        public async Task FillUpDataBaseFromSpreadSheet()
         {
-            SpreadSheet spreadSheet = JsonConvert.DeserializeObject<SpreadSheet>(ReturnBadgesSpreadSheetContent());
+            SpreadSheet spreadSheet = JsonConvert.DeserializeObject<SpreadSheet>(await ReturnBadgesSpreadSheetContent());
             foreach (string[] spreadSheetBadge in spreadSheet.Values)
             {
                 Badge badgeToAdd = new Badge { Version = spreadSheetBadge[0], Name = spreadSheetBadge[1], Tag = spreadSheetBadge[2] };
@@ -40,10 +40,10 @@ namespace ASP.NET_Core_Webapp.Services
             }
         }
 
-        public string ReturnBadgesSpreadSheetContent()
+        public async Task<string> ReturnBadgesSpreadSheetContent()
         {
-            HttpResponseMessage response = new HttpClient().SendAsync(MakeSpreadSheetRequest()).Result;
-            return response.Content.ReadAsStringAsync().Result;
+            HttpResponseMessage response = await new HttpClient().SendAsync(MakeSpreadSheetRequest());
+            return await response.Content.ReadAsStringAsync();
         }
 
         public HttpRequestMessage MakeSpreadSheetRequest()
