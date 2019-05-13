@@ -21,6 +21,7 @@ namespace ASP.NET_Core_Webapp.Data
             modelBuilder.Entity<UserLevel>()
                .HasKey(sc => new { sc.BadgeLevelId, sc.UserId });
             modelBuilder.Entity<Pitch>().Property(s => s.TimeStamp).HasColumnName("Created");
+            modelBuilder.Entity<Badge>().Property(s => s.TimeStamp).HasColumnName("Created");
         }
     }
 }

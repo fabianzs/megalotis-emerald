@@ -1,4 +1,3 @@
-
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +25,28 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult MyBadges()
         {
             string openId = authService.GetOpenIdFromJwtToken(Request);
+            //User _user = applicationContext.Users.FirstOrDefault(u => u.OpenId == openId);
+            //InitializeDb(_user);
             User user = applicationContext.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.Badgelevel).ThenInclude(bl => bl.Badge).Where(u => u.OpenId == openId).FirstOrDefault();
             return Ok(new Dictionary<string, object>() { { "badges", user.UserLevels.Select(ul => new { ul.Badgelevel.Badge.Name, ul.Badgelevel.Level }) } });
+        }
+
+        [HttpPost("badges")]
+        public IActionResult RecieveBadge([FromBody]BadgeDTO badgeDTO)
+        {
+            if (badgeDTO == null)
+            {
+                return StatusCode(404, new { error = "No message body" });
+            }
+
+            if (badgeDTO.Levels == null || badgeDTO.Name == null || badgeDTO.Tag == null || badgeDTO.Version == null)
+            {
+                return NotFound(new { error = "Please provide all fields" });
+            }
+
+            applicationContext.Badges.Add(badgeDTO.CreateBadge(applicationContext, badgeDTO));
+            applicationContext.SaveChanges();
+            return Created("/badges", new { message = "Success" });
         }
 
         [Authorize("Bearer")]
@@ -38,7 +57,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             badgesList.Add(new Badge("test"));
             return Ok(new { badges = badgesList });
         }
-
 
         [Authorize("Bearer")]
         [HttpPost("badgesmock")]
@@ -54,6 +72,19 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return NotFound(new { error = "Please provide all fields" });
             }
             return Created("/badges", new { message = "Success" });
+        }
+
+        public void InitializeDb(User user)
+        {
+            UserLevel userlevel1 = new UserLevel() { Badgelevel = new BadgeLevel() { Level = 2, Description = "I am an upper-intermediate speaker", Badge = new Badge("English speaker") }, User = user };
+            UserLevel userlevel2 = new UserLevel() { Badgelevel = new BadgeLevel() { Level = 3, Description = "I can write some working code", Badge = new Badge("Java developer") }, User = user };
+            UserLevel userlevel3 = new UserLevel() { Badgelevel = new BadgeLevel() { Level = 1, Description = "I easily freak out", Badge = new Badge("Stress management") }, User = user };
+            user.UserLevels = new List<UserLevel>();
+            user.UserLevels.Add(userlevel1);
+            user.UserLevels.Add(userlevel2);
+            user.UserLevels.Add(userlevel3);
+            applicationContext.Users.Update(user);
+            applicationContext.SaveChanges();
         }
     }
 }

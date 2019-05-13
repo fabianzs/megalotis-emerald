@@ -60,11 +60,11 @@ namespace ASP.NET_Core_Webapp
                         .EnableSensitiveDataLogging(true));
             }
             services.AddAuthorization(auth =>
-                    {
-                        auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
-                            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-                            .RequireAuthenticatedUser().Build());
-                    });
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -102,10 +102,12 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureTestingServices(IServiceCollection services)
         {
+            //NEED TO BE CHANGED FOR INMEMORYDATABASE ONCE SEED DATA IS AVAILABLE!
+
             //services.AddDbContext<ApplicationContext>(builder =>
             //    builder.UseInMemoryDatabase("development"));
             services.AddDbContext<ApplicationContext>(builder =>
-                builder.UseSqlServer(configuration.GetConnectionString("environmentString")));
+                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
@@ -145,11 +147,11 @@ namespace ASP.NET_Core_Webapp
             }
 
             app.UseMvc(routes =>
-                {
-                    routes.MapRoute(
-                        name: "default",
-                        template: "{controller=Auth}/{action=Login}");
-                });
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Auth}/{action=Login}");
+            });
 
             app.UseAuthentication();
             app.UseCors(x => x
