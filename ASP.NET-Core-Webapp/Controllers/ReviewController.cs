@@ -14,12 +14,12 @@ namespace ASP.NET_Core_Webapp.Controllers
     public class ReviewController : Controller
     {
         private readonly IAuthService authService;
-        private readonly ApplicationContext applicationContext;
+        private readonly IReviewService reviewService;
 
-        public ReviewController(IAuthService authService, ApplicationContext applicationContext)
+        public ReviewController(IAuthService authService, IReviewService reviewService)
         {
             this.authService = authService;
-            this.applicationContext = applicationContext;
+            this.reviewService = reviewService;
         }
 
         [HttpPost("review")]
@@ -36,8 +36,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             }
 
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            applicationContext.Add(reviewDTO.CreateReview(applicationContext, openId));
-            applicationContext.SaveChanges();
+            reviewService.CreateReview(openId, reviewDTO);
             return Created("/review", new { message = "Success" });
         }
 
@@ -55,8 +54,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             }
 
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            applicationContext.Update(reviewDTO.UpdateReview(applicationContext, openId, id));
-            applicationContext.SaveChanges();
+            reviewService.UpdateReview(openId, reviewDTO, id);
             return Created("/review", new { message = "Success" });
         }
     }
