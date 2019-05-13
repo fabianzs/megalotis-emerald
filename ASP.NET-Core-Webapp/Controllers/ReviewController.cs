@@ -36,7 +36,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             }
 
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            
+            reviewService.CreateReview(openId, reviewDTO);
             return Created("/review", new { message = "Success" });
         }
     }
