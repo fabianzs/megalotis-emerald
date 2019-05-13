@@ -14,6 +14,11 @@ namespace ASP.NET_Core_Webapp.Helpers
         public string email { get; set; }
         public bool email_verified { get; set; }
         public string at_hash { get; set; }
+        public string name { get; set; }
+        public string picture { get; set; }
+        public string given_name { get; set; }
+        public string family_name { get; set; }
+        public string locale { get; set; }
         public string iat { get; set; }
         public string exp { get; set; }
         public string alg { get; set; }
@@ -21,3 +26,4 @@ namespace ASP.NET_Core_Webapp.Helpers
         public string typ { get; set; }
     }
 }
+
