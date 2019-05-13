@@ -28,6 +28,7 @@ namespace ASP.NET_Core_Webapp
 
         public Startup(IHostingEnvironment environment)
         {
+            this.env = environment;
             var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -35,7 +36,6 @@ namespace ASP.NET_Core_Webapp
             .AddUserSecrets<Startup>()
             .AddEnvironmentVariables();
             this.configuration = builder.Build();
-            this.env = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -104,10 +104,8 @@ namespace ASP.NET_Core_Webapp
         {
             //NEED TO BE CHANGED FOR INMEMORYDATABASE ONCE SEED DATA IS AVAILABLE!
 
-            //services.AddDbContext<ApplicationContext>(builder =>
-            //    builder.UseInMemoryDatabase("development"));
             services.AddDbContext<ApplicationContext>(builder =>
-                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                builder.UseInMemoryDatabase("InMemoryDatabase"));
 
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
