@@ -23,7 +23,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         }
 
         [HttpPost("review")]
-        public IActionResult PostReview(ReviewDTO reviewDTO)
+        public IActionResult PostReview([FromBody]ReviewDTO reviewDTO)
         {
             if (reviewDTO == null)
             {
