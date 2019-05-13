@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ASP.NET_Core_Webapp.Migrations
 {
-    public partial class test : Migration
+    public partial class ProductionMigration1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,22 +21,6 @@ namespace ASP.NET_Core_Webapp.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Badges", x => x.BadgeId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    UserId = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    Picture = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    OpenId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -61,12 +45,35 @@ namespace ASP.NET_Core_Webapp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    MyProperty = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    OpenId = table.Column<string>(nullable: true),
+                    BadgeLevelId = table.Column<long>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Users_BadgeLevels_BadgeLevelId",
+                        column: x => x.BadgeLevelId,
+                        principalTable: "BadgeLevels",
+                        principalColumn: "BadgeLevelId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Pitches",
                 columns: table => new
                 {
                     PitchId = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Created = table.Column<DateTime>(nullable: false),
+                    TimeStamp = table.Column<DateTime>(nullable: false),
                     PitchedLevel = table.Column<int>(nullable: false),
                     PitchMessage = table.Column<string>(nullable: true),
                     UserId = table.Column<long>(nullable: true),
@@ -97,37 +104,13 @@ namespace ASP.NET_Core_Webapp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserLevels",
-                columns: table => new
-                {
-                    UserId = table.Column<long>(nullable: false),
-                    BadgeLevelId = table.Column<long>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserLevels", x => new { x.BadgeLevelId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_UserLevels_BadgeLevels_BadgeLevelId",
-                        column: x => x.BadgeLevelId,
-                        principalTable: "BadgeLevels",
-                        principalColumn: "BadgeLevelId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserLevels_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
                     ReviewId = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Message = table.Column<string>(nullable: true),
-                    Status = table.Column<bool>(nullable: false),
+                    Status = table.Column<string>(nullable: true),
                     UserId = table.Column<long>(nullable: true),
                     PitchId = table.Column<long>(nullable: true)
                 },
@@ -179,9 +162,9 @@ namespace ASP.NET_Core_Webapp.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserLevels_UserId",
-                table: "UserLevels",
-                column: "UserId");
+                name: "IX_Users_BadgeLevelId",
+                table: "Users",
+                column: "BadgeLevelId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -190,16 +173,13 @@ namespace ASP.NET_Core_Webapp.Migrations
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "UserLevels");
-
-            migrationBuilder.DropTable(
                 name: "Pitches");
 
             migrationBuilder.DropTable(
-                name: "BadgeLevels");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "BadgeLevels");
 
             migrationBuilder.DropTable(
                 name: "Badges");

@@ -25,6 +25,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Redirect(authService.GetGoogleLogin());
         }
 
+
         [HttpGet("auth")]
         public IActionResult Authenticate(string code)
         {

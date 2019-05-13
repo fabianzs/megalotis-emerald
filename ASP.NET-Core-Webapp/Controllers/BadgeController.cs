@@ -1,3 +1,4 @@
+
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -34,10 +35,10 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult MyBadgesMock()
         {
             List<Badge> badgesList = new List<Badge>();
-
             badgesList.Add(new Badge("test"));
             return Ok(new { badges = badgesList });
         }
+
 
         [Authorize("Bearer")]
         [HttpPost("badgesmock")]
@@ -48,11 +49,11 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return StatusCode(404, new { error = "No message body" });
             }
 
-                if (badge.Levels == null || badge.Name == null || badge.Tag == null || badge.Version == null)
-                {
-                    return NotFound(new { error = "Please provide all fields" });
-                }
-                return Created("/badges", new { message = "Success" });
+            if (badge.Levels == null || badge.Name == null || badge.Tag == null || badge.Version == null)
+            {
+                return NotFound(new { error = "Please provide all fields" });
+            }
+            return Created("/badges", new { message = "Success" });
         }
     }
 }

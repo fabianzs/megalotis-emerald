@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.Entities
 {
@@ -17,7 +19,7 @@ namespace ASP.NET_Core_Webapp.Entities
 
         public Pitch()
         {
-
+            this.Holders = new List<Review>();
         }
 
         public Pitch(string username, string badgeName, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)

@@ -1,17 +1,17 @@
-﻿using ASP.NET_Core_Webapp.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿//using ASP.NET_Core_Webapp.Services;
+//using Microsoft.AspNetCore.Mvc;
 
-namespace ASP.NET_Core_Webapp.Controllers
-{
-    [Route("api")]
-    public class HelloController : Controller
-    {
-        private readonly IHelloService helloService;
+//namespace ASP.NET_Core_Webapp.Controllers
+//{
+//    [Route("api")]
+//    public class HelloController : Controller
+//    {
+//        private readonly IHelloService helloService;
 
-        public HelloController(IHelloService helloService)
-        {
-            this.helloService = helloService;
-        }
+//        public HelloController(IHelloService helloService)
+//        {
+//            this.helloService = helloService;
+//        }
 
         [HttpGet("hello")]
         public IActionResult HelloWorld()
@@ -19,5 +19,5 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Ok(helloService.HelloWorld());
         }
        
-    }
-}
+//    }
+//}
