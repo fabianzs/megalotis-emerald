@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASP.NET_Core_Webapp.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20190426075735_test")]
-    partial class test
+    [Migration("20190429075327_BadgeTimeStamp")]
+    partial class BadgeTimeStamp
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,9 @@ namespace ASP.NET_Core_Webapp.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("Tag");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnName("Created");
 
                     b.Property<string>("Version");
 
@@ -160,7 +163,7 @@ namespace ASP.NET_Core_Webapp.Migrations
                         .HasForeignKey("BadgeLevelId");
 
                     b.HasOne("ASP.NET_Core_Webapp.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Pitches")
                         .HasForeignKey("UserId");
                 });
 

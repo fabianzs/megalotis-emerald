@@ -49,10 +49,5 @@ namespace ASP.NET_Core_Webapp.Services
         {
             return "111300160267154007210";
         }
-
-        public string CreateJwtToken(string sub, string email)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

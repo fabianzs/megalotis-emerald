@@ -34,13 +34,14 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
             var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
-           
+
+
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]
         public async Task CreateNewPitchIsNullTest()
-        {     
+        {
             var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
             var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json"));
 

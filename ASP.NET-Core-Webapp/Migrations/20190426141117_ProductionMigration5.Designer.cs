@@ -4,14 +4,16 @@ using ASP.NET_Core_Webapp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ASP.NET_Core_Webapp.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20190426141117_ProductionMigration5")]
+    partial class ProductionMigration5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,9 +30,6 @@ namespace ASP.NET_Core_Webapp.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("Tag");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnName("Created");
 
                     b.Property<string>("Version");
 

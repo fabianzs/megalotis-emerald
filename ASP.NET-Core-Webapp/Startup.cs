@@ -1,5 +1,6 @@
 
 using ASP.NET_Core_Webapp.Data;
+using ASP.NET_Core_Webapp.SeedData;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -13,9 +14,9 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using ASP.NET_Core_Webapp.Helpers;
 using Microsoft.AspNetCore.Http;
 using ASP.NET_Core_Webapp.Configurations;
-using ASP.NET_Core_Webapp.SeedData;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -46,7 +47,6 @@ namespace ASP.NET_Core_Webapp
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             if (env.IsDevelopment())
-
             {
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseInMemoryDatabase("InMemoryDatabase"));
@@ -101,10 +101,12 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureTestingServices(IServiceCollection services)
         {
+            //NEED TO BE CHANGED FOR INMEMORYDATABASE ONCE SEED DATA IS AVAILABLE!
+
             //services.AddDbContext<ApplicationContext>(builder =>
             //    builder.UseInMemoryDatabase("development"));
             services.AddDbContext<ApplicationContext>(builder =>
-                builder.UseSqlServer(configuration.GetConnectionString("environmentString")));
+                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
