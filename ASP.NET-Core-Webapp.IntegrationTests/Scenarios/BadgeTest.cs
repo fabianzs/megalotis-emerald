@@ -36,7 +36,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "/mybadges");
             HttpResponseMessage response = await testContext.Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
-            Assert.Equal("{\"badges\":[{\"name\":\"English speaker\",\"level\":2},{\"name\":\"Java developer\",\"level\":3},{\"name\":\"Stress management\",\"level\":1},{\"name\":\"Endpoint creater\",\"level\":2},{\"name\":\"Endpoint creater\",\"level\":1},{\"name\":\"Endpoint creater\",\"level\":3},{\"name\":\"Method writer\",\"level\":1},{\"name\":\"Test creator\",\"level\":1}]}", response.Content.ReadAsStringAsync().Result);
+            Assert.Equal("{\"badges\":[{\"name\":\"Process improver/initator\",\"level\":1}]}", response.Content.ReadAsStringAsync().Result);
         }
 
         [Fact]

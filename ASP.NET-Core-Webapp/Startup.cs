@@ -125,17 +125,18 @@ namespace ASP.NET_Core_Webapp
             }).AddTestAuth(o => { });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, MockAuthService > ();
+            services.AddSingleton<IAuthService, MockAuthService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.EnvironmentName == "Testing")
             {
                 app.UseDeveloperExceptionPage();
                 Seed seedDataFromObject = new Seed(applicationContext, configuration);
                 seedDataFromObject.FillDatabaseFromObject();
             }
+
             if (env.IsProduction())
             {
                 Seed seedDataFromObject = new Seed(applicationContext, configuration);
