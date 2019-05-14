@@ -47,7 +47,8 @@ namespace ASP.NET_Core_Webapp.Services
 
         public string GetOpenIdFromJwtToken(HttpRequest request)
         {
-            return "111300160267154007210";
+            return "verysecuretokendjawuidguowa76795432";
         }
     }
 }
+

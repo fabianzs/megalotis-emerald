@@ -1,22 +1,21 @@
+using ASP.NET_Core_Webapp.Configurations;
 using ASP.NET_Core_Webapp.Data;
+using ASP.NET_Core_Webapp.Helpers;
 using ASP.NET_Core_Webapp.SeedData;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using ASP.NET_Core_Webapp.Data;
-using ASP.NET_Core_Webapp.Helpers;
-using Microsoft.AspNetCore.Http;
-using ASP.NET_Core_Webapp.Configurations;
 using System.Net.Http;
 
 namespace ASP.NET_Core_Webapp
@@ -25,7 +24,6 @@ namespace ASP.NET_Core_Webapp
     {
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment env;
-        private readonly ApplicationContext applicationContext;
 
         public Startup(IHostingEnvironment environment)
         {
@@ -106,12 +104,8 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureTestingServices(IServiceCollection services)
         {
-            //NEED TO BE CHANGED FOR INMEMORYDATABASE ONCE SEED DATA IS AVAILABLE!
-
-            //services.AddDbContext<ApplicationContext>(builder =>
-            //    builder.UseInMemoryDatabase("development"));
             services.AddDbContext<ApplicationContext>(builder =>
-                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                builder.UseInMemoryDatabase("InMemoryDatabase"));
 
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
@@ -132,17 +126,17 @@ namespace ASP.NET_Core_Webapp
 
             services.AddScoped<IHelloService, HelloService>();
             services.AddSingleton<IAuthService, MockAuthService>();
-
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.EnvironmentName == "Testing")
             {
                 app.UseDeveloperExceptionPage();
                 Seed seedDataFromObject = new Seed(applicationContext, configuration);
                 seedDataFromObject.FillDatabaseFromObject();
             }
+
             if (env.IsProduction())
             {
                 Seed seedDataFromObject = new Seed(applicationContext, configuration);
