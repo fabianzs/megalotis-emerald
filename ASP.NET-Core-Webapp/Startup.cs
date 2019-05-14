@@ -1,5 +1,7 @@
+using ASP.NET_Core_Webapp.Configurations;
 using ASP.NET_Core_Webapp.Data;
-using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
+using ASP.NET_Core_Webapp.Helpers;
+using ASP.NET_Core_Webapp.SeedData;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -19,10 +21,12 @@ namespace ASP.NET_Core_Webapp
 {
     public class Startup
     {
-        private IConfiguration configuration;
+        private readonly IConfiguration configuration;
+        private readonly IHostingEnvironment env;
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment environment)
         {
+            this.env = environment;
             var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -34,14 +38,24 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddDbContext<ApplicationContext>(builder =>
-                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            var allvariables = Environment.GetEnvironmentVariables();
 
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
+            if (env.IsDevelopment())
+                
+            {
+                services.AddDbContext<ApplicationContext>(builder =>
+                        builder.UseInMemoryDatabase("InMemoryDatabase"));
+            }
+            if (env.IsProduction())
+            {
+                services.AddDbContext<ApplicationContext>(builder =>
+                        builder.UseSqlServer(configuration.GetConnectionString("environmentString"))
+                        .EnableSensitiveDataLogging(true));
+            }
             services.AddAuthorization(auth =>
             {
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
@@ -86,7 +100,7 @@ namespace ASP.NET_Core_Webapp
         public void ConfigureTestingServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationContext>(builder =>
-                builder.UseInMemoryDatabase("development"));
+                builder.UseInMemoryDatabase("InMemoryDatabase"));
 
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
@@ -106,14 +120,24 @@ namespace ASP.NET_Core_Webapp
             }).AddTestAuth(o => { });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IAuthService, MockAuthService>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.EnvironmentName == "Testing")
             {
                 app.UseDeveloperExceptionPage();
+                Seed seedDataFromObject = new Seed(applicationContext, configuration);
+                seedDataFromObject.FillDatabaseFromObject();
+            }
+
+            if (env.IsProduction())
+            {
+                Seed seedDataFromObject = new Seed(applicationContext, configuration);
+
+                seedDataFromObject.FillDatabaseFromObject();
+
             }
 
             if (env.EnvironmentName == "Testing")

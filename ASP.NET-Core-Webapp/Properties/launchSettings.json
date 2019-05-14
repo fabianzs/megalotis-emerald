@@ -19,6 +19,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
+        "SQLCONNSTR_environmentString": "Server=(localdb)\\MSSQLLocalDB;Database=LevelUpDbProduction;Trusted_Connection=True;MultipleActiveResultSets=true",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5001/"
