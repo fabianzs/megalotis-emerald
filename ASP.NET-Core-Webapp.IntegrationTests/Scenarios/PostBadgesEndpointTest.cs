@@ -11,10 +11,6 @@ using Xunit;
 
 namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 {
-    /// <summary>
-    /// Tests for testing BadgeController RecieveBadge action
-    /// </summary>
-    /// 
     [Collection("BaseCollection")]
     public class PostBadgesEndpointTest
     {
@@ -39,7 +35,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         public async Task PostBadges_AllFielsdFilled_ShouldReturn201()
         {
             BadgeDTO badge = new BadgeDTO() { Name = "test", Tag = "test", Version = "test" };
-            List<String> holders = new List<String>() { "Osztertág Szabolcs", "Zsófia Eszter Fábián" };
+            List<String> holders = new List<String>() { "sandor.vass", "alajos.katona" };
             BadgeLevelDTO testlevel = new BadgeLevelDTO() { Description = "test" };
             testlevel.Holders = holders;
             badge.Levels.Add(testlevel);
@@ -48,7 +44,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             request.Content = (new StringContent(JsonConvert.SerializeObject(badge), Encoding.UTF8, "application/json"));
 
             var response = await testContext.Client.SendAsync(request);
-
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
@@ -75,7 +70,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             request.Content = (new StringContent(JsonConvert.SerializeObject(badge), Encoding.UTF8, "application/json"));
 
             var response = await testContext.Client.SendAsync(request);
-
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
@@ -86,7 +80,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             request.Content = new StringContent(JsonConvert.SerializeObject(new Badge() { Name = "test", Tag = "test", Version = "test", Levels = null }), Encoding.UTF8, "application/json");
 
             var response = await testContext.Client.SendAsync(request);
-
             Assert.Equal("{\"error\":\"Please provide all fields\"}", response.Content.ReadAsStringAsync().Result);
 
         }
