@@ -17,6 +17,7 @@ using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Helpers;
 using Microsoft.AspNetCore.Http;
 using ASP.NET_Core_Webapp.Configurations;
+using System.Net.Http;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -97,7 +98,10 @@ namespace ASP.NET_Core_Webapp
                     });
             services.AddScoped<IHelloService, HelloService>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<GoogleSheetService>();
+            services.AddScoped<IGoogleSheetService, GoogleSheetService>();
+            services.AddScoped<HttpClient>();
+            services.AddHttpClient<GoogleSheetService>();
+            services.AddHttpClient<AuthService>();
         }
 
         public void ConfigureTestingServices(IServiceCollection services)

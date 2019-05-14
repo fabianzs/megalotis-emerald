@@ -19,12 +19,14 @@ namespace ASP.NET_Core_Webapp.Services
     public class AuthService : IAuthService
     {
         private readonly IConfiguration configuration;
-        private readonly GoogleSheetService googleSheetService;
+        private readonly IGoogleSheetService googleSheetService;
+        private readonly HttpClient httpClient;
 
-        public AuthService(IConfiguration configuration, GoogleSheetService googleSheetService)
+        public AuthService(IConfiguration configuration, IGoogleSheetService googleSheetService, HttpClient httpClient)
         {
             this.configuration = configuration;
             this.googleSheetService = googleSheetService;
+            this.httpClient = httpClient;
         }
 
         public string GetGoogleLogin()
@@ -51,7 +53,8 @@ namespace ASP.NET_Core_Webapp.Services
             HttpResponseMessage response = client.SendAsync(req).Result;
             string res = response.Content.ReadAsStringAsync().Result;
             GoogleToken token = JsonConvert.DeserializeObject<GoogleToken>(res);
-            googleSheetService.AccesToken = token.access_token;
+            GoogleSheetService a = googleSheetService as GoogleSheetService;
+            a.AccesToken = token.access_token;
             return token;
         }
 

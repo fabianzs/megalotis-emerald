@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.Services
 {
-    public class GoogleSheetService
+    public class GoogleSheetService : IGoogleSheetService
     {
         IConfiguration configuration;
         ApplicationContext applictionContext;
+        HttpClient httpClient;
         private static string StaticAccesToken;
 
         public string AccesToken
@@ -23,10 +24,11 @@ namespace ASP.NET_Core_Webapp.Services
         }
 
 
-        public GoogleSheetService(ApplicationContext applictionContext,IConfiguration configuration)
+        public GoogleSheetService(ApplicationContext applictionContext,IConfiguration configuration, HttpClient client)
         {
             this.applictionContext = applictionContext;
             this.configuration = configuration;
+            this.httpClient = client;
         }
 
         public async Task FillUpDataBaseFromSpreadSheet()
@@ -34,7 +36,10 @@ namespace ASP.NET_Core_Webapp.Services
             SpreadSheet spreadSheet = JsonConvert.DeserializeObject<SpreadSheet>(await ReturnBadgesSpreadSheetContent());
             foreach (string[] spreadSheetBadge in spreadSheet.Values)
             {
-                Badge badgeToAdd = new Badge { Version = spreadSheetBadge[0], Name = spreadSheetBadge[1], Tag = spreadSheetBadge[2] };
+                Badge badgeToAdd = new Badge
+                { Version = spreadSheetBadge[0],
+                    Name = spreadSheetBadge[1],
+                    Tag = spreadSheetBadge[2] };
                 applictionContext.Add(badgeToAdd);
                 applictionContext.SaveChanges();
             }
@@ -42,7 +47,7 @@ namespace ASP.NET_Core_Webapp.Services
 
         public async Task<string> ReturnBadgesSpreadSheetContent()
         {
-            HttpResponseMessage response = await new HttpClient().SendAsync(MakeSpreadSheetRequest());
+            HttpResponseMessage response = await httpClient.SendAsync(MakeSpreadSheetRequest());
             return await response.Content.ReadAsStringAsync();
         }
 

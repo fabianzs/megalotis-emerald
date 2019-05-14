@@ -4,24 +4,26 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
     public class SpreadsheetController : Controller
     {
-        GoogleSheetService googleSheetService;
+        IGoogleSheetService googleSheetService;
 
-        public SpreadsheetController(GoogleSheetService googleSheetService)
+        public SpreadsheetController(IGoogleSheetService googleSheetService)
         {
             this.googleSheetService = googleSheetService;
         }
 
+        [Authorize("Bearer")]
         [HttpGet("spreadsheet")]
-        public Object SpreadSheet()
+        public async Task<IActionResult> SpreadSheet()
         {
-            googleSheetService.FillUpDataBaseFromSpreadSheet();
-            return googleSheetService.ReturnBadgesSpreadSheetContent();
+            await googleSheetService.FillUpDataBaseFromSpreadSheet();
+            return Ok();
         }
 
 
