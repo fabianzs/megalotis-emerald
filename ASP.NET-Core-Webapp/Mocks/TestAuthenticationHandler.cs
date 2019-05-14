@@ -40,5 +40,4 @@ namespace ASP.NET_Core_Webapp.Configurations
     {
         public virtual ClaimsIdentity Identity { get; } = new ClaimsIdentity(new Claim[] { new Claim("OpenID", Guid.NewGuid().ToString()) }, "test");
     }
-
 }

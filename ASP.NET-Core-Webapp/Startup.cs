@@ -26,6 +26,7 @@ namespace ASP.NET_Core_Webapp
 
         public Startup(IHostingEnvironment environment)
         {
+            this.env = environment;
             var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -33,7 +34,6 @@ namespace ASP.NET_Core_Webapp
             .AddUserSecrets<Startup>()
             .AddEnvironmentVariables();
             this.configuration = builder.Build();
-            this.env = environment;      
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -100,12 +100,8 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureTestingServices(IServiceCollection services)
         {
-            //NEED TO BE CHANGED FOR INMEMORYDATABASE ONCE SEED DATA IS AVAILABLE!
-
-            //services.AddDbContext<ApplicationContext>(builder =>
-            //    builder.UseInMemoryDatabase("development"));
             services.AddDbContext<ApplicationContext>(builder =>
-                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                builder.UseInMemoryDatabase("InMemoryDatabase"));
 
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
@@ -126,17 +122,17 @@ namespace ASP.NET_Core_Webapp
 
             services.AddScoped<IHelloService, HelloService>();
             services.AddSingleton<IAuthService, MockAuthService>();
-
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.EnvironmentName == "Testing")
             {
                 app.UseDeveloperExceptionPage();
                 Seed seedDataFromObject = new Seed(applicationContext, configuration);
                 seedDataFromObject.FillDatabaseFromObject();
             }
+
             if (env.IsProduction())
             {
                 Seed seedDataFromObject = new Seed(applicationContext, configuration);
