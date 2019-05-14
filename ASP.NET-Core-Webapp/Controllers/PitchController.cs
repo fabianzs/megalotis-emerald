@@ -2,10 +2,8 @@ using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 
 namespace ASP.NET_Core_Webapp.Controllers
@@ -35,12 +33,6 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult CreateNewPitch(Pitch newPitch)
         {
                 return Created("", new { message = "Success" });
-        }
-
-        [HttpGet("test2")]
-        public IActionResult TestingTest()
-        {
-            return Ok();
         }
     }
 }
