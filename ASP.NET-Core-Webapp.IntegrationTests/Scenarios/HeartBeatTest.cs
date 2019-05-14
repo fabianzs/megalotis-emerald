@@ -1,16 +1,8 @@
 ﻿using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
-using ASP.NET_Core_Webapp.Services;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using Moq;
-using Castle.Core.Configuration;
-using System.Net.Http.Headers;
 
 namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 {
@@ -41,12 +33,9 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task HeartBeat_Authorized_ReturnOK()
         {
-            var tokenstring = testContext.AuthServiceContext.CreateJwtToken("1234", "boti", "balogh.botond8@gmail.com", "234124");
             var request = new HttpRequestMessage(HttpMethod.Get, "heartbeat");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Authorization", tokenstring);
-
-
             var response = await testContext.Client.SendAsync(request);
+
             //var response = await testContext.Client.GetAsync("heartbeat",);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             //Assert.True(true);0
