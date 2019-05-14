@@ -47,7 +47,6 @@ namespace ASP.NET_Core_Webapp.Services
             dict.Add(new KeyValuePair<string, string>("client_secret", configuration["Authentication:Google:ClientSecret"]));
             dict.Add(new KeyValuePair<string, string>("redirect_uri", configuration.GetValue<string>("AppSettings:Authentication endpoint")));
             dict.Add(new KeyValuePair<string, string>("grant_type", "authorization_code"));
-            //var client = new HttpClient();
             var req = new HttpRequestMessage(HttpMethod.Post, "https://www.googleapis.com/oauth2/v4/token");
             req.Content = new FormUrlEncodedContent(dict);
             HttpResponseMessage response = httpClient.SendAsync(req).Result;
@@ -60,7 +59,6 @@ namespace ASP.NET_Core_Webapp.Services
 
         public TokenInfo ValidateToken(string id_token)
         {
-           /// var client = new HttpClient();
             var req = new HttpRequestMessage(HttpMethod.Get, "https://oauth2.googleapis.com/tokeninfo?id_token=" + id_token);
             HttpResponseMessage response = httpClient.SendAsync(req).Result;
             string res = response.Content.ReadAsStringAsync().Result;
