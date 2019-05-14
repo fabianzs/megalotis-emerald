@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -14,6 +16,10 @@ namespace ASP.NET_Core_Webapp
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((hostingContext, config) =>
+            {
+                config.AddEnvironmentVariables();
+            })
                 .UseStartup<Startup>();
     }
 }

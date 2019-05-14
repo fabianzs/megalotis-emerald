@@ -20,10 +20,10 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             this.testContext = testContext;
         }
 
-        readonly List<Holder> Holders = new List<Holder>{
-            new Holder("Szabi", "Good", true),
-            new Holder("Zsófi", "Good", true),
-            new Holder("Laci", "Good", true),
+        readonly List<Review> Holders = new List<Review>{
+            new Review("Good", true),
+            new Review("Good", true),
+            new Review("Good", true),
             };
 
         [Fact]
@@ -33,13 +33,14 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
             var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
-           
+
+
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]
         public async Task CreateNewPitchIsNullTest()
-        {     
+        {
             var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
             var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json"));
 
