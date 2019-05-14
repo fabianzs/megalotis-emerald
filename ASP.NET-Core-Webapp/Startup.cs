@@ -140,11 +140,6 @@ namespace ASP.NET_Core_Webapp
 
             }
 
-            if (env.EnvironmentName == "Testing")
-            {
-                //app.UseMiddleware<AuthenticatedTestRequestMiddleware>();
-            }
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
