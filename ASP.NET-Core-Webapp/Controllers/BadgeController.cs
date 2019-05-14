@@ -55,7 +55,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         {
             List<Badge> badgesList = new List<Badge>();
             badgesList.Add(new Badge("test"));
-            return Ok(new { badges = badgesList });
+            return Ok(new { badges = badgesList.Select(b => new { b.BadgeId, b.Version, b.Name, b.Tag, b.Levels }) });
         }
 
         [Authorize("Bearer")]
