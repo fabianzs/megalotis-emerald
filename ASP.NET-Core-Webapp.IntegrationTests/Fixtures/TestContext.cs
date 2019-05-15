@@ -19,7 +19,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
 
             server = new TestServer(builder);
             Client = server.CreateClient();
-            number++;
         }
 
         public void Dispose()
