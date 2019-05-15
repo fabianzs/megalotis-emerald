@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.DTO;
-using ASP.NET_Core_Webapp.Entities;
+using ASP.NET_Core_Webapp.Helpers;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
@@ -34,9 +29,19 @@ namespace ASP.NET_Core_Webapp.Controllers
             {
                 return NotFound(new { error = "Please provide all fields" });
             }
-
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            reviewService.CreateReview(openId, reviewDTO);
+            try
+            {
+                reviewService.CreateReview(openId, reviewDTO);
+            }
+            catch (NullReferenceException)
+            {
+                return StatusCode(404, new CustomErrorMessage("The provided pitch does not exist."));
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized(new CustomErrorMessage("You are not allowed to give a review."));
+            }
             return Created("/review", new { message = "Success" });
         }
     }

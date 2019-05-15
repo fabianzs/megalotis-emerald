@@ -22,16 +22,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         }
 
         [Fact]
-        public async Task PostReview_Should_Return_Ok()
-        {
-            var request = new HttpRequestMessage(HttpMethod.Post, "/review");
-            request.Content = new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json");
-
-            var response = await testContext.Client.SendAsync(request);
-            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        }
-
-        [Fact]
         public async Task PostReview_NoBodyContent_ShouldReturn404()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "/review");
@@ -42,15 +32,39 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         }
 
         [Fact]
-        public async Task PostReview_AllFielsdFilled_ShouldReturn201()
+        public async Task PostReview_AllFielsdFilledReviewerOwnsBadge_ShouldReturn201()
         {
-            ReviewDTO review = new ReviewDTO() { Message = "testreview", Status = true, PitchId = 4 };
+            ReviewDTO review = new ReviewDTO() { Message = "testreview", Status = true, PitchId = 3 };
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/review");
             request.Content = (new StringContent(JsonConvert.SerializeObject(review), Encoding.UTF8, "application/json"));
 
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PostReview_AllFielsdFilledSelfReview_ShouldReturn401()
+        {
+            ReviewDTO review = new ReviewDTO() { Message = "testreview", Status = true, PitchId = 5 };
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "/review");
+            request.Content = (new StringContent(JsonConvert.SerializeObject(review), Encoding.UTF8, "application/json"));
+
+            var response = await testContext.Client.SendAsync(request);
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PostReview_AllFielsdFilledPithDoesNotExist_ShouldReturn404()
+        {
+            ReviewDTO review = new ReviewDTO() { Message = "testreview", Status = true, PitchId = 8 };
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "/review");
+            request.Content = new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json");
+
+            var response = await testContext.Client.SendAsync(request);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
     }
 }
