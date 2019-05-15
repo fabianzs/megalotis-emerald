@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-using ASP.NET_Core_Webapp.Entities;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-=======
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -11,20 +6,11 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.EntityFrameworkCore;
->>>>>>> dev
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
     public class BadgeController : Controller
     {
-<<<<<<< HEAD
-
-        [HttpGet("mybadges")]
-        public IActionResult MyBadges()
-        {
-            List<Badge> badgesList = new List<Badge>();
-
-=======
         private readonly IAuthService authService;
         private readonly ApplicationContext applicationContext;
 
@@ -68,19 +54,13 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult MyBadgesMock()
         {
             List<Badge> badgesList = new List<Badge>();
->>>>>>> dev
             badgesList.Add(new Badge("test"));
             return Ok(new { badges = badgesList });
         }
 
-<<<<<<< HEAD
-        [HttpPost("badges")]
-        public IActionResult RecieveBadge([FromBody]Badge badge)
-=======
         [Authorize("Bearer")]
         [HttpPost("badgesmock")]
         public IActionResult RecieveBadgeMock([FromBody]Badge badge)
->>>>>>> dev
         {
             if (badge == null)
             {
@@ -93,8 +73,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             }
             return Created("/badges", new { message = "Success" });
         }
-<<<<<<< HEAD
-=======
 
         public void InitializeDb(User user)
         {
@@ -108,6 +86,5 @@ namespace ASP.NET_Core_Webapp.Controllers
             applicationContext.Users.Update(user);
             applicationContext.SaveChanges();
         }
->>>>>>> dev
     }
 }

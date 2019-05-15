@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-﻿using ASP.NET_Core_Webapp.Helpers;
-using ASP.NET_Core_Webapp.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-=======
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.Helpers;
@@ -11,26 +5,18 @@ using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
->>>>>>> dev
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
     public class AuthController : Controller
     {
         private readonly IAuthService authService;
-<<<<<<< HEAD
-
-        public AuthController(IAuthService authService)
-        {
-            this.authService = authService;
-=======
         private readonly ApplicationContext applicationContext;
 
         public AuthController(IAuthService authService, ApplicationContext applicationContext)
         {
             this.authService = authService;
             this.applicationContext = applicationContext;
->>>>>>> dev
         }
 
         [HttpGet("")]
@@ -47,12 +33,9 @@ namespace ASP.NET_Core_Webapp.Controllers
             bool isValid = tokenInfo.email_verified;
             if (isValid)
             {
-<<<<<<< HEAD
-                var tokenstring = authService.CreateJwtToken(tokenInfo.sub, tokenInfo.email);
-=======
                 if(applicationContext.Users.FirstOrDefault(u => u.OpenId == tokenInfo.sub) == null)
                 {
-                    User user = new User
+                    Entities.User user = new Entities.User
                     {
                         Name = $"{tokenInfo.family_name} {tokenInfo.given_name}",
                         Picture = tokenInfo.picture,
@@ -63,7 +46,6 @@ namespace ASP.NET_Core_Webapp.Controllers
                     applicationContext.SaveChanges();
                 }
                 string tokenstring = authService.CreateJwtToken(tokenInfo.sub, $"{tokenInfo.family_name} {tokenInfo.given_name}", tokenInfo.email, tokenInfo.picture);
->>>>>>> dev
                 return Ok(tokenstring);
             }
             else
