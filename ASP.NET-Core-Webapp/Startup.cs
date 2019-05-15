@@ -1,16 +1,21 @@
+using ASP.NET_Core_Webapp.Configurations;
 using ASP.NET_Core_Webapp.Data;
+using ASP.NET_Core_Webapp.Helpers;
 using ASP.NET_Core_Webapp.SeedData;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -19,20 +24,25 @@ namespace ASP.NET_Core_Webapp
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment env;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IHostingEnvironment environment)
         {
-            this.configuration = configuration;
             this.env = environment;
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+            .AddUserSecrets<Startup>()
+            .AddEnvironmentVariables();
+            this.configuration = builder.Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             var allvariables = Environment.GetEnvironmentVariables();
             
             services.AddCors();
-            services.AddMvc();
-            services.AddScoped<IHelloService, HelloService>();
+            services.AddMvc().AddJsonOptions(options =>
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             if (env.IsDevelopment())
                 
@@ -49,11 +59,11 @@ namespace ASP.NET_Core_Webapp
             }
 
             services.AddAuthorization(auth =>
-                    {
-                        auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
-                            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-                            .RequireAuthenticatedUser().Build());
-                    });
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
@@ -67,20 +77,65 @@ namespace ASP.NET_Core_Webapp
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:Jwt:Secret"])),
                             ClockSkew = TimeSpan.Zero
                         };
+                        options.Events = new JwtBearerEvents()
+                        {
+                            OnAuthenticationFailed = c =>
+                            {
+                                c.NoResult();
+                                c.Response.StatusCode = 401;
+                                c.Response.ContentType = "application/json";
+                                c.Response.WriteAsync(JsonConvert.SerializeObject(new CustomErrorMessage("Unauthorized"))).Wait();
+                                return Task.CompletedTask;
+                            },
+                            OnChallenge = c =>
+                            {
+                                c.HandleResponse();
+                                return Task.CompletedTask;
+                            }
+                        };
                     });
+
+            services.AddScoped<IHelloService, HelloService>();
             services.AddSingleton<IAuthService, AuthService>();
             services.AddScoped<SlackService>();
             services.AddHttpClient();
         }
 
+        public void ConfigureTestingServices(IServiceCollection services)
+        {
+            services.AddDbContext<ApplicationContext>(builder =>
+                builder.UseInMemoryDatabase("InMemoryDatabase"));
+
+            services.AddCors();
+            services.AddMvc().AddJsonOptions(options =>
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "Bearer";
+                options.DefaultChallengeScheme = "Bearer";
+            }).AddTestAuth(o => { });
+
+            services.AddScoped<IHelloService, HelloService>();
+            services.AddSingleton<IAuthService, MockAuthService>();
+        }
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.EnvironmentName == "Testing")
             {
                 app.UseDeveloperExceptionPage();
                 SeedDatabaseHandler seedDataFromObject = new SeedDatabaseHandler(applicationContext, configuration);
                 seedDataFromObject.FillDatabaseFromObject();
             }
+
             if (env.IsProduction())
             {
                 SeedDatabaseHandler seedDataFromObject = new SeedDatabaseHandler(applicationContext, configuration);
@@ -90,11 +145,11 @@ namespace ASP.NET_Core_Webapp
             }
 
             app.UseMvc(routes =>
-                {
-                    routes.MapRoute(
-                        name: "default",
-                        template: "{controller=Auth}/{action=Login}");
-                });
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Auth}/{action=Login}");
+            });
 
             app.UseAuthentication();
             app.UseCors(x => x
