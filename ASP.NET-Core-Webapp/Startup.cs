@@ -126,6 +126,7 @@ namespace ASP.NET_Core_Webapp
 
             services.AddScoped<IHelloService, HelloService>();
             services.AddSingleton<IAuthService, MockAuthService>();
+            services.AddScoped<IGoogleSheetService, GoogleSheetService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
