@@ -8,6 +8,7 @@ using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
@@ -32,7 +33,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         }
 
         [HttpPost("pitches")]
-        public IActionResult CreateNewPitch(SeedData.Pitch newPitch)
+        public async Task<IActionResult> CreateNewPitch(SeedData.Pitch newPitch)
         {
             Pitch pitchToAdd = new Pitch() { };
             // Add user:
@@ -89,7 +90,7 @@ namespace ASP.NET_Core_Webapp.Controllers
 
             foreach (var email in emails)
             {
-                slackService.SendEmail(email, $"You have 1 new pitch! Pitch message: {newPitch.pitchMessage}");
+                await slackService.SendEmail(email, $"You have 1 new pitch! Pitch message: {newPitch.pitchMessage}");
             }
             return Created("", new {messageSentTo=emails, pitches = ApplicationContext.Pitches.Select(x=>x.PitchMessage).ToList(), pitchToAddTimeStamp = pitchToAdd.TimeStamp });
         }

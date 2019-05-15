@@ -23,17 +23,11 @@ namespace ASP.NET_Core_Webapp
     {
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment env;
-
-        public Startup(IHostingEnvironment environment)
+        
+        public Startup(IHostingEnvironment environment, IConfiguration config)
         {
             this.env = environment;
-            var builder = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-            .AddUserSecrets<Startup>()
-            .AddEnvironmentVariables();
-            this.configuration = builder.Build();
+            this.configuration = config;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -143,7 +137,7 @@ namespace ASP.NET_Core_Webapp
                 seedDataFromObject.FillDatabaseFromObject();
 
             }
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
