@@ -1,5 +1,6 @@
 ﻿using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -83,45 +84,46 @@ namespace ASP.NET_Core_Webapp.SeedData
             {
                 Entities.Pitch pitchToAdd = new Entities.Pitch() { };
                 // Add user:
-                Entities.User userToAdd = new Entities.User();
-                userToAdd = DataBase.Users.Where(x => x.Name == pitchList[i].username).FirstOrDefault();
+                Entities.User userToAdd = DataBase.Users.Where(x => x.Name == pitchList[i].username).FirstOrDefault();
+
+                if (userToAdd == null)
+                {
+                    userToAdd = new Entities.User() { Name = pitchList[i].username };
+                    DataBase.Add(userToAdd);
+                }
+                pitchToAdd.User = userToAdd;
+                DataBase.Add(pitchToAdd);
+                DataBase.SaveChanges();
+
+                Entities.Badge badgeToAdd;
+                badgeToAdd = DataBase.Badges.Where(x => x.Name == pitchList[i].badgeName).FirstOrDefault();
+
+                if (badgeToAdd == null)
+                {
+                    badgeToAdd = new Entities.Badge() { Name = pitchList[i].badgeName };
+                    DataBase.Badges.Add(badgeToAdd);
+                }
+
+                pitchToAdd.TimeStamp = DateTime.ParseExact(pitchList[i].timestamp, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                pitchToAdd.PitchMessage = pitchList[i].pitchMessage;
+                pitchToAdd.PitchedLevel = Int32.Parse(pitchList[i].pitchedLevel);
+                pitchToAdd.Badge = DataBase.Badges.Include(b => b.Levels).Where(x => x.Name == pitchList[i].badgeName).FirstOrDefault();
+                pitchToAdd.BadgeLevel = DataBase.BadgeLevels.Where(x => x.Badge.Name == pitchList[i].badgeName).FirstOrDefault();
                 // Add reviews:
                 foreach (var holderReview in pitchList[i].holders)
                 {
                     Review review = new Review(holderReview.message, holderReview.pitchStatus);
                     pitchToAdd.Holders.Add(review);
-                    DataBase.SaveChanges();
+                    //DataBase.SaveChanges();
 
                     review.User = DataBase.Users.Where(x => x.Name == holderReview.name).FirstOrDefault();
-                    review.Pitch = DataBase.Pitches.Where(x => x.PitchMessage == holderReview.message).FirstOrDefault();
+                    review.Pitch = pitchToAdd;
 
                     DataBase.Reviews.Add(review);
-                    DataBase.SaveChanges();
                 }
-
-                if (userToAdd == null)
-                {
-                    Entities.User newUser = new Entities.User() { Name = pitchList[i].username };
-                    //DataBase.Add(newUser);
-                    pitchToAdd.User = newUser;
-                    DataBase.SaveChanges();
-                }
-                else
-                {
-                    pitchToAdd.User = userToAdd;
-                    DataBase.SaveChanges();
-                }
-
-                Entities.Badge badgeToAdd;
-                badgeToAdd = DataBase.Badges.Where(x => x.Name == pitchList[i].badgeName).FirstOrDefault();
-                pitchToAdd.Badge = badgeToAdd;
-
-                pitchToAdd.TimeStamp = DateTime.ParseExact(pitchList[i].timestamp, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                pitchToAdd.PitchMessage = pitchList[i].pitchMessage;
-                pitchToAdd.Badge = DataBase.Badges.Where(x => x.Name == pitchList[i].badgeName).FirstOrDefault();
-                pitchToAdd.BadgeLevel = DataBase.BadgeLevels.Where(x => x.Badge.Name == pitchList[i].badgeName).FirstOrDefault();
-                DataBase.Add(pitchToAdd);
-
+                userToAdd.Pitches.Add(pitchToAdd);
+                pitchToAdd.User = userToAdd;
+                DataBase.Update(pitchToAdd);
                 DataBase.SaveChanges();
 
                 var badgesList2 = SeedObject.library;

@@ -16,13 +16,6 @@ using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-<<<<<<< HEAD
-using Newtonsoft.Json;
-using ASP.NET_Core_Webapp.Helpers;
-using Microsoft.AspNetCore.Http;
-using ASP.NET_Core_Webapp.Configurations;
-=======
->>>>>>> dev
 
 namespace ASP.NET_Core_Webapp
 {
@@ -33,11 +26,7 @@ namespace ASP.NET_Core_Webapp
 
         public Startup(IHostingEnvironment environment)
         {
-<<<<<<< HEAD
             this.env = environment;      
-=======
-            this.env = environment;
->>>>>>> dev
             var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -112,11 +101,6 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureTestingServices(IServiceCollection services)
         {
-<<<<<<< HEAD
-            //NEED TO BE CHANGED FOR INMEMORYDATABASE ONCE SEED DATA IS AVAILABLE!
-
-=======
->>>>>>> dev
             services.AddDbContext<ApplicationContext>(builder =>
                 builder.UseInMemoryDatabase("InMemoryDatabase"));
 
@@ -138,7 +122,8 @@ namespace ASP.NET_Core_Webapp
             }).AddTestAuth(o => { });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, MockAuthService>();
+            services.AddScoped<IAuthService, MockAuthService>();
+            services.AddScoped<IReviewService, ReviewService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
