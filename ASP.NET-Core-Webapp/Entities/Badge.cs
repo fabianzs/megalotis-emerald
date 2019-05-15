@@ -13,6 +13,7 @@ namespace ASP.NET_Core_Webapp.Entities
         public string Name { get; set; }
         public string Tag { get; set; }
         public ICollection<BadgeLevel> Levels { get; set; }
+        public ICollection<Pitch> Pitches { get; set; }
 
         public Badge()
         {
