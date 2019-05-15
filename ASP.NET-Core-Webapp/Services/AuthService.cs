@@ -1,7 +1,6 @@
 ﻿using ASP.NET_Core_Webapp.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
@@ -11,7 +10,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.Services
 {
