@@ -10,7 +10,7 @@ namespace ASP.NET_Core_Webapp.Services
     {
         Task FillUpDataBaseFromSpreadSheet();
        Task<string> ReturnBadgesSpreadSheetContent();
-       HttpRequestMessage MakeSpreadSheetRequest();
+       HttpRequestMessage ReturnSpreadSheetRequest();
        string MakeGoogleSheetApiURL();
     }
 }

@@ -23,7 +23,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         public async Task<IActionResult> SpreadSheet()
         {
             await googleSheetService.FillUpDataBaseFromSpreadSheet();
-            return Ok();
+            return Ok(googleSheetService.ReturnBadgesSpreadSheetContent());
         }
 
 

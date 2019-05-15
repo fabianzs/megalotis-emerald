@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.Services
 {
-    public class GoogleSheetService : IGoogleSheetService
+    public class MockGoogleSpreadSheetService : IGoogleSheetService
     {
         IConfiguration configuration;
         ApplicationContext applictionContext;
@@ -24,7 +24,7 @@ namespace ASP.NET_Core_Webapp.Services
         }
 
 
-        public GoogleSheetService(ApplicationContext applictionContext,IConfiguration configuration, HttpClient client)
+        public MockGoogleSpreadSheetService(ApplicationContext applictionContext, IConfiguration configuration, HttpClient client)
         {
             this.applictionContext = applictionContext;
             this.configuration = configuration;
@@ -37,9 +37,11 @@ namespace ASP.NET_Core_Webapp.Services
             foreach (string[] spreadSheetBadge in spreadSheet.Values)
             {
                 Badge badgeToAdd = new Badge
-                { Version = spreadSheetBadge[0],
+                {
+                    Version = spreadSheetBadge[0],
                     Name = spreadSheetBadge[1],
-                    Tag = spreadSheetBadge[2] };
+                    Tag = spreadSheetBadge[2]
+                };
                 applictionContext.Add(badgeToAdd);
                 applictionContext.SaveChanges();
             }
@@ -54,7 +56,6 @@ namespace ASP.NET_Core_Webapp.Services
         public HttpRequestMessage ReturnSpreadSheetRequest()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, MakeGoogleSheetApiURL());
-            request.Headers.Add("Authorization", $"Bearer {StaticAccesToken}");
             return request;
         }
 
@@ -63,7 +64,7 @@ namespace ASP.NET_Core_Webapp.Services
             string baseURL = configuration["GoogleSheet:GoogleSheetApiBaseURL"];
             string spreadSheetID = configuration["GoogleSheet:SpreadSheetID"];
             string range = configuration["GoogleSheet:Range"];
-            return $"{baseURL}{spreadSheetID}/values/{range}";
+            return $"{baseURL}{spreadSheetID}/values/{range}?key=AIzaSyCEyuQolfW1jsc1RQDrxvTRH8YIaLTQsho";
         }
 
 
