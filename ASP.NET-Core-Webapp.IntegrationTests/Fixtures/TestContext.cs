@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using ASP.NET_Core_Webapp.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using System;
 using System.Net.Http;
@@ -9,6 +10,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
     {
         private TestServer server;
         public HttpClient Client { get; set; }
+        public IAuthService AuthServiceContext { get; set; }
 
         public TestContext()
         {
@@ -18,6 +20,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
 
             server = new TestServer(builder);
             Client = server.CreateClient();
+            AuthServiceContext = server.Host.Services.GetService(typeof(IAuthService)) as AuthService;
         }
 
         public void Dispose()
