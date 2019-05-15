@@ -115,7 +115,9 @@ namespace ASP.NET_Core_Webapp.SeedData
                     oldBadgeLevel = new Entities.BadgeLevel() { Level = Int32.Parse(pitchList[i].oldLevel) };
                     oldBadgeLevel.Badge = badgeToAdd;
                     UserLevel newUserLevel = new UserLevel() { User = userToAdd, Badgelevel = oldBadgeLevel };
+                    userToAdd.UserLevels.Add(newUserLevel);
                     DataBase.Add(oldBadgeLevel);
+                    DataBase.Update(userToAdd);
                 }
                 pitchToAdd.BadgeLevel = oldBadgeLevel;
 

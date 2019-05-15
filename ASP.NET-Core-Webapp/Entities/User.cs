@@ -18,7 +18,9 @@ namespace ASP.NET_Core_Webapp.Entities
 
         public User()
         {
-
+            this.UserLevels = new List<UserLevel>();
+            this.Pitches = new List<Pitch>();
+            this.Reviews = new List<Review>();
         }
     }
 }
