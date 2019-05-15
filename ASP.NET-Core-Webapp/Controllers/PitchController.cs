@@ -34,9 +34,9 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpPost("pitches")]
         public IActionResult CreateNewPitch(SeedData.Pitch newPitch)
         {
-            Entities.Pitch pitchToAdd = new Entities.Pitch() { };
+            Pitch pitchToAdd = new Pitch() { };
             // Add user:
-            Entities.User userToAdd = new Entities.User();
+            User userToAdd = new User();
             userToAdd = ApplicationContext.Users.Where(x => x.Name == newPitch.username).FirstOrDefault();
             // Add reviews:
             foreach (var holderReview in newPitch.holders)
