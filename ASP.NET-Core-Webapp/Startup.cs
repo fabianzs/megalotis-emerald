@@ -70,6 +70,7 @@ namespace ASP.NET_Core_Webapp
                     });
             services.AddSingleton<IAuthService, AuthService>();
             services.AddScoped<SlackService>();
+            services.AddHttpClient();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)

@@ -11,16 +11,18 @@ namespace ASP.NET_Core_Webapp.Services
     public class SlackService
     {
         private readonly IConfiguration configuration;
+        private readonly IHttpClientFactory httpClientFactory;
 
-        public SlackService(IConfiguration config)
+        public SlackService(IConfiguration config, IHttpClientFactory httpCF)
         {
             this.configuration = config;
+            this.httpClientFactory = httpCF;
         }
 
         public async Task SendEmail(string email, string messageToSend)
         {
-            var Client = new HttpClient();
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", configuration["SlackBotToken"]);
+            var httpClient = httpClientFactory.CreateClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", configuration["SlackBotToken"]);
             
             //Create an email user lookup request:
             var emailLookupRequest = new HttpRequestMessage(HttpMethod.Post, "https://slack.com/api/users.lookupByEmail");
@@ -29,7 +31,7 @@ namespace ASP.NET_Core_Webapp.Services
             list.Add(new KeyValuePair<string, string>("email", email));
 
             emailLookupRequest.Content = new FormUrlEncodedContent(list);
-            var response = await Client.SendAsync(emailLookupRequest);
+            var response = await httpClient.SendAsync(emailLookupRequest);
 
             EmailLookupResponse responseObject = new EmailLookupResponse();
 
@@ -45,7 +47,7 @@ namespace ASP.NET_Core_Webapp.Services
             messageRequestBody.Add(new KeyValuePair<string, string>("text", messageToSend));
             postMessageRequest.Content = new FormUrlEncodedContent(messageRequestBody);
 
-            Client.SendAsync(postMessageRequest);
+            await httpClient.SendAsync(postMessageRequest);
         }
     }
 }
