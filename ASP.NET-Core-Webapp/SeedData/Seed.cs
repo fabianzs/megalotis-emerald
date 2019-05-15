@@ -96,7 +96,7 @@ namespace ASP.NET_Core_Webapp.SeedData
                 DataBase.SaveChanges();
 
                 Entities.Badge badgeToAdd;
-                badgeToAdd = DataBase.Badges.Where(x => x.Name == pitchList[i].badgeName).FirstOrDefault();
+                badgeToAdd = DataBase.Badges.Include(b => b.Levels).Where(b => b.Name.ToLower().Contains(pitchList[i].badgeName.ToLower())).FirstOrDefault();
 
                 if (badgeToAdd == null)
                 {
@@ -107,19 +107,44 @@ namespace ASP.NET_Core_Webapp.SeedData
                 pitchToAdd.TimeStamp = DateTime.ParseExact(pitchList[i].timestamp, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                 pitchToAdd.PitchMessage = pitchList[i].pitchMessage;
                 pitchToAdd.PitchedLevel = Int32.Parse(pitchList[i].pitchedLevel);
-                pitchToAdd.Badge = DataBase.Badges.Include(b => b.Levels).Where(x => x.Name == pitchList[i].badgeName).FirstOrDefault();
-                pitchToAdd.BadgeLevel = DataBase.BadgeLevels.Where(x => x.Badge.Name == pitchList[i].badgeName).FirstOrDefault();
+                pitchToAdd.Badge = badgeToAdd;
+
+                Entities.BadgeLevel oldBadgeLevel = DataBase.BadgeLevels.Include(bl => bl.Badge).Where(bl => bl.Badge.Name.ToLower().Contains(pitchList[i].badgeName.ToLower()) && bl.Level == Int32.Parse(pitchList[i].oldLevel)).FirstOrDefault();
+                if (oldBadgeLevel == null)
+                {
+                    oldBadgeLevel = new Entities.BadgeLevel() { Level = Int32.Parse(pitchList[i].oldLevel) };
+                    oldBadgeLevel.Badge = badgeToAdd;
+                    UserLevel newUserLevel = new UserLevel() { User = userToAdd, Badgelevel = oldBadgeLevel };
+                    DataBase.Add(oldBadgeLevel);
+                }
+                pitchToAdd.BadgeLevel = oldBadgeLevel;
+
+                Entities.BadgeLevel pitchedBadgeLevel = DataBase.BadgeLevels.Include(bl => bl.Badge).Where(bl => bl.Badge.Name.ToLower().Contains(pitchList[i].badgeName.ToLower()) && bl.Level == Int32.Parse(pitchList[i].pitchedLevel)).FirstOrDefault();
+                if (pitchedBadgeLevel == null)
+                {
+                    pitchedBadgeLevel = new Entities.BadgeLevel() { Level = Int32.Parse(pitchList[i].pitchedLevel) };
+                    pitchedBadgeLevel.Badge = badgeToAdd;
+                    DataBase.Add(pitchedBadgeLevel);
+                }
+                pitchToAdd.BadgeLevel = oldBadgeLevel;
+
                 // Add reviews:
                 foreach (var holderReview in pitchList[i].holders)
                 {
                     Review review = new Review(holderReview.message, holderReview.pitchStatus);
                     pitchToAdd.Holders.Add(review);
                     //DataBase.SaveChanges();
-
-                    review.User = DataBase.Users.Where(x => x.Name == holderReview.name).FirstOrDefault();
+                    Entities.User reviewerUser = DataBase.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.Badgelevel).ThenInclude(bl => bl.Badge).Where(u => u.Name == holderReview.name).FirstOrDefault();
+                    if (reviewerUser.UserLevels.Where(ul => ul.Badgelevel.Badge.Name.ToLower().Contains(badgeToAdd.Name.ToLower())).FirstOrDefault() == null)
+                    {
+                        Entities.BadgeLevel newBadgeLevel = new BadgeLevel() { Level = 0, Badge = badgeToAdd };
+                        UserLevel reviewerLevel = new UserLevel() { User = reviewerUser, Badgelevel = newBadgeLevel };
+                        reviewerUser.UserLevels.Add(reviewerLevel);
+                    }
+                    review.User = reviewerUser;
                     review.Pitch = pitchToAdd;
 
-                    DataBase.Reviews.Add(review);
+                    DataBase.Add(review);
                 }
                 userToAdd.Pitches.Add(pitchToAdd);
                 pitchToAdd.User = userToAdd;
