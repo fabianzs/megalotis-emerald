@@ -96,17 +96,15 @@ namespace ASP.NET_Core_Webapp
                     });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, AuthService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
         {
             //NEED TO BE CHANGED FOR INMEMORYDATABASE ONCE SEED DATA IS AVAILABLE!
 
-            //services.AddDbContext<ApplicationContext>(builder =>
-            //    builder.UseInMemoryDatabase("development"));
             services.AddDbContext<ApplicationContext>(builder =>
-                builder.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                builder.UseInMemoryDatabase("InMemoryDatabase"));
 
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
@@ -126,12 +124,12 @@ namespace ASP.NET_Core_Webapp
             }).AddTestAuth(o => { });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, MockAuthService>();
+            services.AddScoped<IAuthService, MockAuthService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() ||env.EnvironmentName=="Testing")
             {
                 app.UseDeveloperExceptionPage();
                 Seed seedDataFromObject = new Seed(applicationContext, configuration);

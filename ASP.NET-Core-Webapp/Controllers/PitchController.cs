@@ -20,7 +20,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         private readonly ApplicationContext applicationContext;
         private readonly IAuthService authService;
 
-        public PitchController(ApplicationContext application, AuthService authService)
+        public PitchController(ApplicationContext application, IAuthService authService)
         {
             applicationContext = application;
             this.authService = authService;
@@ -28,7 +28,7 @@ namespace ASP.NET_Core_Webapp.Controllers
 
         [HttpGet("pitches")]
         public Object GetPitch()
-        {
+        { 
             return StatusCode(401, new { error = "Unauthorizied" });
         }
 
@@ -36,20 +36,23 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpPost("pitches")]
         public IActionResult CreateNewPitch(Pitch newPitch)
         {
-            var badgeNames = applicationContext.Pitches.Include(a => a.Badge).Select(e => e.Badge.BadgeId);
-            long newPitchBadgeId = newPitch.Badge.BadgeId;
+          
+            string openId = authService.GetOpenIdFromJwtToken(Request);
 
-            if (!badgeNames.Contains(newPitchBadgeId) && !newPitch.Equals(null)) {
+            User user = applicationContext.Users.Include(a => a.Pitches).FirstOrDefault(u => u.OpenId == openId);
+            List<long> userPitchId = user.Pitches.Select(p => p.PitchId).ToList();
+
+            if (!applicationContext.Pitches.Select(e => e.PitchId).Contains(newPitch.PitchId) && !userPitchId.Contains(newPitch.PitchId) && !newPitch.Equals(null))
+            {
                 applicationContext.Add(newPitch);
                 applicationContext.SaveChanges();
                 return Created("", new { message = "Success" });
-            } else {
-                return Unauthorized(new { error = "Unauthorizied" });
             }
+            return Unauthorized(new { error = "Unauthorizied" });
         }
        
         // notificiton-hoz: elfodagva-> ha a user pitchének a holderében a rewiwerek statusa true;
-        // servicebe ksizervezni a logikát
+        // servicebe ksizervezni a logikát, satrtup ba is meghívni
         [Authorize("Bearer")]
         [HttpPut("pitch")]
         public IActionResult EditPitch(Pitch pitch) {
