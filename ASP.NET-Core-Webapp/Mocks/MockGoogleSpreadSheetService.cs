@@ -61,9 +61,9 @@ namespace ASP.NET_Core_Webapp.Services
 
         public string MakeGoogleSheetApiURL()
         {
-            string baseURL = configuration["GoogleSheet:GoogleSheetApiBaseURL"];
-            string spreadSheetID = configuration["GoogleSheet:SpreadSheetID"];
-            string range = configuration["GoogleSheet:Range"];
+            string baseURL = "https://sheets.googleapis.com/v4/spreadsheets/";
+            string spreadSheetID = "1l6Jw7yXJVLdNjfgHMKK45HQtgHLdp1UmpxrOCiIti40";
+            string range = "A2:N80";
             return $"{baseURL}{spreadSheetID}/values/{range}?key=AIzaSyCEyuQolfW1jsc1RQDrxvTRH8YIaLTQsho";
         }
 
