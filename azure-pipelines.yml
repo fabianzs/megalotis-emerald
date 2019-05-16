@@ -31,3 +31,5 @@ steps:
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
   continueOnError: true
+
+- task: PublishBuildArtifacts@1
