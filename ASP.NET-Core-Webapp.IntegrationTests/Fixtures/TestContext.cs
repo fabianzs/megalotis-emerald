@@ -1,4 +1,5 @@
 ﻿using ASP.NET_Core_Webapp.Data;
+﻿using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
     {
         private TestServer server;
         public HttpClient Client { get; set; }
+
         public readonly ApplicationContext context;
 
         public TestContext()
