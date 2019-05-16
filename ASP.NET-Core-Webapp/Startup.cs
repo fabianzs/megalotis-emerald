@@ -138,10 +138,10 @@ namespace ASP.NET_Core_Webapp
             if (env.IsProduction())
             {
                 Seed seedDataFromObject = new Seed(applicationContext, configuration);
-
                 seedDataFromObject.FillDatabaseFromObject();
-
             }
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseMvc(routes =>
             {
@@ -149,6 +149,7 @@ namespace ASP.NET_Core_Webapp
                     name: "default",
                     template: "{controller=Auth}/{action=Login}");
             });
+
 
             app.UseAuthentication();
             app.UseCors(x => x

@@ -30,18 +30,18 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return NotFound(new { error = "Please provide all fields" });
             }
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            try
-            {
+            //try
+            //{
                 reviewService.CreateReview(openId, reviewDTO);
-            }
-            catch (NullReferenceException)
-            {
-                return StatusCode(404, new CustomErrorMessage("The provided pitch does not exist."));
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return Unauthorized(new CustomErrorMessage("You are not allowed to give a review."));
-            }
+            //}
+            //catch (NullReferenceException)
+            //{
+            //    return StatusCode(404, new CustomErrorMessage("The provided pitch does not exist."));
+            //}
+            //catch (UnauthorizedAccessException)
+            //{
+            //    return Unauthorized(new CustomErrorMessage("You are not allowed to give a review."));
+            //}
             return Created("/review", new { message = "Success" });
         }
 
