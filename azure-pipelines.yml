@@ -18,25 +18,16 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: Test
+- task: DotNetCoreCLI@2  
   inputs:
     command: test
-    projects: '$(Parameters.TestProjects)'
-    arguments: '--configuration $(BuildConfiguration)'
+    projects: '**/*Test/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
   continueOnError: true
 
-- task: DotNetCoreCLI@2
-  displayName: Publish
+- task: DotNetCoreCLI@2  
   inputs:
-    command: publish
-    publishWebProjects: false
-    projects: '$(Parameters.RestoreBuildProjects)'
-    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-    zipAfterPublish: false
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-  condition: succeededOrFailed()
+    command: test
+    projects: '**/*Tests/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+  continueOnError: true
