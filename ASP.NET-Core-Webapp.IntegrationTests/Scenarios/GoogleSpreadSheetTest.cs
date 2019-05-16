@@ -1,9 +1,8 @@
-﻿using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
-using System;
-using System.Collections.Generic;
+﻿using ASP.NET_Core_Webapp.Data;
+using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -25,6 +24,15 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             var request = new HttpRequestMessage(HttpMethod.Get, "spreadsheet");
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task SpreadSheet_Should_Fill_Up_Db()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "spreadsheet");
+            var response = await testContext.Client.SendAsync(request);
+            int ProperBadgeCounter = testContext.context.Badges.Where(badge => badge.Name.Equals("test")).Count();
+            Assert.Equal(1, ProperBadgeCounter);
         }
     }
 }

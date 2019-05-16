@@ -32,7 +32,6 @@ namespace ASP.NET_Core_Webapp
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-            .AddJsonFile("appsettings.Testing.json", optional:false, reloadOnChange: true)
             .AddUserSecrets<Startup>()
             .AddEnvironmentVariables();
             this.configuration = builder.Build();
@@ -129,6 +128,7 @@ namespace ASP.NET_Core_Webapp
             services.AddSingleton<IAuthService, MockAuthService>();
             services.AddScoped<HttpClient>();
             services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
+            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)

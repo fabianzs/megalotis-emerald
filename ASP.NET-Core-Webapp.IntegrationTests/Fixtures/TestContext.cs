@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using ASP.NET_Core_Webapp.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,6 +11,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
     {
         private TestServer server;
         public HttpClient Client { get; set; }
+        public readonly ApplicationContext context;
 
         public TestContext()
         {
@@ -20,6 +22,11 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
                 .AddJsonFile("appsettings.Testing.json").Build()); 
 
             server = new TestServer(builder);
+
+            context = server
+                .Host
+                .Services
+                .GetService(typeof(ApplicationContext)) as ApplicationContext;
 
             Client = server.CreateClient();
         }
