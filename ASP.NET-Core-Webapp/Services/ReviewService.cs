@@ -1,6 +1,7 @@
 ﻿using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.DTO;
 using ASP.NET_Core_Webapp.Entities;
+using ASP.NET_Core_Webapp.Helpers.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace ASP.NET_Core_Webapp.Services
 
             if (newReview.Pitch == null)
             {
-                throw new NullReferenceException();
+                throw new PitchIsNullException();
             }
 
             BadgeLevel badgeLevelOfPitch = newReview.Pitch.BadgeLevel;
@@ -45,7 +46,7 @@ namespace ASP.NET_Core_Webapp.Services
 
             if (badgeLevelOfPitch == null || badgeLevelOfReviewer == null || badgeLevelOfPitch.Badge.Name != badgeLevelOfReviewer.Badge.Name || newReview.User == newReview.Pitch.User)
             {
-                throw new UnauthorizedAccessException();
+                throw new NotAllowedToReviewException();
             }
 
             applicationContext.Add(newReview);
@@ -58,7 +59,7 @@ namespace ASP.NET_Core_Webapp.Services
 
             if (reviewToUpdate == null)
             {
-                throw new NullReferenceException();
+                throw new ReviewIsNullException();
             }
 
             reviewToUpdate.Message = reviewDTO.Message;
@@ -66,12 +67,12 @@ namespace ASP.NET_Core_Webapp.Services
 
             if (reviewToUpdate.Pitch.PitchId != reviewDTO.PitchId)
             {
-                throw new InvalidOperationException();
+                throw new InvalidPitchException();
             }
 
             if (reviewToUpdate.User.OpenId != openId)
             {
-                throw new UnauthorizedAccessException();
+                throw new OtherUsersReviewException();
             }
 
             applicationContext.Reviews.Update(reviewToUpdate);
