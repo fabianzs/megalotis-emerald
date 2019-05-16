@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Net.Http;
 
@@ -14,9 +15,12 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
         {
             var builder = new WebHostBuilder()
                 .UseEnvironment("Testing")
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .UseConfiguration(new ConfigurationBuilder()
+                .AddJsonFile("appsettings.Testing.json").Build()); 
 
             server = new TestServer(builder);
+
             Client = server.CreateClient();
         }
 
