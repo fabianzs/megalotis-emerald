@@ -30,4 +30,4 @@ steps:
     command: test
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
-  continueOnError: tru
+  continueOnError: true
