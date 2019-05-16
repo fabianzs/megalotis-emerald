@@ -46,6 +46,9 @@ namespace ASP.NET_Core_Webapp.Controllers
 
             applicationContext.Badges.Add(badgeDTO.CreateBadge(applicationContext, badgeDTO));
             applicationContext.SaveChanges();
+
+          
+
             return Created("/badges", new { message = "Success" });
         }
 
