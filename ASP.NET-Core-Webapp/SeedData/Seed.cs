@@ -137,9 +137,9 @@ namespace ASP.NET_Core_Webapp.SeedData
                             BadgeLevel badgeLevelNew = DataBase.BadgeLevels.Where(x => x.Description == level.description).FirstOrDefault();
 
                             userLevel.User = DataBase.Users.Where(x => x.Name == user).FirstOrDefault();
-                            userLevel.Badgelevel = badgeLevelNew;
+                            userLevel.BadgeLevel = badgeLevelNew;
 
-                            if (DataBase.UserLevels.Count(x => x.BadgeLevelId == userLevel.Badgelevel.BadgeLevelId && x.UserId == userLevel.User.UserId) == 0)
+                            if (DataBase.UserLevels.Count(x => x.BadgeLevelId == userLevel.BadgeLevel.BadgeLevelId && x.UserId == userLevel.User.UserId) == 0)
                             {
                                 DataBase.Add(userLevel);
                                 DataBase.SaveChanges();

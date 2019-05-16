@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -26,7 +27,7 @@ namespace ASP.NET_Core_Webapp
 
         public Startup(IHostingEnvironment environment)
         {
-            this.env = environment;
+            this.env = environment;      
             var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -93,9 +94,12 @@ namespace ASP.NET_Core_Webapp
                             }
                         };
                     });
-
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, AuthService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IGoogleSheetService, GoogleSheetService>();
+            services.AddScoped<HttpClient>();
+            services.AddHttpClient<GoogleSheetService>();
+            services.AddHttpClient<AuthService>();
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
@@ -122,6 +126,9 @@ namespace ASP.NET_Core_Webapp
 
             services.AddScoped<IHelloService, HelloService>();
             services.AddSingleton<IAuthService, MockAuthService>();
+            services.AddScoped<HttpClient>();
+            services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
+            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
