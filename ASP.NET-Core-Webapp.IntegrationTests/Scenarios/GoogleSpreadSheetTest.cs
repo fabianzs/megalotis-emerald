@@ -1,5 +1,7 @@
 ﻿using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,10 +14,12 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
     public class GoogleSpreadSheetTest
     {
         private readonly TestContext testContext;
+        
 
         public GoogleSpreadSheetTest(TestContext testContext)
         {
             this.testContext = testContext;
+            
         }
 
         [Fact]
