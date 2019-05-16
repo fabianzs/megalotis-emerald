@@ -122,7 +122,8 @@ namespace ASP.NET_Core_Webapp
             }).AddTestAuth(o => { });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, MockAuthService>();
+            services.AddScoped<IAuthService, MockAuthService>();
+            services.AddScoped<IReviewService, ReviewService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)

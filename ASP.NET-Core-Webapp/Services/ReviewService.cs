@@ -54,38 +54,27 @@ namespace ASP.NET_Core_Webapp.Services
 
         public void UpdateReview(string openId, ReviewDTO reviewDTO, long id)
         {
-            Review originalReview = applicationContext.Reviews.Include(r => r.User).FirstOrDefault(r => r.ReviewId == id);
-            if (originalReview == null)
+            Review reviewToUpdate = applicationContext.Reviews.Include(r => r.User).Include(r => r.Pitch).FirstOrDefault(r => r.ReviewId == id);
+
+            if (reviewToUpdate == null)
+            {
+                throw new NullReferenceException();
+            }
+
+            reviewToUpdate.Message = reviewDTO.Message;
+            reviewToUpdate.Status = reviewDTO.Status;
+
+            if (reviewToUpdate.Pitch.PitchId != reviewDTO.PitchId)
             {
                 throw new InvalidOperationException();
             }
 
-            Review updatedReview = new Review()
-            {
-                ReviewId = id,
-                Message = reviewDTO.Message,
-                Status = reviewDTO.Status,
-                Pitch = applicationContext.Pitches
-                                            .Include(p => p.BadgeLevel)
-                                            .ThenInclude(bl => bl.Badge)
-                                            .FirstOrDefault(p => p.PitchId == reviewDTO.PitchId),
-                User = applicationContext.Users
-                                            .Include(u => u.UserLevels)
-                                            .ThenInclude(ul => ul.Badgelevel)
-                                            .ThenInclude(bl => bl.Badge)
-                                            .FirstOrDefault(u => u.OpenId == openId)
-            };
-
-            if (updatedReview.Pitch == null)
-            {
-                throw new NullReferenceException();
-            }
-            if (updatedReview.User != originalReview.User)
+            if (reviewToUpdate.User.OpenId != openId)
             {
                 throw new UnauthorizedAccessException();
             }
 
-            applicationContext.Update(updatedReview);
+            applicationContext.Reviews.Update(reviewToUpdate);
             applicationContext.SaveChanges();
         }
     }
