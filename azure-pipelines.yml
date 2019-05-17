@@ -23,7 +23,6 @@ steps:
     command: test
     projects: '**/*Test/*.csproj'
     arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
-    nobuild: true
   continueOnError: true
 
 - task: DotNetCoreCLI@2  
@@ -31,7 +30,6 @@ steps:
     command: test
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura'
-    nobuild: true
   continueOnError: true
 
 # Generate the report using ReportGenerator (https://github.com/danielpalme/ReportGenerator)
