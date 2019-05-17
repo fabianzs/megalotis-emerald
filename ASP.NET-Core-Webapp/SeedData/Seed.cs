@@ -114,7 +114,7 @@ namespace ASP.NET_Core_Webapp.SeedData
                 {
                     oldBadgeLevel = new Entities.BadgeLevel() { Level = Int32.Parse(pitchList[i].oldLevel) };
                     oldBadgeLevel.Badge = badgeToAdd;
-                    UserLevel newUserLevel = new UserLevel() { User = userToAdd, Badgelevel = oldBadgeLevel };
+                    UserLevel newUserLevel = new UserLevel() { User = userToAdd, BadgeLevel = oldBadgeLevel };
                     userToAdd.UserLevels.Add(newUserLevel);
                     DataBase.Add(oldBadgeLevel);
                     DataBase.Update(userToAdd);
@@ -136,11 +136,11 @@ namespace ASP.NET_Core_Webapp.SeedData
                     Review review = new Review(holderReview.message, holderReview.pitchStatus);
                     pitchToAdd.Holders.Add(review);
                     //DataBase.SaveChanges();
-                    Entities.User reviewerUser = DataBase.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.Badgelevel).ThenInclude(bl => bl.Badge).Where(u => u.Name == holderReview.name).FirstOrDefault();
-                    if (reviewerUser.UserLevels.Where(ul => ul.Badgelevel.Badge.Name.ToLower().Contains(badgeToAdd.Name.ToLower())).FirstOrDefault() == null)
+                    Entities.User reviewerUser = DataBase.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.BadgeLevel).ThenInclude(bl => bl.Badge).Where(u => u.Name == holderReview.name).FirstOrDefault();
+                    if (reviewerUser.UserLevels.Where(ul => ul.BadgeLevel.Badge.Name.ToLower().Contains(badgeToAdd.Name.ToLower())).FirstOrDefault() == null)
                     {
                         Entities.BadgeLevel newBadgeLevel = new BadgeLevel() { Level = 0, Badge = badgeToAdd };
-                        UserLevel reviewerLevel = new UserLevel() { User = reviewerUser, Badgelevel = newBadgeLevel };
+                        UserLevel reviewerLevel = new UserLevel() { User = reviewerUser, BadgeLevel = newBadgeLevel };
                         reviewerUser.UserLevels.Add(reviewerLevel);
                     }
                     review.User = reviewerUser;
@@ -166,9 +166,9 @@ namespace ASP.NET_Core_Webapp.SeedData
                             BadgeLevel badgeLevelNew = DataBase.BadgeLevels.Where(x => x.Description == level.description).FirstOrDefault();
 
                             userLevel.User = DataBase.Users.Where(x => x.Name == user).FirstOrDefault();
-                            userLevel.Badgelevel = badgeLevelNew;
+                            userLevel.BadgeLevel = badgeLevelNew;
 
-                            if (DataBase.UserLevels.Count(x => x.BadgeLevelId == userLevel.Badgelevel.BadgeLevelId && x.UserId == userLevel.User.UserId) == 0)
+                            if (DataBase.UserLevels.Count(x => x.BadgeLevelId == userLevel.BadgeLevel.BadgeLevelId && x.UserId == userLevel.User.UserId) == 0)
                             {
                                 DataBase.Add(userLevel);
                                 DataBase.SaveChanges();
