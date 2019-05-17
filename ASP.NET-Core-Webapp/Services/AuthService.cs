@@ -39,14 +39,18 @@ namespace ASP.NET_Core_Webapp.Services
 
         public GoogleToken GetToken(string code)
         {
-            var dict = new List<KeyValuePair<string, string>>();
-            dict.Add(new KeyValuePair<string, string>("code", code));
-            dict.Add(new KeyValuePair<string, string>("client_id", configuration["Authentication:Google:ClientId"]));
-            dict.Add(new KeyValuePair<string, string>("client_secret", configuration["Authentication:Google:ClientSecret"]));
-            dict.Add(new KeyValuePair<string, string>("redirect_uri", configuration.GetValue<string>("AppSettings:Authentication endpoint")));
-            dict.Add(new KeyValuePair<string, string>("grant_type", "authorization_code"));
-            var req = new HttpRequestMessage(HttpMethod.Post, "https://www.googleapis.com/oauth2/v4/token");
-            req.Content = new FormUrlEncodedContent(dict);
+            var dict = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("code", code),
+                new KeyValuePair<string, string>("client_id", configuration["Authentication:Google:ClientId"]),
+                new KeyValuePair<string, string>("client_secret", configuration["Authentication:Google:ClientSecret"]),
+                new KeyValuePair<string, string>("redirect_uri", configuration.GetValue<string>("AppSettings:Authentication endpoint")),
+                new KeyValuePair<string, string>("grant_type", "authorization_code")
+            };
+            var req = new HttpRequestMessage(HttpMethod.Post, "https://www.googleapis.com/oauth2/v4/token")
+            {
+                Content = new FormUrlEncodedContent(dict)
+            };
             HttpResponseMessage response = httpClient.SendAsync(req).Result;
             string res = response.Content.ReadAsStringAsync().Result;
             GoogleToken token = JsonConvert.DeserializeObject<GoogleToken>(res);
