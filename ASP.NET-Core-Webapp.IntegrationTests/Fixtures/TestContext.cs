@@ -12,7 +12,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Fixtures
     {
         private TestServer server;
         public HttpClient Client { get; set; }
-
         public readonly ApplicationContext context;
 
         public TestContext()

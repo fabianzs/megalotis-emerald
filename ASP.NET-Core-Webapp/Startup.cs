@@ -40,7 +40,7 @@ namespace ASP.NET_Core_Webapp
         public void ConfigureServices(IServiceCollection services)
         {
             var allvariables = Environment.GetEnvironmentVariables();
-            
+
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
@@ -53,7 +53,6 @@ namespace ASP.NET_Core_Webapp
             }
             if (env.IsProduction())
             {
-                //Debugger.Launch();
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseSqlServer(configuration.GetConnectionString("environmentString"))
                         .EnableSensitiveDataLogging(true));
