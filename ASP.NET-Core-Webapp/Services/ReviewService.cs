@@ -29,7 +29,7 @@ namespace ASP.NET_Core_Webapp.Services
                                             .FirstOrDefault(p => p.PitchId == reviewDTO.PitchId),
                 User = applicationContext.Users
                                             .Include(u => u.UserLevels)
-                                            .ThenInclude(ul => ul.Badgelevel)
+                                            .ThenInclude(ul => ul.BadgeLevel)
                                             .ThenInclude(bl => bl.Badge)
                                             .FirstOrDefault(u => u.OpenId == openId)
             };
@@ -41,7 +41,7 @@ namespace ASP.NET_Core_Webapp.Services
 
             BadgeLevel badgeLevelOfPitch = newReview.Pitch.BadgeLevel;
             BadgeLevel badgeLevelOfReviewer = newReview.User.UserLevels
-                                                                .Select(ul => ul.Badgelevel)
+                                                                .Select(ul => ul.BadgeLevel)
                                                                 .FirstOrDefault(bl => bl.Badge.Name.ToLower().Contains(badgeLevelOfPitch.Badge.Name.ToLower()));
 
             if (badgeLevelOfPitch == null || badgeLevelOfReviewer == null || badgeLevelOfPitch.Badge.Name != badgeLevelOfReviewer.Badge.Name || newReview.User == newReview.Pitch.User)

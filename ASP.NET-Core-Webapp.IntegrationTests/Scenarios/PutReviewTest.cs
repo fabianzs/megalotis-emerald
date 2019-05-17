@@ -63,7 +63,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             request.Content = new StringContent(JsonConvert.SerializeObject(review), Encoding.UTF8, "application/json");
 
             var response = await testContext.Client.SendAsync(request);
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
 }
