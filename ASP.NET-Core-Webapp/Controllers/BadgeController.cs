@@ -12,11 +12,13 @@ namespace ASP.NET_Core_Webapp.Controllers
     public class BadgeController : Controller
     {
         private readonly IAuthService authService;
+        private readonly IBadgeService badgeService;
         private readonly ApplicationContext applicationContext;
 
-        public BadgeController(IAuthService authService, ApplicationContext applicationContext)
+        public BadgeController(IAuthService authService, IBadgeService badgeService, ApplicationContext applicationContext)
         {
             this.authService = authService;
+            this.badgeService = badgeService;
             this.applicationContext = applicationContext;
         }
 
@@ -34,17 +36,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpPost("badges")]
         public IActionResult RecieveBadge([FromBody]BadgeDTO badgeDTO)
         {
-            if (badgeDTO == null)
-            {
-                return StatusCode(404, new { error = "No message body" });
-            }
-
-            if (badgeDTO.Levels == null || badgeDTO.Name == null || badgeDTO.Tag == null || badgeDTO.Version == null)
-            {
-                return NotFound(new { error = "Please provide all fields" });
-            }
-
-            applicationContext.Badges.Add(badgeDTO.CreateBadge(applicationContext, badgeDTO));
+            applicationContext.Badges.Add(badgeService.CreateBadge(badgeDTO));
             applicationContext.SaveChanges();
             return Created("/badges", new { message = "Success" });
         }
