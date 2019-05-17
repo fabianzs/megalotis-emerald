@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.Helpers.Exceptions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -65,12 +61,17 @@ namespace ASP.NET_Core_Webapp.Helpers
             else if(exception is NoMessageBodyException)
             {
                 statusCode = (int)HttpStatusCode.Forbidden;
-                errorMessage.Error = "No message body";
+                errorMessage.Error = "No message body.";
             }
             else if(exception is MissingFieldsException)
             {
                 statusCode = (int)HttpStatusCode.Forbidden;
-                errorMessage.Error = "Please provide all fields";
+                errorMessage.Error = "Please provide all fields.";
+            }
+            else if(exception is UserNotFoundException)
+            {
+                statusCode = (int)HttpStatusCode.NotFound;
+                errorMessage.Error = "Unknown user";
             }
             else
             {

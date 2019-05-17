@@ -1,4 +1,5 @@
 ﻿using ASP.NET_Core_Webapp.Data;
+using ASP.NET_Core_Webapp.DTO;
 using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.Helpers.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,22 @@ namespace ASP.NET_Core_Webapp.Services
             this.applicationContext = applicationContext;
         }
 
+        public Dictionary<string, List<MyBadgeDTO>> GetMyBadges(string openId)
+        {
+            User user = applicationContext.Users
+                                            .Include(u => u.UserLevels)
+                                            .ThenInclude(ul => ul.BadgeLevel)
+                                            .ThenInclude(bl => bl.Badge)
+                                            .FirstOrDefault(u => u.OpenId == openId);
+            if(user == null)
+            {
+                throw new UserNotFoundException();
+            };
+
+            List<MyBadgeDTO> myBadges = user.UserLevels.Select(ul => new MyBadgeDTO(ul.BadgeLevel.Badge.Name, ul.BadgeLevel.Level)).ToList();
+            return new Dictionary<string, List<MyBadgeDTO>>() { { "badges", myBadges } };
+        }
+
         public void CheckBadgeDTO(BadgeDTO badgeDTO)
         {
             if (badgeDTO == null)
@@ -25,13 +42,13 @@ namespace ASP.NET_Core_Webapp.Services
                 throw new NoMessageBodyException();
             }
 
-            if (badgeDTO.Levels == null || badgeDTO.Name == null || badgeDTO.Tag == null || badgeDTO.Version == null)
+            if (badgeDTO.Levels == null || !badgeDTO.Levels.Any() || badgeDTO.Name == null || badgeDTO.Tag == null || badgeDTO.Version == null)
             {
                 throw new MissingFieldsException();
             }
         }
 
-        public Badge CreateBadge(BadgeDTO badgeDTO)
+        public void CreateBadge(BadgeDTO badgeDTO)
         {
             CheckBadgeDTO(badgeDTO);
 
@@ -46,7 +63,9 @@ namespace ASP.NET_Core_Webapp.Services
             {
                 badge.Levels.Add(CreateBadgeLevel(bl));
             }
-            return badge;
+
+            applicationContext.Badges.Add(badge);
+            applicationContext.SaveChanges();
         }
 
         public BadgeLevel CreateBadgeLevel(BadgeLevelDTO badgeLevelDTO)
@@ -62,6 +81,7 @@ namespace ASP.NET_Core_Webapp.Services
             {
                 newBadgeLevel.UserLevels.Add(CreateUserLevel(newBadgeLevel, holder));
             }
+
             return newBadgeLevel;
         }
 

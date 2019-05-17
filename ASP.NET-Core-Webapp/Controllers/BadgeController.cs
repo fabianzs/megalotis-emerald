@@ -27,47 +27,20 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult MyBadges()
         {
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            //User _user = applicationContext.Users.FirstOrDefault(u => u.OpenId == openId);
-            //InitializeDb(_user);
-            User user = applicationContext.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.BadgeLevel).ThenInclude(bl => bl.Badge).Where(u => u.OpenId == openId).FirstOrDefault();
-            return Ok(new Dictionary<string, object>() { { "badges", user.UserLevels.Select(ul => new { ul.BadgeLevel.Badge.Name, ul.BadgeLevel.Level }) } });
+            //InitializeSampleDb(openId);
+            return Ok(badgeService.GetMyBadges(openId));
         }
 
         [HttpPost("badges")]
-        public IActionResult RecieveBadge([FromBody]BadgeDTO badgeDTO)
+        public IActionResult RecieveBadge([FromBody] BadgeDTO badgeDTO)
         {
-            applicationContext.Badges.Add(badgeService.CreateBadge(badgeDTO));
-            applicationContext.SaveChanges();
+            badgeService.CreateBadge(badgeDTO);
             return Created("/badges", new { message = "Success" });
         }
 
-        [Authorize("Bearer")]
-        [HttpGet("mybadgesmock")]
-        public IActionResult MyBadgesMock()
+        public void InitializeSampleDb(string openId)
         {
-            List<Badge> badgesList = new List<Badge>();
-            badgesList.Add(new Badge("test"));
-            return Ok(new { badges = badgesList.Select(b => new { b.BadgeId, b.Version, b.Name, b.Tag, b.Levels }) });
-        }
-
-        [Authorize("Bearer")]
-        [HttpPost("badgesmock")]
-        public IActionResult RecieveBadgeMock([FromBody]Badge badge)
-        {
-            if (badge == null)
-            {
-                return StatusCode(404, new { error = "No message body" });
-            }
-
-            if (badge.Levels == null || badge.Name == null || badge.Tag == null || badge.Version == null)
-            {
-                return NotFound(new { error = "Please provide all fields" });
-            }
-            return Created("/badges", new { message = "Success" });
-        }
-
-        public void InitializeDb(User user)
-        {
+            User user = applicationContext.Users.FirstOrDefault(u => u.OpenId == openId);
             UserLevel userlevel1 = new UserLevel() { BadgeLevel = new BadgeLevel() { Level = 2, Description = "I am an upper-intermediate speaker", Badge = new Badge("English speaker") }, User = user };
             UserLevel userlevel2 = new UserLevel() { BadgeLevel = new BadgeLevel() { Level = 3, Description = "I can write some working code", Badge = new Badge("Java developer") }, User = user };
             UserLevel userlevel3 = new UserLevel() { BadgeLevel = new BadgeLevel() { Level = 1, Description = "I easily freak out", Badge = new Badge("Stress management") }, User = user };
