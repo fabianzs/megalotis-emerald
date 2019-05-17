@@ -96,6 +96,9 @@ namespace ASP.NET_Core_Webapp
 
             services.AddScoped<IHelloService, HelloService>();
             services.AddSingleton<IAuthService, AuthService>();
+            services.AddScoped<SlackService>();
+            services.AddHttpClient();
+
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
