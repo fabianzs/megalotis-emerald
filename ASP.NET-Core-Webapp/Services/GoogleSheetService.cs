@@ -55,6 +55,7 @@ namespace ASP.NET_Core_Webapp.Services
         {
             var request = new HttpRequestMessage(HttpMethod.Get, MakeGoogleSheetApiURL());
             request.Headers.Add("Authorization", $"Bearer {StaticAccesToken}");
+            
             return request;
         }
 

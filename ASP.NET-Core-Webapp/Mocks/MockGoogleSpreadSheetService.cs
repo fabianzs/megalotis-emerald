@@ -61,6 +61,7 @@ namespace ASP.NET_Core_Webapp.Services
 
         public string MakeGoogleSheetApiURL()
         {
+            string sdds = configuration["Authentication:Google:ClientId"];
             string baseURL =  configuration["GoogleSheet:GoogleSheetApiBaseURL"];
             string spreadSheetID = configuration["GoogleSheet:SpreadSheetID"];
             string range = configuration["GoogleSheet:Range"];
