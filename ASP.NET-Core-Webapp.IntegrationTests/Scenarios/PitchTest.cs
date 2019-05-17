@@ -17,7 +17,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         }
 
         [Fact]
-        public async Task Pitch_GetPitches_Return200()
+        public async Task Pitch_GetPitches_Return202()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");        
             var response = await testContext.Client.SendAsync(request);
@@ -26,7 +26,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 
         [Theory]
         [InlineData("/pitches")]
-        public async Task Pitch_GetPitchesInLineData_Return200(string url)
+        public async Task Pitch_GetPitchesInLineData_Return202(string url)
         {
             var request = url;
             var response = await testContext.Client.GetAsync(request);
