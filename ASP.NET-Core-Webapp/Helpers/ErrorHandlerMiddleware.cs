@@ -37,12 +37,7 @@ namespace ASP.NET_Core_Webapp.Helpers
 
             CustomErrorMessage errorMessage = new CustomErrorMessage();
             int statusCode = 0;
-            if (exception is UnauthorizedAccessException)
-            {
-                statusCode = (int)HttpStatusCode.Unauthorized;
-                errorMessage.Error = "You are not allowed to give a review.";
-            }
-            else if (exception is PitchIsNullException)
+            if (exception is PitchIsNullException)
             {
                 statusCode = (int)HttpStatusCode.NotFound;
                 errorMessage.Error = "The provided pitch does not exist.";
@@ -70,7 +65,7 @@ namespace ASP.NET_Core_Webapp.Helpers
             else
             {
                 statusCode = (int)HttpStatusCode.InternalServerError;
-                errorMessage.Error = "Ther error is not specified, You have not reviewed this pitch yet.";
+                errorMessage.Error = "Ther error is not specified.";
             }
 
             context.Response.ContentType = "application/json";
