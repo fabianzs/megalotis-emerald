@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -93,10 +94,13 @@ namespace ASP.NET_Core_Webapp
                             }
                         };
                     });
-
             services.AddScoped<IHelloService, HelloService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IGoogleSheetService, GoogleSheetService>();
+            services.AddScoped<HttpClient>();
+            services.AddHttpClient<GoogleSheetService>();
+            services.AddHttpClient<AuthService>();
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
@@ -124,6 +128,9 @@ namespace ASP.NET_Core_Webapp
             services.AddScoped<IHelloService, HelloService>();
             services.AddScoped<IAuthService, MockAuthService>();
             services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IAuthService, MockAuthService>();
+            services.AddScoped<HttpClient>();
+            services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
