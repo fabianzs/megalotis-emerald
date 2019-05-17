@@ -94,8 +94,10 @@ namespace ASP.NET_Core_Webapp
                             }
                         };
                     });
+
             services.AddScoped<IHelloService, HelloService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, GoogleSheetService>();
             services.AddScoped<HttpClient>();
             services.AddHttpClient<GoogleSheetService>();
@@ -125,10 +127,10 @@ namespace ASP.NET_Core_Webapp
             }).AddTestAuth(o => { });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, MockAuthService>();
-            services.AddScoped<HttpClient>();
+            services.AddScoped<IAuthService, MockAuthService>();
+            services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
-            
+            services.AddScoped<HttpClient>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
@@ -143,10 +145,10 @@ namespace ASP.NET_Core_Webapp
             if (env.IsProduction())
             {
                 Seed seedDataFromObject = new Seed(applicationContext, configuration);
-
                 seedDataFromObject.FillDatabaseFromObject();
-
             }
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseMvc(routes =>
             {
@@ -154,6 +156,7 @@ namespace ASP.NET_Core_Webapp
                     name: "default",
                     template: "{controller=Auth}/{action=Login}");
             });
+
 
             app.UseAuthentication();
             app.UseCors(x => x
