@@ -9,6 +9,10 @@ namespace ASP.NET_Core_Webapp.Helpers
     {
         public string Error { get; set; }
 
+        public CustomErrorMessage()
+        {
+        }
+
         public CustomErrorMessage(string error)
         {
             Error = error;

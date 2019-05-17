@@ -13,6 +13,7 @@ namespace ASP.NET_Core_Webapp.Entities
         public string Name { get; set; }
         public string Tag { get; set; }
         public ICollection<BadgeLevel> Levels { get; set; }
+        public ICollection<Pitch> Pitches { get; set; }
 
         public Badge()
         {
@@ -25,6 +26,13 @@ namespace ASP.NET_Core_Webapp.Entities
             this.Name = name;
             this.Levels = new List<BadgeLevel>();
             this.TimeStamp = DateTime.Now;
+        }
+
+        public Badge(string version, string name, string tag)
+        {
+            Name = name;
+            Tag = tag;
+            Version = version;
         }
     }
 }
