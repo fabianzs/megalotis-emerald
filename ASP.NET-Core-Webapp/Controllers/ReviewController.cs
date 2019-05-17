@@ -30,18 +30,7 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return NotFound(new { error = "Please provide all fields" });
             }
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            //try
-            //{
-                reviewService.CreateReview(openId, reviewDTO);
-            //}
-            //catch (NullReferenceException)
-            //{
-            //    return StatusCode(404, new CustomErrorMessage("The provided pitch does not exist."));
-            //}
-            //catch (UnauthorizedAccessException)
-            //{
-            //    return Unauthorized(new CustomErrorMessage("You are not allowed to give a review."));
-            //}
+            reviewService.CreateReview(openId, reviewDTO);
             return Created("/review", new { message = "Success" });
         }
 
@@ -58,23 +47,6 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return NotFound(new { error = "Please provide all fields" });
             }
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            try
-            {
-                reviewService.UpdateReview(openId, reviewDTO, id);
-            }
-            catch (InvalidOperationException)
-            {
-                return BadRequest(new CustomErrorMessage("You have not reviewed this pitch yet."));
-            }
-            catch (NullReferenceException)
-            {
-                return StatusCode(404, new CustomErrorMessage("The provided review does not exist."));
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return Unauthorized(new CustomErrorMessage("You are not allowed to give a review."));
-            }
-
             reviewService.UpdateReview(openId, reviewDTO, id);
             return Ok(new { message = "Success" });
         }
