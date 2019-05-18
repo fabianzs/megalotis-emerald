@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.Helpers.Exceptions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -42,7 +38,7 @@ namespace ASP.NET_Core_Webapp.Helpers
                 statusCode = (int)HttpStatusCode.NotFound;
                 errorMessage.Error = "The provided pitch does not exist.";
             }
-            else if(exception is NotAllowedToReviewException)
+            else if (exception is NotAllowedToReviewException)
             {
                 statusCode = (int)HttpStatusCode.Unauthorized;
                 errorMessage.Error = "You are not allowed to give a review, because you either lack the necessary badge, or you are trying to review your own pitch.";
@@ -62,6 +58,21 @@ namespace ASP.NET_Core_Webapp.Helpers
                 statusCode = (int)HttpStatusCode.BadRequest;
                 errorMessage.Error = "The review cannot be updated, it belongs to another user.";
             }
+            else if (exception is NoMessageBodyException)
+            {
+                statusCode = (int)HttpStatusCode.Forbidden;
+                errorMessage.Error = "No message body.";
+            }
+            else if (exception is MissingFieldsException)
+            {
+                statusCode = (int)HttpStatusCode.Forbidden;
+                errorMessage.Error = "Please provide all fields.";
+            }
+            else if (exception is UserNotFoundException)
+            {
+                statusCode = (int)HttpStatusCode.NotFound;
+                errorMessage.Error = "Unknown user";
+            }
             else
             {
                 statusCode = (int)HttpStatusCode.InternalServerError;
@@ -75,6 +86,3 @@ namespace ASP.NET_Core_Webapp.Helpers
         }
     }
 }
-
-
-

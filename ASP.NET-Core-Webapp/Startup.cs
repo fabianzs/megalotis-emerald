@@ -96,6 +96,7 @@ namespace ASP.NET_Core_Webapp
 
             services.AddScoped<IHelloService, HelloService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IBadgeService, BadgeService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, GoogleSheetService>();
             services.AddScoped<HttpClient>();
@@ -127,6 +128,7 @@ namespace ASP.NET_Core_Webapp
 
             services.AddScoped<IHelloService, HelloService>();
             services.AddScoped<IAuthService, MockAuthService>();
+            services.AddScoped<IBadgeService, BadgeService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
             services.AddScoped<HttpClient>();
