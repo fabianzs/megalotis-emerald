@@ -19,5 +19,20 @@ namespace ASP.NET_Core_Webapp.Entities
         {
             Levels = new List<BadgeLevelDTO>();
         }
+
+        public Badge CreateBadge(ApplicationContext applicationContext, BadgeDTO badgeDTO)
+        {
+            Badge badge = new Badge()
+            {
+                Name = badgeDTO.Name,
+                Version = badgeDTO.Version,
+                Tag = badgeDTO.Tag,
+            };
+            foreach (BadgeLevelDTO bl in badgeDTO.Levels)
+            {
+                badge.Levels.Add(bl.CreateBadgeLevel(applicationContext));
+            }
+            return badge;
+        }
     }
 }
