@@ -27,8 +27,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult MyBadges()
         {
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            //User _user = applicationContext.Users.FirstOrDefault(u => u.OpenId == openId);
-            //InitializeDb(_user);
+            //InitializeDb(openId);
             User user = applicationContext.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.BadgeLevel).ThenInclude(bl => bl.Badge).Where(u => u.OpenId == openId).FirstOrDefault();
             return Ok(new Dictionary<string, object>() { { "badges", user.UserLevels.Select(ul => new { ul.BadgeLevel.Badge.Name, ul.BadgeLevel.Level }) } });
         }
@@ -40,8 +39,9 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Created("/badges", new { message = "Success" });
         }
 
-        public void InitializeDb(User user)
+        public void InitializeDb(string openId)
         {
+            User user = applicationContext.Users.FirstOrDefault(u => u.OpenId == openId);
             UserLevel userlevel1 = new UserLevel() { BadgeLevel = new BadgeLevel() { Level = 2, Description = "I am an upper-intermediate speaker", Badge = new Badge("English speaker") }, User = user };
             UserLevel userlevel2 = new UserLevel() { BadgeLevel = new BadgeLevel() { Level = 3, Description = "I can write some working code", Badge = new Badge("Java developer") }, User = user };
             UserLevel userlevel3 = new UserLevel() { BadgeLevel = new BadgeLevel() { Level = 1, Description = "I easily freak out", Badge = new Badge("Stress management") }, User = user };
