@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -23,30 +24,37 @@ namespace ASP.NET_Core_Webapp
     {
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment env;
-        
+
         public Startup(IHostingEnvironment environment, IConfiguration config)
         {
             this.env = environment;
-            this.configuration = config;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true).AddUserSecrets<Startup>()
+                .AddEnvironmentVariables();
+            this.configuration = builder.Build();
+
+            this.env = environment;
+            this.configuration = config; 
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             var allvariables = Environment.GetEnvironmentVariables();
-            
+
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             if (env.IsDevelopment())
-                
+
             {
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseInMemoryDatabase("InMemoryDatabase"));
             }
             if (env.IsProduction())
             {
-                //Debugger.Launch();
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseSqlServer(configuration.GetConnectionString("environmentString"))
                         .EnableSensitiveDataLogging(true));
@@ -90,9 +98,15 @@ namespace ASP.NET_Core_Webapp
                     });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, AuthService>();
+
             services.AddScoped<SlackService>();
             services.AddHttpClient();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IGoogleSheetService, GoogleSheetService>();
+            services.AddScoped<HttpClient>();
+            services.AddHttpClient<GoogleSheetService>();
+            services.AddHttpClient<AuthService>();
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
@@ -118,7 +132,10 @@ namespace ASP.NET_Core_Webapp
             }).AddTestAuth(o => { });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, MockAuthService>();
+            services.AddScoped<IAuthService, MockAuthService>();
+            services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
+            services.AddScoped<HttpClient>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
@@ -135,15 +152,16 @@ namespace ASP.NET_Core_Webapp
                 SeedDatabaseHandler seedDataFromObject = new SeedDatabaseHandler(applicationContext, configuration);
 
                 seedDataFromObject.FillDatabaseFromObject();
-
             }
-            
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Auth}/{action=Login}");
             });
+
 
             app.UseAuthentication();
             app.UseCors(x => x

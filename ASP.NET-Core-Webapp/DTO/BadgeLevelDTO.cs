@@ -32,7 +32,7 @@ namespace ASP.NET_Core_Webapp.Entities
 
         public UserLevel CreateUserLevel(ApplicationContext applicationContext, BadgeLevel newBadgeLevel, string holder)
         {
-            return new UserLevel() { Badgelevel = newBadgeLevel, User = applicationContext.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.Badgelevel).ThenInclude(blvl => blvl.Badge).FirstOrDefault(u => u.Name.Equals(holder)) };
+            return new UserLevel() { BadgeLevel = newBadgeLevel, User = applicationContext.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.BadgeLevel).ThenInclude(blvl => blvl.Badge).FirstOrDefault(u => u.Name.Equals(holder)) };
         }
     }
 }
