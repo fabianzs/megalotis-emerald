@@ -65,7 +65,7 @@ namespace ASP.NET_Core_Webapp.Helpers
             else
             {
                 statusCode = (int)HttpStatusCode.InternalServerError;
-                errorMessage.Error = "Ther error is not specified.";
+                errorMessage.Error = exception.Message;
             }
 
             context.Response.ContentType = "application/json";
