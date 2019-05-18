@@ -1,0 +1,21 @@
+﻿{
+  "range": "Munkalap1!A2:C100",
+  "majorDimension": "ROWS",
+  "values": [
+    [
+      "v2.1",
+      "Feedback giver V2",
+      "general"
+    ],
+    [
+      "test",
+      "test",
+      "test"
+    ],
+    [
+      "v2.1",
+      "Re-Presenter V2",
+      "general"
+    ]
+  ]
+}

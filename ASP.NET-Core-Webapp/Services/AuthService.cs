@@ -1,7 +1,6 @@
 ﻿using ASP.NET_Core_Webapp.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
@@ -11,7 +10,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.Services
 {
@@ -19,16 +17,20 @@ namespace ASP.NET_Core_Webapp.Services
     public class AuthService : IAuthService
     {
         private readonly IConfiguration configuration;
+        private readonly IGoogleSheetService googleSheetService;
+        private readonly HttpClient httpClient;
 
-        public AuthService(IConfiguration configuration)
+        public AuthService(IConfiguration configuration, IGoogleSheetService googleSheetService, HttpClient httpClient)
         {
             this.configuration = configuration;
+            this.googleSheetService = googleSheetService;
+            this.httpClient = httpClient;
         }
 
         public string GetGoogleLogin()
         {
             string base_url = "https://accounts.google.com/o/oauth2/v2/auth";
-            string scope = "openid%20email%20profile";
+            string scope = "openid%20email%20profile%20https://www.googleapis.com/auth/spreadsheets.readonly";
             string redirect_uri = configuration.GetValue<string>("AppSettings:Authentication endpoint");
             string response_type = "code";
             string client_id = configuration["Authentication:Google:ClientId"];
@@ -43,20 +45,19 @@ namespace ASP.NET_Core_Webapp.Services
             dict.Add(new KeyValuePair<string, string>("client_secret", configuration["Authentication:Google:ClientSecret"]));
             dict.Add(new KeyValuePair<string, string>("redirect_uri", configuration.GetValue<string>("AppSettings:Authentication endpoint")));
             dict.Add(new KeyValuePair<string, string>("grant_type", "authorization_code"));
-            var client = new HttpClient();
             var req = new HttpRequestMessage(HttpMethod.Post, "https://www.googleapis.com/oauth2/v4/token");
             req.Content = new FormUrlEncodedContent(dict);
-            HttpResponseMessage response = client.SendAsync(req).Result;
+            HttpResponseMessage response = httpClient.SendAsync(req).Result;
             string res = response.Content.ReadAsStringAsync().Result;
             GoogleToken token = JsonConvert.DeserializeObject<GoogleToken>(res);
+            (googleSheetService as GoogleSheetService).AccesToken = token.access_token;
             return token;
         }
 
         public TokenInfo ValidateToken(string id_token)
         {
-            var client = new HttpClient();
             var req = new HttpRequestMessage(HttpMethod.Get, "https://oauth2.googleapis.com/tokeninfo?id_token=" + id_token);
-            HttpResponseMessage response = client.SendAsync(req).Result;
+            HttpResponseMessage response = httpClient.SendAsync(req).Result;
             string res = response.Content.ReadAsStringAsync().Result;
             TokenInfo tokenInfo = JsonConvert.DeserializeObject<TokenInfo>(res);
             return tokenInfo;

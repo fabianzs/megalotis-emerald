@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -26,7 +27,7 @@ namespace ASP.NET_Core_Webapp
 
         public Startup(IHostingEnvironment environment)
         {
-            this.env = environment;
+            this.env = environment;      
             var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -39,7 +40,7 @@ namespace ASP.NET_Core_Webapp
         public void ConfigureServices(IServiceCollection services)
         {
             var allvariables = Environment.GetEnvironmentVariables();
-            
+
             services.AddCors();
             services.AddMvc().AddJsonOptions(options =>
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
@@ -52,7 +53,6 @@ namespace ASP.NET_Core_Webapp
             }
             if (env.IsProduction())
             {
-                //Debugger.Launch();
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseSqlServer(configuration.GetConnectionString("environmentString"))
                         .EnableSensitiveDataLogging(true));
@@ -95,7 +95,12 @@ namespace ASP.NET_Core_Webapp
                     });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, AuthService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IGoogleSheetService, GoogleSheetService>();
+            services.AddScoped<HttpClient>();
+            services.AddHttpClient<GoogleSheetService>();
+            services.AddHttpClient<AuthService>();
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
@@ -121,7 +126,10 @@ namespace ASP.NET_Core_Webapp
             }).AddTestAuth(o => { });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddSingleton<IAuthService, MockAuthService>();
+            services.AddScoped<IAuthService, MockAuthService>();
+            services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
+            services.AddScoped<HttpClient>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
@@ -136,10 +144,10 @@ namespace ASP.NET_Core_Webapp
             if (env.IsProduction())
             {
                 Seed seedDataFromObject = new Seed(applicationContext, configuration);
-
                 seedDataFromObject.FillDatabaseFromObject();
-
             }
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseMvc(routes =>
             {
@@ -147,6 +155,7 @@ namespace ASP.NET_Core_Webapp
                     name: "default",
                     template: "{controller=Auth}/{action=Login}");
             });
+
 
             app.UseAuthentication();
             app.UseCors(x => x
