@@ -36,7 +36,7 @@ namespace ASP.NET_Core_Webapp
             this.configuration = builder.Build();
 
             this.env = environment;
-            this.configuration = config; 
+            this.configuration = config;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -104,6 +104,7 @@ namespace ASP.NET_Core_Webapp
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, GoogleSheetService>();
+            services.AddScoped<IPitchService, PitchService>();            
             services.AddScoped<HttpClient>();
             services.AddHttpClient<GoogleSheetService>();
             services.AddHttpClient<AuthService>();

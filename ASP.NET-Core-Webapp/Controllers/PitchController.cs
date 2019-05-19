@@ -16,12 +16,14 @@ namespace ASP.NET_Core_Webapp.Controllers
         ApplicationContext database;
         private SlackService slackService;
         private readonly IAuthService authService;
+        private IPitchService pitchService { get; set; }
 
-        public PitchController(ApplicationContext db, IAuthService authService, SlackService ss)
+        public PitchController(ApplicationContext db, IAuthService authService, SlackService ss, IPitchService ps)
         {
             this.database = db;
             this.authService = authService;
             this.slackService = ss;
+            this.pitchService = ps;
         }
 
         [Authorize("Bearer")]
@@ -37,23 +39,11 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpPost("pitches")]
         public async Task<IActionResult> CreateNewPitch([FromBody]SeedData.Pitch newPitch)
         {
-            List<Holder> holderList = new List<Holder>();
-            List<string> emailList = new List<string>();
-            string emailToAdd = String.Empty;
-            foreach (var holder in newPitch.holders)
-            {
-                emailToAdd = database.Users.FirstOrDefault(x => x.Name == holder.name).Email;
-                if (emailToAdd != null)
-                {
-                    emailList.Add(emailToAdd);
-                }
-            }
-
-            foreach (var email in emailList)
+            foreach (var email in pitchService.CreateEmailListFromPostedPitch(newPitch))
             {
                 await slackService.SendEmail(email, $"You have 1 new pitch! Pitch message: {newPitch.pitchMessage}");
             }
-            return Created("", new { messageSentTo = emailList });
+            return Created("", new { messageSentTo = pitchService.CreateEmailListFromPostedPitch(newPitch) });
         }
     }
 }
