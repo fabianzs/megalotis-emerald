@@ -14,11 +14,11 @@ namespace ASP.NET_Core_Webapp.Controllers
     public class PitchController : Controller
     {
         ApplicationContext database;
-        private SlackService slackService;
+        private ISlackService slackService;
         private readonly IAuthService authService;
         private IPitchService pitchService { get; set; }
 
-        public PitchController(ApplicationContext db, IAuthService authService, SlackService ss, IPitchService ps)
+        public PitchController(ApplicationContext db, IAuthService authService, ISlackService ss, IPitchService ps)
         {
             this.database = db;
             this.authService = authService;
@@ -37,7 +37,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         }
 
         [HttpPost("pitches")]
-        public async Task<IActionResult> CreateNewPitch([FromBody]SeedData.Pitch newPitch)
+        public async Task<IActionResult> SendEmailWhenPitchCreated([FromBody]SeedData.Pitch newPitch)
         {
             foreach (var email in pitchService.CreateEmailListFromPostedPitch(newPitch))
             {

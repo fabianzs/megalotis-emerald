@@ -1,4 +1,5 @@
 ﻿using ASP.NET_Core_Webapp.Helpers;
+using ASP.NET_Core_Webapp.Services;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -6,14 +7,14 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace ASP.NET_Core_Webapp.Services
+namespace ASP.NET_Core_Webapp.Mocks
 {
-    public class SlackService : ISlackService
+    public class MockSlackService : ISlackService
     {
         private readonly IConfiguration configuration;
         private readonly IHttpClientFactory httpClientFactory;
 
-        public SlackService(IConfiguration config, IHttpClientFactory httpCF)
+        public MockSlackService(IConfiguration config, IHttpClientFactory httpCF)
         {
             this.configuration = config;
             this.httpClientFactory = httpCF;
@@ -23,7 +24,7 @@ namespace ASP.NET_Core_Webapp.Services
         {
             var httpClient = httpClientFactory.CreateClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", configuration["SlackBotToken"]);
-            
+
             //Create an email user lookup request:
             var emailLookupRequest = new HttpRequestMessage(HttpMethod.Post, "https://slack.com/api/users.lookupByEmail");
 

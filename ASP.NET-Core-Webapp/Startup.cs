@@ -17,6 +17,7 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using ASP.NET_Core_Webapp.Mocks;
 
 namespace ASP.NET_Core_Webapp
 {
@@ -99,13 +100,13 @@ namespace ASP.NET_Core_Webapp
 
             services.AddScoped<IHelloService, HelloService>();
 
-            services.AddScoped<SlackService>();
+            services.AddScoped<ISlackService, SlackService>();
             services.AddHttpClient();
+            services.AddScoped<HttpClient>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, GoogleSheetService>();
             services.AddScoped<IPitchService, PitchService>();            
-            services.AddScoped<HttpClient>();
             services.AddHttpClient<GoogleSheetService>();
             services.AddHttpClient<AuthService>();
         }
@@ -136,6 +137,8 @@ namespace ASP.NET_Core_Webapp
             services.AddScoped<IAuthService, MockAuthService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
+            services.AddScoped<ISlackService, MockSlackService>();
+            services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<HttpClient>();
         }
 
