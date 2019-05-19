@@ -24,7 +24,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task Pitch_GetPitches_Return202()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");        
+            var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.Accepted, response.StatusCode);
         }
@@ -61,11 +61,14 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         {
             Debugger.Launch();
             var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
-            request.Content = new StringContent(await 
-                new StreamReader(@"C:\Users\laszl\Documents\Programozás\greenfox\megem_project\megalotis-emerald\ASP.NET-Core-Webapp.IntegrationTests\PitchPostTest.json").ReadToEndAsync(), 
-                Encoding.UTF8,
-                "application/json"
-                );
+            using (StreamReader sr = new StreamReader(@"C:\Users\laszl\Documents\Programozás\greenfox\megem_project\megalotis-emerald\ASP.NET-Core-Webapp.IntegrationTests\PitchPostTest.json"))
+            {
+                string contentLoad = await sr.ReadToEndAsync();
+                request.Content = new StringContent(contentLoad,
+                    Encoding.UTF8,
+                    "application/json"
+                    );
+            }
 
             var response = await testContext.Client.SendAsync(request);
 

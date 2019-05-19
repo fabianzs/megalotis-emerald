@@ -36,6 +36,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Accepted(pitches);
         }
 
+        [Authorize("Bearer")]
         [HttpPost("pitches")]
         public async Task<IActionResult> SendEmailWhenPitchCreated([FromBody]SeedData.Pitch newPitch)
         {
