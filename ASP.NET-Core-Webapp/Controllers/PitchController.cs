@@ -1,6 +1,5 @@
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
-using ASP.NET_Core_Webapp.Mocks;
 using ASP.NET_Core_Webapp.SeedData;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -20,12 +19,12 @@ namespace ASP.NET_Core_Webapp.Controllers
         private readonly ISlackService slackService;
         private readonly IPitchService pitchService;
 
-        public PitchController(ApplicationContext db, IAuthService authService)
+        public PitchController(ApplicationContext db, IAuthService authService, ISlackService ss, IPitchService ps)
         {
             this.database = db;
             this.authService = authService;
-            //this.slackService = ss;
-            //this.pitchService = ps;
+            this.slackService = ss;
+            this.pitchService = ps;
         }
 
         [Authorize("Bearer")]

@@ -9,13 +9,13 @@ namespace ASP.NET_Core_Webapp.Services
 {
     public class PitchService : IPitchService
     {
-        public ApplicationContext database { get; set; }
+        public ApplicationContext database;
         public PitchService(ApplicationContext ac)
         {
             this.database = ac;
         }
 
-        IList<string> IPitchService.CreateEmailListFromPostedPitch(SeedData.Pitch pitch)
+        public IList<string> CreateEmailListFromPostedPitch(SeedData.Pitch pitch)
         {
             List<Holder> holderList = new List<Holder>();
             List<string> emailList = new List<string>();
