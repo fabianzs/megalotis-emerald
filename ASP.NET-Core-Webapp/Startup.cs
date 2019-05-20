@@ -99,15 +99,13 @@ namespace ASP.NET_Core_Webapp
                     });
 
             services.AddScoped<IHelloService, HelloService>();
-
             services.AddScoped<ISlackService, SlackService>();
-            services.AddHttpClient();
             services.AddScoped<HttpClient>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, GoogleSheetService>();
-            services.AddScoped<IPitchService, PitchService>();            
-            services.AddHttpClient<GoogleSheetService>();
+            services.AddScoped<IPitchService, PitchService>();
+            services.AddHttpClient<IGoogleSheetService, GoogleSheetService>();
             services.AddHttpClient<AuthService>();
         }
 

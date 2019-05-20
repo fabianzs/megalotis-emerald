@@ -16,9 +16,9 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
     {
         private readonly TestContext testContext;
 
-        public PitchTest(TestContext testContext)
+        public PitchTest(TestContext tc)
         {
-            this.testContext = testContext;
+            this.testContext = tc;
         }
 
         [Fact]
@@ -59,7 +59,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task Pitch_PostNewPitch_ReturnOK()
         {
-            Debugger.Launch();
             var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
             using (StreamReader sr = new StreamReader(@"C:\Users\laszl\Documents\Programozás\greenfox\megem_project\megalotis-emerald\ASP.NET-Core-Webapp.IntegrationTests\PitchPostTest.json"))
             {
