@@ -1,20 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace ASP.NET_Core_Webapp.Controllers
 {
-    [Route("api")]
-    [ApiController]
     public class PitchController : Controller
     {
         private readonly ApplicationContext applicationContext;
@@ -22,14 +18,19 @@ namespace ASP.NET_Core_Webapp.Controllers
 
         public PitchController(ApplicationContext application, IAuthService authService)
         {
-            applicationContext = application;
             this.authService = authService;
+            this.applicationContext = application;
         }
 
+
+        [Authorize("Bearer")]
         [HttpGet("pitches")]
-        public Object GetPitch()
-        { 
-            return StatusCode(401, new { error = "Unauthorizied" });
+        public IActionResult GetPitch()
+        {
+            string openId = authService.GetOpenIdFromJwtToken(Request);
+            var user = applicationContext.Users.Include(u => u.Pitches).FirstOrDefault(u => u.OpenId == openId);
+            var pitches = user.Pitches.Select(x => new { x.PitchId, x.TimeStamp, x.PitchedLevel, x.PitchMessage }).ToList();
+            return Accepted(pitches);
         }
 
         [Authorize("Bearer")]
@@ -51,8 +52,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Unauthorized(new { error = "Unauthorizied" });
         }
        
-        // notificiton-hoz: elfodagva-> ha a user pitchének a holderében a rewiwerek statusa true;
-        // servicebe ksizervezni a logikát, satrtup ba is meghívni
         [Authorize("Bearer")]
         [HttpPut("pitch")]
         public IActionResult EditPitch(Pitch pitch) {

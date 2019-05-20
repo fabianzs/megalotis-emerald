@@ -9,9 +9,13 @@ namespace ASP.NET_Core_Webapp.Entities
     {
         public long ReviewId { get; set; }
         public string Message { get; set; }
-        public bool Status { get; set; }
+        public bool? Status { get; set; }
         public User User { get; set; }
         public Pitch Pitch { get; set; }
+
+        public Review()
+        {
+        }
 
         public Review(string message, bool status)
         {

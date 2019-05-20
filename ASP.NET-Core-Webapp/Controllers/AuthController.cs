@@ -55,7 +55,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         }
 
         [Authorize("Bearer")]
-        [HttpGet("test")]
+        [HttpGet("heartbeat")]
         public IActionResult Test()
         {
             return Ok("You are authorized");

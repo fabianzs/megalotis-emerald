@@ -18,6 +18,7 @@ namespace ASP.NET_Core_Webapp.Entities
 
         public Pitch()
         {
+            TimeStamp = DateTime.Now;
             this.Holders = new List<Review>();
         }
 
