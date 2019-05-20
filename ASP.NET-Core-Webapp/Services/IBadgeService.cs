@@ -10,5 +10,9 @@ namespace ASP.NET_Core_Webapp.Services
     public interface IBadgeService
     {
         Dictionary<string, List<MyBadgeDTO>> GetMyBadges(string openId);
+        void CheckBadgeDTO(BadgeDTO badgeDTO);
+        void CreateBadge(BadgeDTO badgeDTO);
+        BadgeLevel CreateBadgeLevel(BadgeLevelDTO badgeLevelDTO);
+        UserLevel CreateUserLevel(BadgeLevel newBadgeLevel, string holder);        
     }
 }
