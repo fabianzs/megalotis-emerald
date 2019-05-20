@@ -22,7 +22,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             this.applicationContext = application;
         }
 
-
         [Authorize("Bearer")]
         [HttpGet("pitches")]
         public IActionResult GetPitch()
