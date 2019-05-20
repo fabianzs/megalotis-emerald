@@ -19,6 +19,22 @@ namespace ASP.NET_Core_Webapp.Services
             this.applicationContext = applicationContext;
         }
 
+        public Dictionary<string, List<MyBadgeDTO>> GetMyBadges(string openId)
+        {
+            User user = applicationContext.Users
+                                            .Include(u => u.UserLevels)
+                                            .ThenInclude(ul => ul.BadgeLevel)
+                                            .ThenInclude(bl => bl.Badge)
+                                            .FirstOrDefault(u => u.OpenId == openId);
+            if(user == null)
+            {
+                throw new UserNotFoundException();
+            };
+
+            List<MyBadgeDTO> myBadges = user.UserLevels.Select(ul => new MyBadgeDTO(ul.BadgeLevel.Badge.Name, ul.BadgeLevel.Level)).ToList();
+            return new Dictionary<string, List<MyBadgeDTO>>() { { "badges", myBadges } };
+        }
+        
         public void CheckBadgeDTO(BadgeDTO badgeDTO)
         {
             if (badgeDTO == null)

@@ -61,7 +61,8 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         }
 
         [Fact]
-        public async Task PostBadges_NotAllFieldFilledLevelsIsMissing_ShouldReturn401WithBody()
+
+        public async Task PostBadges_NotAllFieldFilledLevelsIsMissing_ShouldReturn403WithBody()
         {
             BadgeDTO badge = new BadgeDTO()
             {
@@ -76,8 +77,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             };
 
             var response = await testContext.Client.SendAsync(request);
-            Assert.Equal("{\"Error\":\"Please provide all fields.\"}", response.Content.ReadAsStringAsync().Result);
-
+            Assert.Equal("{\"error\":\"Please provide all fields.\"}", response.Content.ReadAsStringAsync().Result);
         }
     }
 }
