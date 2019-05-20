@@ -28,7 +28,6 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult MyBadges()
         {
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            //InitializeSampleDb(openId);
             return Ok(badgeService.GetMyBadges(openId));
         }
 
@@ -48,22 +47,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             applicationContext.Badges.Add(badgeDTO.CreateBadge(applicationContext, badgeDTO));
             applicationContext.SaveChanges();
             return Created("/badges", new { message = "Success" });
-        }
-
-        public void InitializeSampleDb(string openId)
-        {
-            User user = applicationContext.Users.FirstOrDefault(u => u.OpenId == openId);
-            UserLevel userlevel1 = new UserLevel() { BadgeLevel = new BadgeLevel() { Level = 2, Description = "I am an upper-intermediate speaker", Badge = new Badge("English speaker") }, User = user };
-            UserLevel userlevel2 = new UserLevel() { BadgeLevel = new BadgeLevel() { Level = 3, Description = "I can write some working code", Badge = new Badge("Java developer") }, User = user };
-            UserLevel userlevel3 = new UserLevel() { BadgeLevel = new BadgeLevel() { Level = 1, Description = "I easily freak out", Badge = new Badge("Stress management") }, User = user };
-            user.UserLevels = new List<UserLevel>
-            {
-                userlevel1,
-                userlevel2,
-                userlevel3
-            };
-            applicationContext.Users.Update(user);
-            applicationContext.SaveChanges();
         }
     }
 }
