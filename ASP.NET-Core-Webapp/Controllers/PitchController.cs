@@ -28,6 +28,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult CreateNewPitch(Pitch newPitch)
         {
                 return Created("", new { message = "Success" });
+
         }
     }
 }
