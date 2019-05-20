@@ -26,7 +26,7 @@ namespace ASP.NET_Core_Webapp
         private readonly IConfiguration configuration;
         private readonly IHostingEnvironment env;
 
-        public Startup(IHostingEnvironment environment, IConfiguration config)
+        public Startup(IHostingEnvironment environment)
         {
             this.env = environment;
             var builder = new ConfigurationBuilder()

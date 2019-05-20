@@ -1,4 +1,5 @@
 using ASP.NET_Core_Webapp.Data;
+using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.SeedData;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;

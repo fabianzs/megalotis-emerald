@@ -1,7 +1,4 @@
 ﻿using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
