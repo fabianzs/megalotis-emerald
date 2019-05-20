@@ -30,6 +30,8 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task CreateNewPitchSuccessTest()
         {
+            User user = new User();
+
             Pitch pitch = new Pitch(new User(),new Badge(), 2,3, "Hello World! My English is bloody gorgeous.", Holders);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
@@ -45,7 +47,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
             var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json"));
 
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Fact]

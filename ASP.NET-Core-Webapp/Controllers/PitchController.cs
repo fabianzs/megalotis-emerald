@@ -48,6 +48,10 @@ namespace ASP.NET_Core_Webapp.Controllers
                 applicationContext.SaveChanges();
                 return Created("", new { message = "Success" });
             }
+            else if (newPitch.Equals(null))
+            {
+                return NotFound(new { error = "NotFound" });
+            }
             return Unauthorized(new { error = "Unauthorizied" });
         }
        
