@@ -22,7 +22,7 @@ namespace ASP.NET_Core_Webapp.Entities
             this.Holders = new List<Review>();
         }
 
-        public Pitch(User user, Badge badge, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)
+        public Pitch(Badge badge, int oldLevel, int pitchedLevel, string pitchMessage, ICollection<Review> holders)
         {
             TimeStamp = DateTime.Now;
             PitchedLevel = pitchedLevel;

@@ -22,5 +22,10 @@ namespace ASP.NET_Core_Webapp.Entities
             this.Message = message;
             this.Status = status;
         }
+
+        public Review(User user)
+        {
+            this.User = user;
+        }
     }
 }

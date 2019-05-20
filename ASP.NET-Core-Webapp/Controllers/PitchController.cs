@@ -39,11 +39,12 @@ namespace ASP.NET_Core_Webapp.Controllers
           
             string openId = authService.GetOpenIdFromJwtToken(Request);
 
-            User user = applicationContext.Users.Include(a => a.Pitches).FirstOrDefault(u => u.OpenId == openId);
-            List<long> userPitchId = user.Pitches.Select(p => p.PitchId).ToList();
+            User user = applicationContext.Users.Include(a => a.Pitches).ThenInclude(p=>p.Badge).FirstOrDefault(u => u.OpenId == openId);
+            List<string> badgeNames = user.Pitches.Select(p => p.Badge.Name).ToList();
 
-            if (!applicationContext.Pitches.Select(e => e.PitchId).Contains(newPitch.PitchId) && !userPitchId.Contains(newPitch.PitchId) && !newPitch.Equals(null))
+            if (!badgeNames.Contains(newPitch.Badge.Name) && !newPitch.Equals(null))
             {
+                newPitch.User = user;
                 applicationContext.Add(newPitch);
                 applicationContext.SaveChanges();
                 return Created("", new { message = "Success" });
@@ -52,7 +53,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             {
                 return NotFound(new { error = "NotFound" });
             }
-            return Unauthorized(new { error = "Unauthorizied" });
+            return NotFound(new { error = "Unauthorizied" });
         }
        
         [Authorize("Bearer")]
