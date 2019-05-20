@@ -42,7 +42,7 @@ namespace ASP.NET_Core_Webapp.Helpers
                 statusCode = (int)HttpStatusCode.NotFound;
                 errorMessage.Error = "The provided pitch does not exist.";
             }
-            else if(exception is NotAllowedToReviewException)
+            else if (exception is NotAllowedToReviewException)
             {
                 statusCode = (int)HttpStatusCode.Unauthorized;
                 errorMessage.Error = "You are not allowed to give a review, because you either lack the necessary badge, or you are trying to review your own pitch.";
@@ -65,7 +65,7 @@ namespace ASP.NET_Core_Webapp.Helpers
             else
             {
                 statusCode = (int)HttpStatusCode.InternalServerError;
-                errorMessage.Error = exception.Message;
+                errorMessage.Error = "Ther error is not specified.";
             }
 
             context.Response.ContentType = "application/json";
@@ -75,6 +75,7 @@ namespace ASP.NET_Core_Webapp.Helpers
         }
     }
 }
+
 
 
 

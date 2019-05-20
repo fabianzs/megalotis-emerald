@@ -35,9 +35,6 @@ namespace ASP.NET_Core_Webapp
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true).AddUserSecrets<Startup>()
                 .AddEnvironmentVariables();
             this.configuration = builder.Build();
-
-            this.env = environment;
-            this.configuration = config;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -99,14 +96,14 @@ namespace ASP.NET_Core_Webapp
                     });
 
             services.AddScoped<IHelloService, HelloService>();
-            services.AddScoped<ISlackService, SlackService>();
-            services.AddScoped<HttpClient>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, GoogleSheetService>();
-            services.AddScoped<IPitchService, PitchService>();
-            services.AddHttpClient<IGoogleSheetService, GoogleSheetService>();
+            services.AddScoped<HttpClient>();
+            services.AddHttpClient<GoogleSheetService>();
             services.AddHttpClient<AuthService>();
+            services.AddScoped<ISlackService, SlackService>();
+            services.AddScoped<IPitchService, PitchService>();
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
