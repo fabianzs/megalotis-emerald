@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.Helpers.Exceptions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -37,7 +33,7 @@ namespace ASP.NET_Core_Webapp.Helpers
 
             CustomErrorMessage errorMessage = new CustomErrorMessage();
             int statusCode = 0;
-            if (exception is PitchIsNullException)
+            if(exception is PitchIsNullException)
             {
                 statusCode = (int)HttpStatusCode.NotFound;
                 errorMessage.Error = "The provided pitch does not exist.";
@@ -47,20 +43,35 @@ namespace ASP.NET_Core_Webapp.Helpers
                 statusCode = (int)HttpStatusCode.Unauthorized;
                 errorMessage.Error = "You are not allowed to give a review, because you either lack the necessary badge, or you are trying to review your own pitch.";
             }
-            else if (exception is ReviewIsNullException)
+            else if(exception is ReviewIsNullException)
             {
                 statusCode = (int)HttpStatusCode.NotFound;
                 errorMessage.Error = "The provided review does not exist.";
             }
-            else if (exception is InvalidPitchException)
+            else if(exception is InvalidPitchException)
             {
                 statusCode = (int)HttpStatusCode.BadRequest;
                 errorMessage.Error = "The review cannot be updated, it belongs to another pitch.";
             }
-            else if (exception is OtherUsersReviewException)
+            else if(exception is OtherUsersReviewException)
             {
                 statusCode = (int)HttpStatusCode.BadRequest;
                 errorMessage.Error = "The review cannot be updated, it belongs to another user.";
+            }
+            else if(exception is NoMessageBodyException)
+            {
+                statusCode = (int)HttpStatusCode.Forbidden;
+                errorMessage.Error = "No message body.";
+            }
+            else if(exception is MissingFieldsException)
+            {
+                statusCode = (int)HttpStatusCode.Forbidden;
+                errorMessage.Error = "Please provide all fields.";
+            }
+            else if(exception is UserNotFoundException)
+            {
+                statusCode = (int)HttpStatusCode.NotFound;
+                errorMessage.Error = "Unknown user";
             }
             else
             {
