@@ -40,7 +40,7 @@ namespace ASP.NET_Core_Webapp.Services
                 {
                     Version = spreadSheetBadge[0],
                     Name = spreadSheetBadge[1],
-                    Tag = spreadSheetBadge[2]
+                    Tag = spreadSheetBadge[2],
                 };
                 applictionContext.Add(badgeToAdd);
                 applictionContext.SaveChanges();

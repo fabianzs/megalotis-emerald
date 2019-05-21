@@ -19,7 +19,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task Pitch_GetPitches_Return202()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");        
+            var request = new HttpRequestMessage(HttpMethod.Get, "/pitches");
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.Accepted, response.StatusCode);
         }
