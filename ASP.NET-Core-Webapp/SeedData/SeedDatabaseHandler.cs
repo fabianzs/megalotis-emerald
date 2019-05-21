@@ -65,9 +65,12 @@ namespace ASP.NET_Core_Webapp.SeedData
                 {
                     foreach (var user in item.holders)
                     {
-                        Entities.User userToAddFromBadges = new Entities.User();
-                        userToAddFromBadges.Name = user;
-                        if (DataBase.Users.Where(x => x.Name == user).FirstOrDefault() == null)
+                        Entities.User userToAddFromBadges = new Entities.User
+                        {
+                            Name = user
+                        };
+
+                        if (DataBase.Users.Where(u => u.Name == user).FirstOrDefault() == null)
                         {
                             DataBase.Add(userToAddFromBadges);
                             DataBase.SaveChanges();

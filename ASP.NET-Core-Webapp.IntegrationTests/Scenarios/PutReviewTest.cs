@@ -24,8 +24,10 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task PutReview_NoBodyContent_ShouldReturn404()
         {
-            var request = new HttpRequestMessage(HttpMethod.Put, "/review/12");
-            request.Content = new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json");
+            var request = new HttpRequestMessage(HttpMethod.Put, "/review/12")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json")
+            };
 
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
@@ -35,8 +37,10 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         public async Task PutReview_AllFielsdFilledUserHasGivenReview_ShouldReturn200()
         {
             ReviewDTO review = new ReviewDTO() { Message = "testreview", Status = true, PitchId = 3 };
-            var request = new HttpRequestMessage(HttpMethod.Put, "/review/9");
-            request.Content = (new StringContent(JsonConvert.SerializeObject(review), Encoding.UTF8, "application/json"));
+            var request = new HttpRequestMessage(HttpMethod.Put, "/review/9")
+            {
+                Content = (new StringContent(JsonConvert.SerializeObject(review), Encoding.UTF8, "application/json"))
+            };
 
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -47,8 +51,10 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         {
             ReviewDTO review = new ReviewDTO() { Message = "testreview", Status = true, PitchId = 5 };
 
-            var request = new HttpRequestMessage(HttpMethod.Put, "/review/9");
-            request.Content = (new StringContent(JsonConvert.SerializeObject(review), Encoding.UTF8, "application/json"));
+            var request = new HttpRequestMessage(HttpMethod.Put, "/review/9")
+            {
+                Content = (new StringContent(JsonConvert.SerializeObject(review), Encoding.UTF8, "application/json"))
+            };
 
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -59,8 +65,10 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         {
             ReviewDTO review = new ReviewDTO() { Message = "testreview", Status = true, PitchId = 5 };
 
-            var request = new HttpRequestMessage(HttpMethod.Put, "/review/15");
-            request.Content = new StringContent(JsonConvert.SerializeObject(review), Encoding.UTF8, "application/json");
+            var request = new HttpRequestMessage(HttpMethod.Put, "/review/15")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(review), Encoding.UTF8, "application/json")
+            };
 
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
