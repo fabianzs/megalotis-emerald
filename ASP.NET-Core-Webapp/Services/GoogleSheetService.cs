@@ -42,7 +42,7 @@ namespace ASP.NET_Core_Webapp.Services
 
                 if (badegeToUpdate == null)
                 {
-                    CreateBadege(spreadSheetBadge);
+                    CreateBadge(spreadSheetBadge);
                 }
                 else
                 {
@@ -51,7 +51,7 @@ namespace ASP.NET_Core_Webapp.Services
             }
         }
 
-        public void CreateBadege(string[] badgeFields)
+        public void CreateBadge(string[] badgeFields)
         {
             Badge badgeToAdd = MakeBadgeFromArrayOfFields(badgeFields);
             applictionContext.Add(badgeToAdd);
