@@ -59,7 +59,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         public async Task Pitch_PostNewPitch_ReturnOK()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
-            using (StreamReader sr = new StreamReader(@"C:\Users\laszl\Documents\Programozás\greenfox\megem_project\megalotis-emerald\ASP.NET-Core-Webapp.IntegrationTests\PitchPostTest.json"))
+            using (StreamReader sr = new StreamReader("../../../PitchPostTest.json"))
             {
                 string contentLoad = await sr.ReadToEndAsync();
                 request.Content = new StringContent(contentLoad,
