@@ -35,7 +35,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             {
                 if(applicationContext.Users.FirstOrDefault(u => u.OpenId == tokenInfo.sub) == null)
                 {
-                    User user = new User
+                    Entities.User user = new Entities.User
                     {
                         Name = $"{tokenInfo.family_name} {tokenInfo.given_name}",
                         Picture = tokenInfo.picture,

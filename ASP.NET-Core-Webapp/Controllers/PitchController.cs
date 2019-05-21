@@ -1,22 +1,30 @@
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
+using ASP.NET_Core_Webapp.SeedData;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
     public class PitchController : Controller
     {
-        ApplicationContext app;
+        ApplicationContext database;
         private readonly IAuthService authService;
+        private readonly ISlackService slackService;
+        private readonly IPitchService pitchService;
 
-        public PitchController(ApplicationContext app, IAuthService authService)
+        public PitchController(ApplicationContext db, IAuthService authService, ISlackService ss, IPitchService ps)
         {
-            this.app = app;
+            this.database = db;
             this.authService = authService;
+            this.slackService = ss;
+            this.pitchService = ps;
         }
 
         [Authorize("Bearer")]
@@ -24,16 +32,20 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult GetPitch()
         {
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            var user = app.Users.Include(u => u.Pitches).FirstOrDefault(u => u.OpenId == openId);
+            var user = database.Users.Include(u => u.Pitches).FirstOrDefault(u => u.OpenId == openId);
             var pitches = user.Pitches.Select(x => new { x.PitchId, x.TimeStamp, x.PitchedLevel, x.PitchMessage }).ToList();
             return Accepted(pitches);
         }
 
+        [Authorize("Bearer")]
         [HttpPost("pitches")]
-        public IActionResult CreateNewPitch(Pitch newPitch)
+        public async Task<IActionResult> SendEmailWhenPitchCreated([FromBody]SeedData.Pitch newPitch)
         {
-                return Created("", new { message = "Success" });
+            foreach (var email in pitchService.CreateEmailListFromPostedPitch(newPitch))
+            {
+                await slackService.SendEmail(email, $"You have 1 new pitch! Pitch message: {newPitch.pitchMessage}");
+            }
+            return Created("", new { messageSentTo = pitchService.CreateEmailListFromPostedPitch(newPitch) });
         }
     }
 }
-
