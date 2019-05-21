@@ -131,8 +131,8 @@ namespace ASP.NET_Core_Webapp
             services.AddScoped<IAuthService, MockAuthService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
-            services.AddScoped<SlackService>();
-            services.AddScoped<PitchService>();
+            services.AddScoped<ISlackService,SlackService>();
+            services.AddScoped<IPitchService,PitchService>();
             services.AddScoped<HttpClient>();
             services.AddHttpClient<SlackService>();
         }
