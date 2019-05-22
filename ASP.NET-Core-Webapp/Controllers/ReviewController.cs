@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.DTO;
 using ASP.NET_Core_Webapp.Helpers;
 using ASP.NET_Core_Webapp.Services;
@@ -18,7 +19,7 @@ namespace ASP.NET_Core_Webapp.Controllers
         }
 
         [HttpPost("review")]
-        public IActionResult PostReview([FromBody]ReviewDTO reviewDTO)
+        public async Task<IActionResult> PostReview([FromBody]ReviewDTO reviewDTO)
         {
             if (reviewDTO == null)
             {
@@ -30,12 +31,12 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return NotFound(new { error = "Please provide all fields" });
             }
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            reviewService.CreateReview(openId, reviewDTO);
+            await reviewService.CreateReview(openId, reviewDTO);
             return Created("/review", new { message = "Success" });
         }
 
         [HttpPut("review/{id}")]
-        public IActionResult PutReview([FromRoute] long id, [FromBody] ReviewDTO reviewDTO)
+        public async Task<IActionResult> PutReview([FromRoute] long id, [FromBody] ReviewDTO reviewDTO)
         {
             if (reviewDTO == null)
             {
@@ -47,7 +48,7 @@ namespace ASP.NET_Core_Webapp.Controllers
                 return NotFound(new { error = "Please provide all fields" });
             }
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            reviewService.UpdateReview(openId, reviewDTO, id);
+            await reviewService.UpdateReview(openId, reviewDTO, id);
             return Ok(new { message = "Success" });
         }
     }
