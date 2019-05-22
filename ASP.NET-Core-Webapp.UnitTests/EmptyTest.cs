@@ -30,5 +30,13 @@ namespace ASP.NET_Core_Webapp.UnitTests
             int result = 15;
             Assert.Equal(result, n);
         }
+
+        [Fact]
+        public void Simpletest4()
+        {
+            int n = 150;
+            int result = 150;
+            Assert.Equal(result, n);
+        }
     }
 }
