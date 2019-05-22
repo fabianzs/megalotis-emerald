@@ -36,7 +36,13 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "/mybadges");
             HttpResponseMessage response = await testContext.Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
-            Assert.Equal("{\"badges\":[{\"name\":\"Process improver/initator\",\"level\":1}]}", response.Content.ReadAsStringAsync().Result);
+            Assert.Equal("{\"badges\":" +
+                                    "[{\"name\":\"English speaker\",\"level\":0}," +
+                                    "{\"name\":\"Process improver/initator\",\"level\":1}," +
+                                    "{\"name\":\"Feedback receiver\",\"level\":0}," +
+                                    "{\"name\":\"Feedback giver\",\"level\":0}," +
+                                    "{\"name\":\"Programming\",\"level\":2}," +
+                                    "{\"name\":\"Programmer\",\"level\":0}]}", response.Content.ReadAsStringAsync().Result);
         }
 
         [Fact]
@@ -44,32 +50,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "/mybadges");
             HttpResponseMessage response = await testContext.Client.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType.ToString());
-        }
-
-        [Fact]
-        public async Task MyBadgesMock_Should_Return_ReturnOk()
-        {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "/mybadgesmock");
-            HttpResponseMessage response = await testContext.Client.SendAsync(request);
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        }
-
-        [Fact]
-        public async Task MyBadgesMock_Should_Return_Badge_In_Proper_Format()
-        {
-            var response = await testContext.Client.GetAsync("/mybadgesmock");
-            response.EnsureSuccessStatusCode();
-            Assert.Equal("{\"badges\":[{\"badgeId\":0,\"version\":null,\"name\":\"test\",\"tag\":null,\"levels\":[]}]}",
-                response.Content.ReadAsStringAsync().Result);
-        }
-
-        [Fact]
-        public async Task MyBadgesMock_ContentTypeJson_Success()
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, "/mybadgesmock");
-            var response = await testContext.Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
             Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType.ToString());
         }

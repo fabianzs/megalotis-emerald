@@ -1,0 +1,25 @@
+﻿{
+  "username": "berei.daniel",
+  "badgeName": "English speaker",
+  "oldLevel": "2",
+  "pitchedLevel": "3",
+  "pitchMessage": "I was working abroad for six years, so I can speak english very well. Pls improve my badge level to 3.",
+  "holders": [
+    {
+      "name": "sandor.vass",
+      "message": "Yes, you are able to speak english",
+      "pitchStatus": true
+    },
+    {
+      "name": "balazs.barna",
+      "message": "Please improve your english",
+      "pitchStatus": false
+    },
+    {
+      "name": "sandor.benedek",
+      "message": "null",
+      "pitchStatus": true
+    }
+  ],
+  "timestamp": "2018-11-29 13:10:47"
+}
