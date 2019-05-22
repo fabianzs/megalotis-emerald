@@ -83,6 +83,10 @@ namespace ASP.NET_Core_Webapp.Services
             List<BadgeLevel> levels = new List<BadgeLevel>();
             for (int actualColumn = 3; actualColumn < spreadSheetBadge.Length; actualColumn++)
             {
+                var badgeLevel2 = applictionContext.BadgeLevels
+                    .FirstOrDefault(p =>
+                    spreadSheetBadge[actualColumn].Equals(p.Description, StringComparison.InvariantCultureIgnoreCase));
+
                 BadgeLevel badgeLevel = new BadgeLevel
                 {
                     Description = spreadSheetBadge[actualColumn],
