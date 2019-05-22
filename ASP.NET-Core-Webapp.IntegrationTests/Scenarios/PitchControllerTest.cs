@@ -1,4 +1,5 @@
-﻿using ASP.NET_Core_Webapp.Entities;
+﻿using ASP.NET_Core_Webapp.DTO;
+using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -30,9 +31,8 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task CreateNewPitch_Should_Return201()
         {
-           
-            Pitch pitch = new Pitch(new Badge("szar"), 2,3, "Ez a teszt tuti szar", Holders);
 
+            PitchDTO pitch = new PitchDTO() { BadgeName ="Hamburger destroyer", OldLVL ="2", PitchedLVL= 3, PitchMessage ="test" };
             var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
             var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
             
@@ -80,6 +80,5 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
-
     }
 }

@@ -49,11 +49,7 @@ namespace ASP.NET_Core_Webapp.Controllers
                 applicationContext.SaveChanges();
                 return Created("", new { message = "Success" });
             }
-            else if (newPitch.Equals(null))
-            {
-                return NotFound(new { error = "NotFound" });
-            }
-            return NotFound(new { error = "Unauthorizied" });
+            return NotFound(new { error = "NotFound" });
         }
        
         [Authorize("Bearer")]
@@ -64,7 +60,8 @@ namespace ASP.NET_Core_Webapp.Controllers
         
             User user = applicationContext.Users.Include(a => a.Pitches).FirstOrDefault(u => u.OpenId == openId);
             List<long> userPitchId = user.Pitches.Select(p => p.PitchId).ToList();
-           
+            pitch.User = user;
+
             if (applicationContext.Pitches.Select(e => e.PitchId).Contains(pitch.PitchId) && userPitchId.Contains(pitch.PitchId) ) {
                 applicationContext.Update(pitch);
                 applicationContext.SaveChanges();
