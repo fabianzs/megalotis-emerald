@@ -369,3 +369,6 @@ ASALocalRun/
 
 # MSBuild Binary and Structured Log
 *.binlog
+
+# Test Coverage
+BuildReports/
