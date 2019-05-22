@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ASP.NET_Core_Webapp.Data;
+using ASP.NET_Core_Webapp.DTO;
 using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -34,15 +35,18 @@ namespace ASP.NET_Core_Webapp.Controllers
 
         [Authorize("Bearer")]
         [HttpPost("pitches")]
-        public IActionResult CreateNewPitch(Pitch newPitch)
+        public IActionResult CreateNewPitch([FromBody]PitchDTO pitchDTO)
         {
-          
+
+            Pitch newPitch = PitchDTO.CreatePitch(applicationContext, pitchDTO);
+            
+            
             string openId = authService.GetOpenIdFromJwtToken(Request);
 
             User user = applicationContext.Users.Include(a => a.Pitches).ThenInclude(p=>p.Badge).FirstOrDefault(u => u.OpenId == openId);
             List<string> badgeNames = user.Pitches.Select(p => p.Badge.Name).ToList();
 
-            if (!badgeNames.Contains(newPitch.Badge.Name) && !newPitch.Equals(null))
+            if (!badgeNames.Contains(newPitch.Badge.Name) && newPitch!=null)
             {
                 newPitch.User = user;
                 applicationContext.Add(newPitch);

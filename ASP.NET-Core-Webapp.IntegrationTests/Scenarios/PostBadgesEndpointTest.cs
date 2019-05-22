@@ -41,7 +41,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             BadgeDTO badge = new BadgeDTO() { Name = "test", Tag = "test", Version = "test" };
             List<String> holders = new List<String>() { "Osztertág Szabolcs", "Zsófia Eszter Fábián" };
             BadgeLevelDTO testlevel = new BadgeLevelDTO() { Description = "test" };
-            testlevel.Holders = holders;
+            testlevel.Holders = holders;                                                                                                   
             badge.Levels.Add(testlevel);
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/badges");

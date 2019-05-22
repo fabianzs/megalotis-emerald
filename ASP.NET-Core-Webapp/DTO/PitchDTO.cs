@@ -11,7 +11,7 @@ namespace ASP.NET_Core_Webapp.DTO
     public class PitchDTO
     {
         public string BadgeName { get; set; }
-        public string OldLVL { get; set; }
+        public int OldLVL { get; set; }
         public int PitchedLVL { get; set; }
         public string PitchMessage { get; set; }
         public virtual ICollection<String> Holders { get; set; }
@@ -21,7 +21,7 @@ namespace ASP.NET_Core_Webapp.DTO
             Holders = new List<String>();
         }
 
-        public Pitch CreatePitch(ApplicationContext applicationContext, PitchDTO pitchDTO)
+        public static Pitch CreatePitch(ApplicationContext applicationContext, PitchDTO pitchDTO)
         {
             if (applicationContext == null)
             {
@@ -30,10 +30,10 @@ namespace ASP.NET_Core_Webapp.DTO
 
             Pitch pitch = new Pitch()
             {
-                Badge = applicationContext.Badges.FirstOrDefault(b => b.Name == pitchDTO.BadgeName && b.Version == pitchDTO.OldLVL),
+                Badge = applicationContext.Badges.FirstOrDefault(b => b.Name == pitchDTO.BadgeName),
+                BadgeLevel = applicationContext.BadgeLevels.FirstOrDefault(b=>b.Level== pitchDTO.OldLVL),
                 PitchMessage = pitchDTO.PitchMessage,
-                PitchedLevel = pitchDTO.PitchedLVL,
-              
+                PitchedLevel = pitchDTO.PitchedLVL,            
         };
             return pitch;
         }   

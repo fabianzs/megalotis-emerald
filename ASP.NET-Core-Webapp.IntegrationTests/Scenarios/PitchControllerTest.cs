@@ -32,9 +32,9 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         public async Task CreateNewPitch_Should_Return201()
         {
 
-            PitchDTO pitch = new PitchDTO() { BadgeName ="Hamburger destroyer", OldLVL ="2", PitchedLVL= 3, PitchMessage ="test" };
-            var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
-            var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
+            PitchDTO pitch = new PitchDTO() { BadgeName = "English speaker", OldLVL =2, PitchedLVL= 3, PitchMessage ="test" };
+            var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
+            var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
             
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
