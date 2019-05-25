@@ -41,7 +41,13 @@ namespace ASP.NET_Core_Webapp.SeedData
 
             for (int i = 0; i < userList.Length; i++)
             {
-                Entities.User userToAdd = new Entities.User() { Name = userList[i].name, Picture = userList[i].pic, OpenId = userList[i].tokenAuth, Email=userList[i].email };
+                Entities.User userToAdd = new Entities.User()
+                {
+                    Name = userList[i].name,
+                    Picture = userList[i].pic,
+                    OpenId = userList[i].tokenAuth,
+                    Email =userList[i].email
+                };
                 
                 DataBase.Add(userToAdd);
                 DataBase.SaveChanges();
@@ -60,7 +66,14 @@ namespace ASP.NET_Core_Webapp.SeedData
                     };
                     levelList.Add(badgeLevel);
                 }
-                Entities.Badge badgeToAdd = new Entities.Badge() { Name = badgesList[i].name, Tag = badgesList[i].tag, Version = badgesList[i].version, Levels = levelList };
+
+                Entities.Badge badgeToAdd = new Entities.Badge()
+                { 
+                    Name = badgesList[i].name,
+                    Tag = badgesList[i].tag,
+                    Version = badgesList[i].version,
+                    Levels = levelList
+                };
                 DataBase.Add(badgeToAdd);
                 DataBase.SaveChanges();
 
@@ -104,7 +117,9 @@ namespace ASP.NET_Core_Webapp.SeedData
                 DataBase.SaveChanges();
 
                 Entities.Badge badgeToAdd;
-                badgeToAdd = DataBase.Badges.Include(b => b.Levels).Where(b => b.Name.ToLower().Contains(pitchList[i].badgeName.ToLower())).FirstOrDefault();
+                badgeToAdd = DataBase.Badges
+                    .Include(b => b.Levels)
+                    .Where(b => b.Name.ToLower().Contains(pitchList[i].badgeName.ToLower())).FirstOrDefault();
 
                 if (badgeToAdd == null)
                 {
@@ -117,7 +132,9 @@ namespace ASP.NET_Core_Webapp.SeedData
                 pitchToAdd.PitchedLevel = Int32.Parse(pitchList[i].pitchedLevel);
                 pitchToAdd.Badge = badgeToAdd;
 
-                Entities.BadgeLevel oldBadgeLevel = DataBase.BadgeLevels.Include(bl => bl.Badge).Where(bl => bl.Badge.Name.ToLower().Contains(pitchList[i].badgeName.ToLower()) && bl.Level == Int32.Parse(pitchList[i].oldLevel)).FirstOrDefault();
+                Entities.BadgeLevel oldBadgeLevel = DataBase.BadgeLevels
+                    .Include(bl => bl.Badge).Where(bl => bl.Badge.Name.ToLower()
+                    .Contains(pitchList[i].badgeName.ToLower()) && bl.Level == Int32.Parse(pitchList[i].oldLevel)).FirstOrDefault();
                 if (oldBadgeLevel == null)
                 {
                     oldBadgeLevel = new Entities.BadgeLevel() { Level = Int32.Parse(pitchList[i].oldLevel) };
@@ -129,7 +146,10 @@ namespace ASP.NET_Core_Webapp.SeedData
                 }
                 pitchToAdd.BadgeLevel = oldBadgeLevel;
 
-                Entities.BadgeLevel pitchedBadgeLevel = DataBase.BadgeLevels.Include(bl => bl.Badge).Where(bl => bl.Badge.Name.ToLower().Contains(pitchList[i].badgeName.ToLower()) && bl.Level == Int32.Parse(pitchList[i].pitchedLevel)).FirstOrDefault();
+                Entities.BadgeLevel pitchedBadgeLevel = DataBase.BadgeLevels
+                    .Include(bl => bl.Badge).Where(bl => bl.Badge.Name.ToLower()
+                    .Contains(pitchList[i].badgeName.ToLower()) && bl.Level == Int32.Parse(pitchList[i].pitchedLevel)).FirstOrDefault();
+                //itt szuletnek
                 if (pitchedBadgeLevel == null)
                 {
                     pitchedBadgeLevel = new Entities.BadgeLevel() { Level = Int32.Parse(pitchList[i].pitchedLevel) };
@@ -144,8 +164,13 @@ namespace ASP.NET_Core_Webapp.SeedData
                     Review review = new Review(holderReview.message, holderReview.pitchStatus);
                     pitchToAdd.Holders.Add(review);
                     //DataBase.SaveChanges();
-                    Entities.User reviewerUser = DataBase.Users.Include(u => u.UserLevels).ThenInclude(ul => ul.BadgeLevel).ThenInclude(bl => bl.Badge).Where(u => u.Name == holderReview.name).FirstOrDefault();
-                    if (reviewerUser.UserLevels.Where(ul => ul.BadgeLevel.Badge.Name.ToLower().Contains(badgeToAdd.Name.ToLower())).FirstOrDefault() == null)
+                    Entities.User reviewerUser = DataBase.Users.Include(u => u.UserLevels)
+                        .ThenInclude(ul => ul.BadgeLevel)
+                        .ThenInclude(bl => bl.Badge)
+                        .Where(u => u.Name == holderReview.name).FirstOrDefault();
+
+                    if (reviewerUser.UserLevels.Where(ul => ul.BadgeLevel.Badge.Name.ToLower()
+                    .Contains(badgeToAdd.Name.ToLower())).FirstOrDefault() == null)
                     {
                         Entities.BadgeLevel newBadgeLevel = new BadgeLevel() { Level = 0, Badge = badgeToAdd };
                         UserLevel reviewerLevel = new UserLevel() { User = reviewerUser, BadgeLevel = newBadgeLevel };
@@ -171,7 +196,8 @@ namespace ASP.NET_Core_Webapp.SeedData
                         {
                             UserLevel userLevel = new UserLevel();
 
-                            BadgeLevel badgeLevelNew = DataBase.BadgeLevels.Where(x => x.Description == $"Lvl{level.level}:{level.description}").FirstOrDefault();
+                            BadgeLevel badgeLevelNew = DataBase.BadgeLevels
+                                .Where(x => x.Description == $"Lvl{level.level}:{level.description}").FirstOrDefault();
 
                             userLevel.User = DataBase.Users.Where(x => x.Name == user).FirstOrDefault();
                             userLevel.BadgeLevel = badgeLevelNew;
