@@ -146,18 +146,6 @@ namespace ASP.NET_Core_Webapp.SeedData
                 }
                 pitchToAdd.BadgeLevel = oldBadgeLevel;
 
-                Entities.BadgeLevel pitchedBadgeLevel = DataBase.BadgeLevels
-                    .Include(bl => bl.Badge).Where(bl => bl.Badge.Name.ToLower()
-                    .Contains(pitchList[i].badgeName.ToLower()) && bl.Level == Int32.Parse(pitchList[i].pitchedLevel)).FirstOrDefault();
-                //itt szuletnek
-                if (pitchedBadgeLevel == null)
-                {
-                    pitchedBadgeLevel = new Entities.BadgeLevel() { Level = Int32.Parse(pitchList[i].pitchedLevel) };
-                    pitchedBadgeLevel.Badge = badgeToAdd;
-                    DataBase.Add(pitchedBadgeLevel);
-                }
-                pitchToAdd.BadgeLevel = oldBadgeLevel;
-
                 // Add reviews:
                 foreach (var holderReview in pitchList[i].holders)
                 {
