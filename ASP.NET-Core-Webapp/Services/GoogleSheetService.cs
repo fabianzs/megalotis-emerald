@@ -85,7 +85,8 @@ namespace ASP.NET_Core_Webapp.Services
             {
                 var badgeLevel = applictionContext.BadgeLevels
                     .FirstOrDefault(p =>
-                    spreadSheetBadge[actualColumn].Equals(p.Description, StringComparison.InvariantCultureIgnoreCase));
+                    spreadSheetBadge[actualColumn].Replace(" ","")
+                    .Equals(p.Description, StringComparison.InvariantCultureIgnoreCase));
 
                 if (badgeLevel == null)
                 {

@@ -53,7 +53,11 @@ namespace ASP.NET_Core_Webapp.SeedData
                 List<BadgeLevel> levelList = new List<BadgeLevel>();
                 foreach (var item in badgesList[i].levels)
                 {
-                    BadgeLevel badgeLevel = new BadgeLevel() { Description = item.description, Level = item.level };
+                    BadgeLevel badgeLevel = new BadgeLevel()
+                    {
+                        Level = item.level,
+                        Description =$"Lvl{item.level}:{item.description}"
+                    };
                     levelList.Add(badgeLevel);
                 }
                 Entities.Badge badgeToAdd = new Entities.Badge() { Name = badgesList[i].name, Tag = badgesList[i].tag, Version = badgesList[i].version, Levels = levelList };
@@ -167,7 +171,7 @@ namespace ASP.NET_Core_Webapp.SeedData
                         {
                             UserLevel userLevel = new UserLevel();
 
-                            BadgeLevel badgeLevelNew = DataBase.BadgeLevels.Where(x => x.Description == level.description).FirstOrDefault();
+                            BadgeLevel badgeLevelNew = DataBase.BadgeLevels.Where(x => x.Description == $"Lvl{level.level}:{level.description}").FirstOrDefault();
 
                             userLevel.User = DataBase.Users.Where(x => x.Name == user).FirstOrDefault();
                             userLevel.BadgeLevel = badgeLevelNew;
