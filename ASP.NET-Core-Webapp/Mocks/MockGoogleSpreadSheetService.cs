@@ -34,17 +34,72 @@ namespace ASP.NET_Core_Webapp.Services
         public async Task FillUpDataBaseFromSpreadSheet()
         {
             SpreadSheet spreadSheet = JsonConvert.DeserializeObject<SpreadSheet>(await ReturnBadgesSpreadSheetContent());
+
             foreach (string[] spreadSheetBadge in spreadSheet.Values)
             {
-                Badge badgeToAdd = new Badge
+                var badegeToUpdate = applictionContext.Badges
+                  .FirstOrDefault(badge =>
+                  badge.Name.Equals(spreadSheetBadge[1], StringComparison.InvariantCultureIgnoreCase));
+
+                if (badegeToUpdate == null)
                 {
-                    Version = spreadSheetBadge[0],
-                    Name = spreadSheetBadge[1],
-                    Tag = spreadSheetBadge[2],
-                };
-                applictionContext.Add(badgeToAdd);
-                applictionContext.SaveChanges();
+                    CreateBadge(spreadSheetBadge);
+                }
+                else
+                {
+                    UpdateBadge(spreadSheetBadge, badegeToUpdate);
+                }
             }
+        }
+
+        public void CreateBadge(string[] badgeFields)
+        {
+            Badge badgeToAdd = MakeBadgeFromArrayOfFields(badgeFields);
+            applictionContext.Add(badgeToAdd);
+            applictionContext.SaveChanges();
+        }
+
+        public void UpdateBadge(string[] badgeFields, Badge badgeToUpdate)
+        {
+            Badge newBadge = MakeBadgeFromArrayOfFields(badgeFields);
+            badgeToUpdate.Levels = newBadge.Levels;
+            badgeToUpdate.Version = newBadge.Version;
+            badgeToUpdate.Tag = newBadge.Tag;
+            applictionContext.SaveChanges();
+        }
+
+        public Badge MakeBadgeFromArrayOfFields(string[] badgeFields)
+        {
+            return new Badge
+            {
+                Version = badgeFields[0],
+                Name = badgeFields[1],
+                Tag = badgeFields[2],
+                Levels = FillUpBadgeLevelList(badgeFields)
+            };
+        }
+
+        public List<BadgeLevel> FillUpBadgeLevelList(string[] spreadSheetBadge)
+        {
+            List<BadgeLevel> levels = new List<BadgeLevel>();
+            for (int actualColumn = 3; actualColumn < spreadSheetBadge.Length; actualColumn++)
+            {
+                var badgeLevel = applictionContext.BadgeLevels
+                    .FirstOrDefault(p =>
+                    spreadSheetBadge[actualColumn].Replace(" ", "")
+                    .Equals(p.Description, StringComparison.InvariantCultureIgnoreCase));
+
+                if (badgeLevel == null)
+                {
+                    badgeLevel = new BadgeLevel
+                    {
+                        Description = spreadSheetBadge[actualColumn],
+                        Level = levels.Count()
+                    };
+                }
+                levels.Add(badgeLevel);
+            }
+            return levels;
         }
 
         public async Task<string> ReturnBadgesSpreadSheetContent()

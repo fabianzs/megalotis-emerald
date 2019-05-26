@@ -34,6 +34,7 @@ namespace ASP.NET_Core_Webapp.Services
         public async Task FillUpDataBaseFromSpreadSheet()
         {
             SpreadSheet spreadSheet = JsonConvert.DeserializeObject<SpreadSheet>(await ReturnBadgesSpreadSheetContent());
+
             foreach (string[] spreadSheetBadge in spreadSheet.Values)
             {
                 var badegeToUpdate = applictionContext.Badges
