@@ -31,7 +31,8 @@ namespace ASP.NET_Core_Webapp
             var builder = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true).AddUserSecrets<Startup>()
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddUserSecrets<Startup>()
                 .AddEnvironmentVariables();
             this.configuration = builder.Build();
         }
@@ -45,11 +46,11 @@ namespace ASP.NET_Core_Webapp
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             if (env.IsDevelopment())
-
             {
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseInMemoryDatabase("InMemoryDatabase"));
             }
+
             if (env.IsProduction())
             {
                 services.AddDbContext<ApplicationContext>(builder =>
@@ -94,16 +95,16 @@ namespace ASP.NET_Core_Webapp
                         };
                     });
 
+            services.AddScoped<HttpClient>();
             services.AddScoped<IHelloService, HelloService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IBadgeService, BadgeService>();
+            services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, GoogleSheetService>();
-            services.AddScoped<HttpClient>();
+            services.AddScoped<ISlackService, SlackService>();
             services.AddHttpClient<GoogleSheetService>();
             services.AddHttpClient<AuthService>();
-            services.AddScoped<ISlackService, SlackService>();
-            services.AddScoped<IPitchService, PitchService>();
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
@@ -128,32 +129,27 @@ namespace ASP.NET_Core_Webapp
                 options.DefaultChallengeScheme = "Bearer";
             }).AddTestAuth(o => { });
 
+            services.AddScoped<HttpClient>();
             services.AddScoped<IHelloService, HelloService>();
             services.AddScoped<IAuthService, MockAuthService>();
             services.AddScoped<IBadgeService, BadgeService>();
+            services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
             services.AddScoped<ISlackService, MockSlackService>();
-            services.AddScoped<IPitchService, PitchService>();
-            services.AddScoped<HttpClient>();
             services.AddHttpClient<SlackService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
-            if (env.IsDevelopment() || env.EnvironmentName == "Testing")
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                SeedDatabaseHandler seedDataFromObject = new SeedDatabaseHandler(applicationContext, configuration);
-                seedDataFromObject.FillDatabaseFromObject();
             }
 
-            if (env.IsProduction())
-            {
-                SeedDatabaseHandler seedDataFromObject = new SeedDatabaseHandler(applicationContext, configuration);
+            SeedDatabaseHandler seedDataFromObject = new SeedDatabaseHandler(applicationContext, configuration);
+            seedDataFromObject.FillDatabaseFromObject();
 
-                seedDataFromObject.FillDatabaseFromObject();
-            }
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseMvc(routes =>
@@ -162,7 +158,6 @@ namespace ASP.NET_Core_Webapp
                     name: "default",
                     template: "{controller=Auth}/{action=Login}");
             });
-
 
             app.UseAuthentication();
             app.UseCors(x => x
