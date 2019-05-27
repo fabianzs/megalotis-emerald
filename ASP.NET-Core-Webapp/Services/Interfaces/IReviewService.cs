@@ -9,7 +9,8 @@ namespace ASP.NET_Core_Webapp.Services
 {
     public interface IReviewService
     {
-        void CreateReview(string openId, ReviewDTO reviewDTO);
-        void UpdateReview(string openId, ReviewDTO reviewDTO, long id);
+        Task CreateReview(string openId, ReviewDTO reviewDTO);
+        void CheckIfReviewerHasPitchedBadge(Review newReview);
+        Task UpdateReview(string openId, ReviewDTO reviewDTO, long id);
     }
 }

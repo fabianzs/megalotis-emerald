@@ -46,7 +46,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
                     new BadgeLevelDTO()
                     {
                         Description = "test",
-                        Holders = { "Osztertág Szabolcs", "Zsófia Eszter Fábián" }
+                        Holders = { "balazs.jozsef", "sandor.benedek" }
                     }
                 }
             };
