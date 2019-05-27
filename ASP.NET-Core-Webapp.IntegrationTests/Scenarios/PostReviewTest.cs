@@ -54,8 +54,8 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         public async Task PostReview_MessageSent_ShouldReturn201()
         {
             User user = new User() { Email = "fabian.zsofia.eszter@gmail.com", Name = "fabian.zsofia" };
-            user.Pitches = new List<Pitch> { { new Pitch() { Badge = testContext.context.Badges.Include(b => b.Levels).FirstOrDefault(b => b.Name.Equals("Programming")), BadgeLevel = testContext.context.BadgeLevels.FirstOrDefault(bl => bl.BadgeLevelId == 37) } } };
-            user.UserLevels = new List<UserLevel> { new UserLevel() { BadgeLevel = testContext.context.BadgeLevels.FirstOrDefault(bl => bl.BadgeLevelId == 37) } };
+            user.Pitches = new List<Pitch> { { new Pitch() { Badge = testContext.context.Badges.Include(b => b.Levels).FirstOrDefault(b => b.Name.Equals("Programming")), BadgeLevel = testContext.context.BadgeLevels.FirstOrDefault(bl => bl.BadgeLevelId == 26) } } };
+            user.UserLevels = new List<UserLevel> { new UserLevel() { BadgeLevel = testContext.context.BadgeLevels.FirstOrDefault(bl => bl.BadgeLevelId == 26) } };
             testContext.context.Add(user);
             testContext.context.SaveChanges();
 
