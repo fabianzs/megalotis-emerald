@@ -14,5 +14,9 @@ namespace ASP.NET_Core_Webapp.Entities
         public ICollection<UserLevel> UserLevels { get; set; }
         public ICollection<Pitch> Pitches { get; set; }
 
+        public BadgeLevel()
+        {
+            UserLevels =new List<UserLevel>();
+        }
     }
 }

@@ -1,0 +1,77 @@
+﻿{
+  "range": "Munkalap1!A2:N100",
+  "majorDimension": "ROWS",
+  "values": [
+    [
+      "v2.1",
+      "English Speaker",
+      "general",
+      "Lvl0: I can follow processes and internal English sessions and occasionally speak with preparation.",
+      "Lvl1: I can present/facilitate sessions in English yet not always fluently.",
+      "Lvl2: I can confidently present/facilitate sessions in English.",
+      "Lvl3: I can express and understand nuanced opinions, needs and feelings (i.e. partner meeting, interviewing, profiling, coaching, event presentation)",
+      "Lvl4: I can negotiate with clients and partners, using sophisticated, grammaticaly correct English"
+    ],
+    [
+      "v2.1",
+      "Feedback receiver",
+      "general",
+      "Lvl0: I usually receive feedback even if I get triggered while receiving it.",
+      "Lvl1: I usually receive feedback without interrupting, getting defensive, trying to find excuses, lashing out,\n and integrate it upon reflection.\n",
+      "Lvl2: I proactively seek feedback on projects or my general work and choose how to integrate it.\n\n",
+      "Lvl3: When you give me feedback, I help you get specific on \n- What I did\n - Why that matters \n- What could we do about it",
+      "Lvl4: I am a role-model for how to receive and process feedback.\n"
+    ],
+    [
+      "v2.1",
+      "Feedback giver",
+      "general",
+      "            ",
+      "Lvl1: When I have a problem, I usually let you know by expressing it clearly instead of keeping to myself",
+      "Lvl2: I proactively give specific, easy to understand and non-judgemental observations, and make a request to you.",
+      "Lvl3: I describe my feelings and needs in conflict situations with most of my team mates (not only with whom I feel comfortable with)",
+      "Lvl4: I am confident in describing my feelings and needs considering the feedback receivers' feelings and suggest a constructive solution"
+    ],
+    [
+      "v2.1",
+      "Self-management / Coordination",
+      "general",
+      "Lvl0: I can coordinate my work following the team agreement I can process a small number of projects into next actions and prioritize between them with minimal help.",
+      "Lvl1: I can maintain smooth processes and clear expectations around my own work. I recognize when I fall behind and I consistently take actions to bring myself back to this standard. I keep 4-6 people (i.e. scrum team) whom I work with up-to-date on what level of self-coordination they can expect from me",
+      "Lvl2: I can reliably coordinate the work of multiple small or a bigger team (i.e. multiple scrums or a whole class)",
+      "Lvl3: I can reliably coordinate the work across circles (i.e. a cohort)",
+      "Lvl4: I can reliably anticipate and avoid most of the pitfalls regarding company-wide projects",
+      "Lvl5: I can coordinate resources between competing projects in the organisation following the company strategy and the ad-hoc needs"
+    ],
+    [
+      "v2.1",
+      "Process Improver/Initiator",
+      "general",
+      "",
+      "Lvl1: I can see through processes and propose relevant and doable ideas for improvement. I can create improved definition / accountibility / documentation and communicate it to the team",
+      "Lvl2: I can reliably improve processes across the organization, doing all that's needed for the change management",
+      "Lvl3: I can introduce processes that are new to the company, and implement them",
+      "Lvl4: I can come up with brand new processes that have high impact on the company (i.e. Húli)"
+    ],
+    [
+      "v5.1",
+      "Holacracy",
+      "general",
+      "Lvl0: I can contribute to Holacracy meetings by bringing my tensions.\nI can explain the function and form of the following terms and provide valid examples:\n - Role\n - Circle\n - Purpose\n - Accountability\n - Domain\n - Lead Link\n - Rep Link\n - Facilitator\n - Secretary\n - Governance Meeting\n - Tactical Meeting",
+      "Lvl1: I can reliably bring tensions to the right meetings and circles. I can reliably contribute to Holacracy meetings by having a significant and experience-based knowledge about Holacracy. I can describe the responsibilities and authorities of the following roles:\n - Facilitator\n - Secretary\n - Lead Link\n - Rep Link\nI can tell the process or outline and the meaning behind the process of the following things:\n - Role assignment and resign\n - Priority Setting\n - Metrics and Checklists\n - Tactical Meeting\n - Governance Meeting\n - Objection integration.",
+      "Lvl2: I understand my roles,and I bring my tensions from those. I can reliably name the role which has the tension. I proactively bring governance tensions and improve my roles. I take and expect next actions and projects form others.",
+      "Lvl3: I can use the holacracy tools/rules to help others process tensions. I can coach others to surface and process their tensions.",
+      "Lvl4: I can see the big picture, I can help cicles to adopt or improve holacracy practices."
+    ],
+    [
+      "v2.1",
+      "Re-Presenter",
+      "general",
+      "",
+      "Lvl1: I can deliver presentations from an existing material (i.e. info nights, show and tell, opening ceremony).",
+      "Lvl2: I can create a professional presentation in my own domain for a GFA event.",
+      "Lvl3: I can represent the company at external events (meetups, conferences, job fairs, universities) by giving a presentation or talk in my own domain.",
+      "Lvl4: I am trusted to present at bigger or external events that increase the company's reputation (conference, press interview, TV celeb)"
+    ]
+  ]
+}
