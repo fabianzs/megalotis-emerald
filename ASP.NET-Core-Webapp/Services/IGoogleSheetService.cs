@@ -8,7 +8,7 @@ namespace ASP.NET_Core_Webapp.Services
 {
     public interface IGoogleSheetService
     {
-        Task FillUpDataBaseFromSpreadSheet();
+       Task FillUpDataBaseFromSpreadSheet();
        Task<string> ReturnBadgesSpreadSheetContent();
        HttpRequestMessage ReturnSpreadSheetRequest();
        string MakeGoogleSheetApiURL();

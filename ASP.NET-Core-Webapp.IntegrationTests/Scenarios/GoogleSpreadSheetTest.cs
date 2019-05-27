@@ -35,7 +35,9 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "spreadsheet");
             var response = await testContext.Client.SendAsync(request);
-            int ProperBadgeCounter = testContext.context.Badges.Where(badge => badge.Name.Equals("test")).Count();
+            int ProperBadgeCounter = testContext.context.Badges.Where(badge => 
+            badge.Name.Equals("testSpreadsheet") && badge.Levels.Count() == 5).Count();
+
             Assert.Equal(1, ProperBadgeCounter);
         }
     }

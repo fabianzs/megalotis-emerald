@@ -51,7 +51,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         public async Task CreateNewPitchPitchAlreadyExist()
         {
             Pitch pitch = new Pitch("Boti", "C#", 1, 2, "I have been improving", Holders);
-
             var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
             var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
 

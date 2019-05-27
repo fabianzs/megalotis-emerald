@@ -77,7 +77,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             };
 
             var response = await testContext.Client.SendAsync(request);
-            Assert.Equal("{\"error\":\"Please provide all fields.\"}", response.Content.ReadAsStringAsync().Result);
+            Assert.Equal("{\"Error\":\"Please provide all fields.\"}", response.Content.ReadAsStringAsync().Result);
         }
     }
 }
