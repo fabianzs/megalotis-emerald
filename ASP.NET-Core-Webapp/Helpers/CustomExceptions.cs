@@ -24,4 +24,5 @@ namespace ASP.NET_Core_Webapp.Helpers.Exceptions
     public class NotAllowedToReviewException : Exception
     {
     }
+
 }

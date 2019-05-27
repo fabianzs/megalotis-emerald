@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 using Xunit;
 
 namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
@@ -20,13 +21,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         {
             this.testContext = testContext;
         }
-
-        readonly List<Review> Holders = new List<Review>{
-
-            new Review( "Good", true),
-            new Review( "Good", true),
-            new Review( "Good", true),
-            };
 
         [Fact]
         public async Task CreateNewPitch_Should_Return201()
@@ -42,8 +36,8 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task CreateNewPitchIsNullTest()
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
-            var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json"));
+            var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
+            var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json"));
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -51,10 +45,13 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task CreateNewPitchPitchAlreadyExist()
         {
-            Pitch pitch = new Pitch( new Badge(), 2, 3, "Hello World! My English is bloody gorgeous.", Holders);
+            List<Review> Holders = new List<Review>();
+            Pitch pitch = new Pitch(new Badge("kaka"),2,3, "English speaker", Holders);
+            testContext.context.Add(pitch);
+            testContext.context.SaveChanges();
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
-            var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
+            var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
+            var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -62,10 +59,14 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task PitchUpdateTest()
         {
-            Pitch pitch = new Pitch( new Badge(), 2, 3, "Hello World! My English is bloody gorgeous.", Holders);
+            List<Review> Holders = new List<Review>();
+            Pitch pitch = new Pitch(new Badge("kaka"), 2, 3, "English speaker", Holders);
+            pitch.User = testContext.context.Users.FirstOrDefault(u => u.Name == "balazs.barna");
+            testContext.context.Add(pitch);
+            testContext.context.SaveChanges();
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitch");
-            var response = await testContext.Client.PostAsync("/api/pitch", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
+            var request = new HttpRequestMessage(HttpMethod.Post, "/pitch");
+            var response = await testContext.Client.PostAsync("/pitch", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -73,10 +74,13 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task PitchExistsTest()
         {
-            Pitch pitch = new Pitch( new Badge(), 2, 3, "Hello World! My English is bloody gorgeous.", Holders);
+            List<Review> Holders = new List<Review>();
+            Pitch pitch = new Pitch(new Badge("kaka"), 2, 3, "English speaker", Holders);
+            testContext.context.Add(pitch);
+            testContext.context.SaveChanges();
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitch");
-            var response = await testContext.Client.PostAsync("/api/pitch", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
+            var request = new HttpRequestMessage(HttpMethod.Put, "/pitch");
+            var response = await testContext.Client.PutAsync("/pitch", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }

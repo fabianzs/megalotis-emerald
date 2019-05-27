@@ -16,11 +16,13 @@ namespace ASP.NET_Core_Webapp.Controllers
     {
         private readonly ApplicationContext applicationContext;
         private readonly IAuthService authService;
+        private readonly IPitchService pitchService;
 
-        public PitchController(ApplicationContext application, IAuthService authService)
+        public PitchController(ApplicationContext application, IAuthService authService, IPitchService pitchService)
         {
             this.authService = authService;
             this.applicationContext = application;
+            this.pitchService = pitchService;
         }
 
         [Authorize("Bearer")]
@@ -37,20 +39,10 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpPost("pitches")]
         public IActionResult CreateNewPitch([FromBody]PitchDTO pitchDTO)
         {
+            bool postPitch = pitchService.PostPitch(Request,pitchDTO);
 
-            Pitch newPitch = PitchDTO.CreatePitch(applicationContext, pitchDTO);
-            
-            
-            string openId = authService.GetOpenIdFromJwtToken(Request);
-
-            User user = applicationContext.Users.Include(a => a.Pitches).ThenInclude(p=>p.Badge).FirstOrDefault(u => u.OpenId == openId);
-            List<string> badgeNames = user.Pitches.Select(p => p.Badge.Name).ToList();
-
-            if (!badgeNames.Contains(newPitch.Badge.Name) && newPitch!=null)
+            if (postPitch)
             {
-                newPitch.User = user;
-                applicationContext.Add(newPitch);
-                applicationContext.SaveChanges();
                 return Created("", new { message = "Success" });
             }
             return NotFound(new { error = "NotFound" });
@@ -61,12 +53,10 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult EditPitch(Pitch pitch) {
 
             string openId = authService.GetOpenIdFromJwtToken(Request);
-        
-            User user = applicationContext.Users.Include(a => a.Pitches).FirstOrDefault(u => u.OpenId == openId);
-            List<long> userPitchId = user.Pitches.Select(p => p.PitchId).ToList();
-            pitch.User = user;
+            User user = applicationContext.Users.Include(a => a.Pitches).ThenInclude(p => p.Badge).FirstOrDefault(u => u.OpenId == openId);
+            List<string> badgeNames = user.Pitches.Select(p => p.Badge.Name).ToList();
 
-            if (applicationContext.Pitches.Select(e => e.PitchId).Contains(pitch.PitchId) && userPitchId.Contains(pitch.PitchId) ) {
+            if (pitch.Badge!=null && badgeNames.Contains(pitch.Badge.Name) ) {
                 applicationContext.Update(pitch);
                 applicationContext.SaveChanges();
                 return Ok();

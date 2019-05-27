@@ -94,13 +94,13 @@ namespace ASP.NET_Core_Webapp
                     });
 
             services.AddScoped<IHelloService, HelloService>();
+            services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, GoogleSheetService>();
             services.AddScoped<HttpClient>();
             services.AddHttpClient<GoogleSheetService>();
             services.AddHttpClient<AuthService>();
-
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
@@ -127,6 +127,7 @@ namespace ASP.NET_Core_Webapp
             }).AddTestAuth(o => { });
 
             services.AddScoped<IHelloService, HelloService>();
+            services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<IAuthService, MockAuthService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
