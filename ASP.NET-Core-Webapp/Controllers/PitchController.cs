@@ -41,11 +41,17 @@ namespace ASP.NET_Core_Webapp.Controllers
         [HttpPost("pitches")]
         public async Task<IActionResult> SendEmailWhenPitchCreated([FromBody]SeedData.Pitch newPitch)
         {
-            foreach (var email in pitchService.CreateEmailListFromPostedPitch(newPitch))
+            //foreach (var email in pitchService.CreateEmailListFromPostedPitch(newPitch))
+            //{
+            //    await slackService.SendEmail(email, $"You have 1 new pitch! Pitch message: {newPitch.pitchMessage}");
+            //}
+            var list = pitchService.CreateListWithBadgeHolders(newPitch);
+            foreach (var email in pitchService.CreateListWithBadgeHolders(newPitch))
             {
-                await slackService.SendEmail(email, $"You have 1 new pitch! Pitch message: {newPitch.pitchMessage}");
+                await slackService.SendEmail(email, $"New pitch posted!");
             }
             return Created("", new { messageSentTo = pitchService.CreateEmailListFromPostedPitch(newPitch) });
         }
+
     }
 }
