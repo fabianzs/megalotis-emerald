@@ -36,6 +36,7 @@ namespace ASP.NET_Core_Webapp.SeedData
         public string pic { get; set; }
         public Badge[] badges { get; set; }
         public bool admin { get; set; }
+        public string email { get; set; }
     }
 
     public class Badge

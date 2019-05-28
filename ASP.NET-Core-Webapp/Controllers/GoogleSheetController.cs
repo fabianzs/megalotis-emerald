@@ -18,12 +18,12 @@ namespace ASP.NET_Core_Webapp.Controllers
             this.googleSheetService = googleSheetService;
         }
 
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         [HttpGet("spreadsheet")]
         public async Task<IActionResult> SpreadSheet()
         {
             await googleSheetService.FillUpDataBaseFromSpreadSheet();
-            return Ok(googleSheetService.ReturnBadgesSpreadSheetContent());
+            return Ok();
         }
 
 

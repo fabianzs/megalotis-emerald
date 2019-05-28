@@ -27,13 +27,13 @@ namespace ASP.NET_Core_Webapp
 
         public Startup(IHostingEnvironment environment)
         {
-            this.env = environment;      
+            this.env = environment;
             var builder = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-            .AddUserSecrets<Startup>()
-            .AddEnvironmentVariables();
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddUserSecrets<Startup>()
+                .AddEnvironmentVariables();
             this.configuration = builder.Build();
         }
 
@@ -50,12 +50,14 @@ namespace ASP.NET_Core_Webapp
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseInMemoryDatabase("InMemoryDatabase"));
             }
+
             if (env.IsProduction())
             {
                 services.AddDbContext<ApplicationContext>(builder =>
                         builder.UseSqlServer(configuration.GetConnectionString("environmentString"))
                         .EnableSensitiveDataLogging(true));
             }
+
             services.AddAuthorization(auth =>
             {
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
@@ -93,12 +95,15 @@ namespace ASP.NET_Core_Webapp
                         };
                     });
 
+            services.AddScoped<HttpClient>();
             services.AddScoped<IHelloService, HelloService>();
             services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IBadgeService, BadgeService>();
+            services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, GoogleSheetService>();
-            services.AddScoped<HttpClient>();
+            services.AddScoped<ISlackService, SlackService>();
             services.AddHttpClient<GoogleSheetService>();
             services.AddHttpClient<AuthService>();
         }
@@ -126,30 +131,29 @@ namespace ASP.NET_Core_Webapp
                 options.DefaultChallengeScheme = "Bearer";
             }).AddTestAuth(o => { });
 
+            services.AddScoped<HttpClient>();
             services.AddScoped<IHelloService, HelloService>();
             services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<IAuthService, MockAuthService>();
+            services.AddScoped<IBadgeService, BadgeService>();
+            services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
             services.AddScoped<HttpClient>();
-
+            services.AddScoped<ISlackService, MockSlackService>();
+            services.AddHttpClient<SlackService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
 
-            if (env.IsDevelopment() || env.EnvironmentName == "Testing")
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                Seed seedDataFromObject = new Seed(applicationContext, configuration);
-                seedDataFromObject.FillDatabaseFromObject();
             }
 
-            if (env.IsProduction())
-            {
-                Seed seedDataFromObject = new Seed(applicationContext, configuration);
-                seedDataFromObject.FillDatabaseFromObject();
-            }
+            SeedDatabaseHandler seedDataFromObject = new SeedDatabaseHandler(applicationContext, configuration);
+            seedDataFromObject.FillDatabaseFromObject();
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
 

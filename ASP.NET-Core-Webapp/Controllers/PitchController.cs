@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.DTO;
 using ASP.NET_Core_Webapp.Entities;
+using ASP.NET_Core_Webapp.SeedData;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,15 +16,19 @@ namespace ASP.NET_Core_Webapp.Controllers
 {
     public class PitchController : Controller
     {
-        private readonly ApplicationContext applicationContext;
+
+        ApplicationContext database;
         private readonly IAuthService authService;
+        private readonly ISlackService slackService;
         private readonly IPitchService pitchService;
 
-        public PitchController(ApplicationContext application, IAuthService authService, IPitchService pitchService)
+        public PitchController(ApplicationContext db, IAuthService authService, ISlackService ss, IPitchService ps)
         {
+            this.database = db;
             this.authService = authService;
-            this.applicationContext = application;
-            this.pitchService = pitchService;
+            this.slackService = ss;
+            this.pitchService = ps;
+
         }
 
         [Authorize("Bearer")]
@@ -30,36 +36,39 @@ namespace ASP.NET_Core_Webapp.Controllers
         public IActionResult GetPitch()
         {
             string openId = authService.GetOpenIdFromJwtToken(Request);
-            var user = applicationContext.Users.Include(u => u.Pitches).FirstOrDefault(u => u.OpenId == openId);
+            var user = database.Users.Include(u => u.Pitches).FirstOrDefault(u => u.OpenId == openId);
             var pitches = user.Pitches.Select(x => new { x.PitchId, x.TimeStamp, x.PitchedLevel, x.PitchMessage }).ToList();
             return Accepted(pitches);
         }
 
         [Authorize("Bearer")]
         [HttpPost("pitches")]
-        public IActionResult CreateNewPitch([FromBody]PitchDTO pitchDTO)
+        public async Task<IActionResult> SendEmailWhenPitchCreated([FromBody]SeedData.Pitch newPitch, [FromBody]PitchDTO pitchDTO)
         {
-            bool postPitch = pitchService.PostPitch(Request,pitchDTO);
+            bool postPitch = pitchService.PostPitch(Request, pitchDTO);
 
             if (postPitch)
             {
-                return Created("", new { message = "Success" });
+                foreach (var email in pitchService.CreateEmailListFromPostedPitch(newPitch))
+                {
+                    await slackService.SendEmail(email, $"You have 1 new pitch! Pitch message: {newPitch.pitchMessage}");
+                }
+                return Created("", new { messageSentTo = pitchService.CreateEmailListFromPostedPitch(newPitch) });
             }
             return NotFound(new { error = "NotFound" });
         }
-       
+
         [Authorize("Bearer")]
         [HttpPut("pitch")]
-        public IActionResult EditPitch(Pitch pitch)
+        public IActionResult EditPitch(Entities.Pitch pitch)
         {
-            bool putPitch = pitchService.PutPitch(pitch, Request);
+            bool putPitch = pitchService.ModifyPitch(pitch, Request);
 
             if (putPitch)
             {
                 return Ok();
-            }       
+            }
             return BadRequest();
-        }
+        }      
     }
 }
-

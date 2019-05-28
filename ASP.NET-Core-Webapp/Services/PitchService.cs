@@ -5,6 +5,7 @@ using ASP.NET_Core_Webapp.Helpers.Exceptions;
 using Google.Apis.Sheets.v4.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using ASP.NET_Core_Webapp.SeedData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,10 +30,10 @@ namespace ASP.NET_Core_Webapp.Services
             {
                 throw new PitchIsNullException();
             }
-            Pitch newPitch = PitchDTO.CreatePitch(applicationContext, pitchDTO);
+            Entities.Pitch newPitch = PitchDTO.CreatePitch(applicationContext, pitchDTO);
             string openId = authService.GetOpenIdFromJwtToken(request);
 
-            User user = applicationContext.Users.Include(a => a.Pitches).ThenInclude(p => p.Badge).FirstOrDefault(u => u.OpenId == openId);
+            Entities.User user = applicationContext.Users.Include(a => a.Pitches).ThenInclude(p => p.Badge).FirstOrDefault(u => u.OpenId == openId);
             List<string> badgeNames = user.Pitches.Select(p => p.Badge.Name).ToList();
 
             if (newPitch.Badge != null && !badgeNames.Contains(newPitch.Badge.Name))
@@ -45,10 +46,10 @@ namespace ASP.NET_Core_Webapp.Services
             return false;
         }
 
-        public bool PutPitch(Pitch pitch, HttpRequest request)
+        public bool ModifyPitch(Entities.Pitch pitch, HttpRequest request)
         {
             string openId = authService.GetOpenIdFromJwtToken(request);
-            User user = applicationContext.Users.Include(a => a.Pitches).ThenInclude(p => p.Badge).FirstOrDefault(u => u.OpenId == openId);
+            Entities.User user = applicationContext.Users.Include(a => a.Pitches).ThenInclude(p => p.Badge).FirstOrDefault(u => u.OpenId == openId);
             List<string> badgeNames = user.Pitches.Select(p => p.Badge.Name).ToList();
 
             if (pitch.Badge != null && badgeNames.Contains(pitch.Badge.Name))
@@ -58,6 +59,33 @@ namespace ASP.NET_Core_Webapp.Services
                 return true;
             }
             return false;
+        }
+
+        public ApplicationContext database;
+        public PitchService(ApplicationContext ac)
+        {
+            this.database = ac;
+        }
+
+        public IList<string> CreateEmailListFromPostedPitch(SeedData.Pitch pitch)
+        {
+            List<Holder> holderList = new List<Holder>();
+            List<string> emailList = new List<string>();
+            string emailToAdd = String.Empty;
+            foreach (var holder in pitch.holders)
+            {
+                emailToAdd = database.Users.FirstOrDefault(x => x.Name == holder.name).Email;
+                if (emailToAdd != null)
+                {
+                    emailList.Add(emailToAdd);
+                }
+            }
+            return emailList;
+        }
+
+        public bool PutPitch(Entities.Pitch pitch, HttpRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 }

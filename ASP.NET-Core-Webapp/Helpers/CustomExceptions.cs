@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.Helpers.Exceptions
 {
@@ -25,4 +22,15 @@ namespace ASP.NET_Core_Webapp.Helpers.Exceptions
     {
     }
 
+    public class NoMessageBodyException : Exception
+    {
+    }
+
+    public class MissingFieldsException : Exception
+    {
+    }
+
+    public class UserNotFoundException : Exception
+    {
+    }
 }

@@ -28,8 +28,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 
             PitchDTO pitch = new PitchDTO() { BadgeName = "English speaker", OldLVL =2, PitchedLVL= 3, PitchMessage ="test" };
             var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
-            var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
-            
+            var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));          
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
@@ -38,7 +37,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
             var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json"));
-
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
@@ -52,7 +50,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
             var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
-
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
@@ -67,7 +64,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/pitch");
             var response = await testContext.Client.PostAsync("/pitch", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
-
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -81,7 +77,6 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 
             var request = new HttpRequestMessage(HttpMethod.Put, "/pitch");
             var response = await testContext.Client.PutAsync("/pitch", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
-
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
     }
