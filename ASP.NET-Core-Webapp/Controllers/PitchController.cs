@@ -50,15 +50,12 @@ namespace ASP.NET_Core_Webapp.Controllers
        
         [Authorize("Bearer")]
         [HttpPut("pitch")]
-        public IActionResult EditPitch(Pitch pitch) {
+        public IActionResult EditPitch(Pitch pitch)
+        {
+            bool putPitch = pitchService.PutPitch(pitch, Request);
 
-            string openId = authService.GetOpenIdFromJwtToken(Request);
-            User user = applicationContext.Users.Include(a => a.Pitches).ThenInclude(p => p.Badge).FirstOrDefault(u => u.OpenId == openId);
-            List<string> badgeNames = user.Pitches.Select(p => p.Badge.Name).ToList();
-
-            if (pitch.Badge!=null && badgeNames.Contains(pitch.Badge.Name) ) {
-                applicationContext.Update(pitch);
-                applicationContext.SaveChanges();
+            if (putPitch)
+            {
                 return Ok();
             }       
             return BadRequest();

@@ -45,5 +45,19 @@ namespace ASP.NET_Core_Webapp.Services
             return false;
         }
 
+        public bool PutPitch(Pitch pitch, HttpRequest request)
+        {
+            string openId = authService.GetOpenIdFromJwtToken(request);
+            User user = applicationContext.Users.Include(a => a.Pitches).ThenInclude(p => p.Badge).FirstOrDefault(u => u.OpenId == openId);
+            List<string> badgeNames = user.Pitches.Select(p => p.Badge.Name).ToList();
+
+            if (pitch.Badge != null && badgeNames.Contains(pitch.Badge.Name))
+            {
+                applicationContext.Update(pitch);
+                applicationContext.SaveChanges();
+                return true;
+            }
+            return false;
+        }
     }
 }
