@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.DTO;
 using ASP.NET_Core_Webapp.Entities;
-using ASP.NET_Core_Webapp.SeedData;
+
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,32 +43,39 @@ namespace ASP.NET_Core_Webapp.Controllers
 
         [Authorize("Bearer")]
         [HttpPost("pitches")]
-        public async Task<IActionResult> SendEmailWhenPitchCreated([FromBody]SeedData.Pitch newPitch, [FromBody]PitchDTO pitchDTO)
+        public async Task<IActionResult> SendEmailWhenPitchCreated([FromBody] PitchDTO pitchDTO)
         {
             bool postPitch = pitchService.PostPitch(Request, pitchDTO);
-
+            
             if (postPitch)
             {
-                foreach (var email in pitchService.CreateEmailListFromPostedPitch(newPitch))
+                foreach (var email in pitchService.CreateEmailListFromPostedPitch(pitchDTO))
                 {
-                    await slackService.SendEmail(email, $"You have 1 new pitch! Pitch message: {newPitch.pitchMessage}");
+                    await slackService.SendEmail(email, $"You have 1 new pitch! Pitch message: {pitchDTO.PitchMessage}");
                 }
-                return Created("", new { messageSentTo = pitchService.CreateEmailListFromPostedPitch(newPitch) });
+                return Created("", new { messageSentTo = pitchService.CreateEmailListFromPostedPitch(pitchDTO) });
             }
             return NotFound(new { error = "NotFound" });
         }
 
         [Authorize("Bearer")]
-        [HttpPut("pitch")]
-        public IActionResult EditPitch(Entities.Pitch pitch)
+        [HttpPut("pitch/{id}")]
+        public IActionResult EditPitch([FromRoute] long id, [FromBody] PitchDTO pitchDTO)
         {
-            bool putPitch = pitchService.ModifyPitch(pitch, Request);
+            if (pitchDTO == null)
 
-            if (putPitch)
             {
-                return Ok();
+                return StatusCode(404, new { error = "There is no such pitch" });
             }
-            return BadRequest();
+
+            if (pitchDTO.BadgeName == null || pitchDTO.PitchMessage == null)
+            {
+                return NotFound(new { error = "Please provide all fields" });
+            }
+
+            string openId = authService.GetOpenIdFromJwtToken(Request);
+            pitchService.ModifyPitch(openId, id, pitchDTO);
+            return Ok(new { message = "Success" });
         }      
     }
 }

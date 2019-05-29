@@ -11,7 +11,7 @@ namespace ASP.NET_Core_Webapp.Services
     public interface IPitchService
     {
         bool PostPitch(HttpRequest request, PitchDTO pitchDTO);
-        bool ModifyPitch(Pitch pitch, HttpRequest request);
-        IList<string> CreateEmailListFromPostedPitch(SeedData.Pitch pitch);
+        void ModifyPitch(string openId, long id, PitchDTO pitchDTO);
+        IList<string> CreateEmailListFromPostedPitch(PitchDTO pitchDTO);
     }
 }

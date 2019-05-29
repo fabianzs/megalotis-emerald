@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.Helpers.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using System;
-using System.Net;
-using System.Threading.Tasks;
+
 
 namespace ASP.NET_Core_Webapp.Helpers
 {
@@ -75,6 +73,16 @@ namespace ASP.NET_Core_Webapp.Helpers
             {
                 statusCode = (int)HttpStatusCode.NotFound;
                 errorMessage.Error = "Unknown user";
+            }
+            else if (exception is PitchIsNullException)
+            {
+                statusCode = (int)HttpStatusCode.NotFound;
+                errorMessage.Error = "There is no such pitch";
+            }
+            else if (exception is OtherUsersPitchException)
+            {
+                statusCode = (int)HttpStatusCode.BadRequest;
+                errorMessage.Error = "The pitch cannot be updated, it belongs to another user.";
             }
             else
             {
