@@ -70,12 +70,6 @@ namespace ASP.NET_Core_Webapp.Services
             applicationContext.SaveChanges();
         }
 
-        public ApplicationContext database;
-        public PitchService(ApplicationContext ac)
-        {
-            this.database = ac;
-        }
-
         public IList<string> CreateEmailListFromPostedPitch(PitchDTO pitchDTO)
         {
             List<Review> holderList = applicationContext.Users.Include(u => u.Reviews).SelectMany(u => u.Reviews).ToList();
@@ -93,7 +87,7 @@ namespace ASP.NET_Core_Webapp.Services
             return emailList;
         }
 
-        public bool PutPitch(Entities.Pitch pitch, HttpRequest request)
+        public bool PutPitch(Pitch pitch, HttpRequest request)
         {
             throw new NotImplementedException();
         }
