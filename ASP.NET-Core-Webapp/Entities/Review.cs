@@ -19,9 +19,13 @@ namespace ASP.NET_Core_Webapp.Entities
 
         public Review(string message, bool status)
         {
-            Message = message;
-            Status = status;
+            this.Message = message;
+            this.Status = status;
+        }
+
+        public Review(User user)
+        {
+            this.User = user;
         }
     }
-
 }

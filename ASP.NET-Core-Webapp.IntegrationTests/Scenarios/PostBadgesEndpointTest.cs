@@ -50,12 +50,10 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
                     }
                 }
             };
-
             var request = new HttpRequestMessage(HttpMethod.Post, "/badges")
             {
                 Content = (new StringContent(JsonConvert.SerializeObject(badge), Encoding.UTF8, "application/json"))
             };
-
             var response = await testContext.Client.SendAsync(request);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }

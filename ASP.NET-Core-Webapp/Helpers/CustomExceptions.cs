@@ -33,4 +33,8 @@ namespace ASP.NET_Core_Webapp.Helpers.Exceptions
     public class UserNotFoundException : Exception
     {
     }
+
+    public class OtherUsersPitchException : Exception
+    {
+    }
 }

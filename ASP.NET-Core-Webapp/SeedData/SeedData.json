@@ -1,439 +1,439 @@
 ﻿{
-    "library": [
-      {
-        "version": "v2.1",
-        "name": "Process improver/initator",
-        "tag": "general",
-        "levels": [
-          {
-            "level": "1",
-            "description": "I can see through processes and propose relevant and doable ideas for improvement. I can create improved definition / accountibility / documentation and communicate it to the team",
-            "holders": [ "balazs.barna", "kati.bela", "sandor.jozsef", "kata.vamosi" ]
-          },
-          {
-            "level": "2",
-            "description": "I can reliably improve processes across the organization, doing all that's needed for the change management",
-            "holders": ["balazs.jozsef", "geza.vamosi"]
-          },
-          {
-            "level": "3",
-            "description": "I can introduce processes that are new to the company, and implement them",
-            "holders": ["sandor.vass", "benedek.vamosi", "istvan.kiss"]
-          },
-          {
-            "level": "4",
-            "description": "I can come up with brand new processes that have high impact on the company (i.e. Húli)",
-            "holders": ["balazs.istvan", "kati.istvan", "istvan.jozsef"]
-          }
-        ]
-      },
-      {
-        "version": "v1.1",
-        "name": "English speaker",
-        "tag": "mentor",
-        "levels": [
-          {
-            "level": "0",
-            "description": "I can follow processes and internal English sessions and occasionally speak with preparation.",
-            "holders": ["sandor.vass", "benedek.vamosi", "istvan.kiss"]
-          },
-          {
-            "level": "1",
-            "description": "I can present/facilitate sessions in English yet not always fluently.",
-            "holders": ["sandor.benedek", "benedek.sandor", "istvan.nagy", "sandor.kiss"]
-          },
-          {
-            "level": "2",
-            "description": "I can confidently present/facilitate sessions in English.",
-            "holders": ["zoltan.katona"]
-          },
-          {
-            "level": "3",
-            "description": "I can express and understand nuanced opinions, needs and feelings (i.e. partner meeting, interviewing, profiling, coaching, event presentation)Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate",
-            "holders": ["kati.lajos", "zoltan.nagy"]
-          },
-          {
-            "level": "4",
-            "description": "I can negotiate with clients and partners, using sophisticated, grammaticaly correct English",
-            "holders": ["kati.istvan"]
-          }
-        ]
-      },
-      {
-        "version": "v1.1",
-        "name": "Feedback receiver",
-        "tag": "general",
-        "levels": [
-          {
-            "level": "1",
-            "description": "I usually receive feedback even if I get triggered while receiving it.",
-            "holders": ["sandor.benedek", "benedek.sandor", "istvan.nagy", "sandor.kiss"]
-          },
-          {
-            "level": "2",
-            "description": "I usually receive feedback without interrupting, getting defensive, trying to find excuses, lashing out, and integrate it upon reflection.",
-            "holders": ["kati.lajos", "zoltan.nagy"]
-          },
-          {
-            "level": "3",
-            "description": "I proactively seek feedback on projects or my general work and choose how to integrate it.",
-            "holders": ["sandor.vass", "benedek.vamosi", "istvan.kiss"]
-          },
-          {
-            "level": "4",
-            "description": "When you give me feedback, I help you get specific on: what I did, why that matters, what could we do about it",
-            "holders": ["balazs.jozsef", "geza.vamosi"]
-          },
-          {
-            "level": "5",
-            "description": "I am a role-model for how to receive and process feedback.",
-            "holders": ["lajos.nagy"]
-          }
-        ]
-      },
-      {
-        "version": "v1.1",
-        "name": "Feedback giver",
-        "tag": "marketing",
-        "levels": [
-          {
-            "level": "0",
-            "description": "When I have a problem, I usually let you know by expressing it clearly instead of keeping to myself",
-            "holders": ["balazs.jozsef", "geza.vamosi"]
-          },
-          {
-            "level": "1",
-            "description": "I proactively give specific, easy to understand observations, and make a request to you",
-            "holders": ["sandor.benedek", "benedek.sandor", "istvan.nagy", "sandor.kiss"]
-          },
-          {
-            "level": "2",
-            "description": "I describe my feelings and needs in conflict situations with most of my team mates (not only with whom I feel comfortable with)",
-            "holders": ["kati.lajos", "zoltan.nagy"]
-          },
-          {
-            "level": "3",
-            "description": "I am confident in describing my feelings and needs considering the feedback receivers feelings and suggest a constructive solution",
-            "holders": ["sandor.vass", "benedek.vamosi", "istvan.kiss"]
-          }
-        ]
-      }
-    ],
-    "users": [
-      {
-        "name": "test.user",
-        "tokenAuth": "testusertoken",
-        "pic": "base64://dwabi24632gdkje8549632...",
-        "badges": [
-          {
-            "name": "Process improver",
-            "level": "2"
-          },
-          {
-            "name": "English speaker",
-            "level": "1"
-          },
-          {
-            "name": "Feedback giver",
-            "level": "1"
-          }
-        ]
-      },
-      {
-        "name": "test.admin:",
-        "tokenAuth": "testadmin:token",
-        "pic": "base64://dwabi24632gdkje8549632...",
-        "admin": true,
-        "badges": [
-          {
-            "name": "Process improver",
-            "level": "2"
-          },
-          {
-            "name": "English speaker",
-            "level": "1"
-          },
-          {
-            "name": "Feedback giver",
-            "level": "1"
-          }
-        ]
-      },
-      {
-        "name": "balazs.barna",
-        "tokenAuth": "verysecuretokendjawuidguowa76795432",
-        "pic": "base64://dwabi24632gdkje8549632...",
-        "email": "balogh.botond8@gmail.com",
-        "badges": [
-          {
-            "name": "Feedback giver",
-            "level": "3"
-          },
-          {
-            "name": "Feedback receiver",
-            "level": "1"
-          },
-          {
-            "name": "English speaker",
-            "level": "3"
-          }
-        ]
-      },
-      {
-        "name": "sandor.vass",
-        "tokenAuth": "sandor542ghd237tiguk3",
-        "pic": "base64://dwabi24632gdkje8549632...",
-        "email": "laszlo.molnar25@gmail.com",
-        "badges": [
-          {
-            "name": "Feedback giver",
-            "level": "1"
-          },
-          {
-            "name": "Feedback receiver",
-            "level": "2"
-          },
-          {
-            "name": "English speaker",
-            "level": "3"
-          }
-        ]
-      },
-      {
-        "name": "alajos.katona",
-        "tokenAuth": "verysecuretokendnj32t7853t2iugkjds",
-        "pic": "base64://dwabi24632gdkje8549632...",
-        "badges": [
-          {
-            "name": "Process improver",
-            "level": "2"
-          },
-          {
-            "name": "English speaker",
-            "level": "1"
-          },
-          {
-            "name": "Feedback giver",
-            "level": "1"
-          }
-        ]
-      }
-    ],
-    "archetypes": [
-      {
-        "name": "Junior mentor",
-        "badges": [
-          {
-            "name": "Process improver/initator",
-            "level": "1"
-          },
-          {
-            "name": "English speaker",
-            "level": "1"
-          },
-          {
-            "name": "Feedback receiver",
-            "level": "1"
-          },
-          {
-            "name": "Feedback giver",
-            "level": "1"
-          }
-        ]
-      },
-      {
-        "name": "Medior mentor",
-        "badges": [
-          {
-            "name": "Process improver/initator",
-            "level": "2"
-          },
-          {
-            "name": "English speaker",
-            "level": "2"
-          },
-          {
-            "name": "Feedback receiver",
-            "level": "2"
-          },
-          {
-            "name": "Feedback giver",
-            "level": "2"
-          }
-        ]
-      },
-      {
-        "name": "Senior mentor",
-        "badges": [
-          {
-            "name": "Process improver/initator",
-            "level": "3"
-          },
-          {
-            "name": "English speaker",
-            "level": "3"
-          },
-          {
-            "name": "Feedback receiver",
-            "level": "3"
-          },
-          {
-            "name": "Feedback giver",
-            "level": "3"
-          }
-        ]
-      }
-    ],
-    "pitches": [
-      {
-        "username": "berei.daniel",
-        "badgeName": "English speaker",
-        "oldLevel": "2",
-        "pitchedLevel": "3",
-        "pitchMessage": "I was working abroad for six years, so I can speak english very well. Pls improve my badge level to 3.",
-        "holders": [
-          {
-            "name": "balazs.jozsef",
-            "message": "Yes, you are able to speak english",
-            "pitchStatus": true
-          },
-          {
-            "name": "balazs.barna",
-            "message": "Please improve your english",
-            "pitchStatus": false
-          },
-          {
-            "name": "sandor.benedek",
-            "message": "null",
-            "pitchStatus": true
-          }
-        ],
-        "timestamp": "2018-11-29 13:10:47"
-      },
-      {
-        "username": "berei.daniel",
-        "badgeName": "Process Improver",
-        "oldLevel": "1",
-        "pitchedLevel": "5",
-        "pitchMessage": "I can see through processes and propose relevant and doable ideas for improvement. I can create improved definition / accountibility / documentation and communicate it to the team",
-        "holders": [
-          {
-            "name": "balazs.barna",
-            "message": "Ok, I think he is ready for this job",
-            "pitchStatus": true
-          },
-          {
-            "name": "sandor.benedek",
-            "message": "Surely he can do it",
-            "pitchStatus": true
-          },
-          {
-            "name": "balazs.jozsef",
-            "message": "null",
-            "pitchStatus": false
-          }
-        ],
-        "timestamp": "2018-11-29 14:10:47"
-      },
-      {
-        "username": "berei.daniel",
-        "badgeName": "Feedback receiver",
-        "oldLevel": "1",
-        "pitchedLevel": "3",
-        "pitchMessage": "I proactively seek feedback on projects or my general work and choose how to integrate it.",
-        "holders": [
-          {
-            "name": "sandor.benedek",
-            "message": "null",
-            "pitchStatus": true
-          },
-          {
-            "name": "balazs.jozsef",
-            "message": "Awesome person with awesome personality",
-            "pitchStatus": true
-          },
-          {
-            "name": "balazs.barna",
-            "message": "It cant be serious",
-            "pitchStatus": false
-          }
-        ],
-        "timestamp": "2018-11-29 15:10:47"
-      },
-      {
-        "username": "berei.daniel",
-        "badgeName": "Feedback giver",
-        "oldLevel": "4",
-        "pitchedLevel": "5",
-        "pitchMessage": "When I have a problem, I usually let you know by expressing it clearly instead of keeping to myself",
-        "holders": [
-          {
-            "name": "balazs.jozsef",
-            "message": "Best feedback giver ever",
-            "pitchStatus": true
-          },
-          {
-            "name": "balazs.barna",
-            "message": "No, I think he should improve",
-            "pitchStatus": false
-          },
-          {
-            "name": "sandor.benedek",
-            "message": "null",
-            "pitchStatus": false
-          }
-        ],
-        "timestamp": "2018-11-29 16:10:47"
-      },
-      {
-        "username": "balazs.barna",
-        "badgeName": "Programming",
-        "oldLevel": "2",
-        "pitchedLevel": "3",
-        "pitchMessage": "I improved in React, Redux, basic JS, NodeJS, Express and in LowDB, pls give me more money",
-        "holders": [
-          {
-            "name": "sandor.vass",
-            "message": "null",
-            "pitchStatus": false
-          },
-          {
-            "name": "berei.daniel",
-            "message": "null",
-            "pitchStatus": false
-          },
-          {
-            "name": "balazs.jozsef",
-            "message": "null",
-            "pitchStatus": false
-          }
-        ],
-        "timestamp": "2018-11-29 17:10:47"
-      },
-      {
-        "username": "sandor.vass",
-        "badgeName": "Programmer",
-        "oldLevel": "4",
-        "pitchedLevel": "5",
-        "pitchMessage": "I am confident in describing my feelings and needs considering the feedback receivers feelings and suggest a constructive solution",
-        "holders": [
-          {
-            "name": "balazs.barna",
-            "message": "null",
-            "pitchStatus": false
-          },
-          {
-            "name": "berei.daniel",
-            "message": "null",
-            "pitchStatus": false
-          },
-          {
-            "name": "balazs.jozsef",
-            "message": "null",
-            "pitchStatus": false
-          }
-        ],
-        "timestamp": "2018-11-29 17:10:47"
-      }
-    ]
+  "library": [
+    {
+      "version": "v2.1",
+      "name": "Process improver/initator",
+      "tag": "general",
+      "levels": [
+        {
+          "level": "1",
+          "description": "I can see through processes and propose relevant and doable ideas for improvement. I can create improved definition / accountibility / documentation and communicate it to the team",
+          "holders": [ "balazs.barna", "kati.bela", "sandor.jozsef", "kata.vamosi" ]
+        },
+        {
+          "level": "2",
+          "description": "I can reliably improve processes across the organization, doing all that's needed for the change management",
+          "holders": [ "balazs.jozsef", "geza.vamosi" ]
+        },
+        {
+          "level": "3",
+          "description": "I can introduce processes that are new to the company, and implement them",
+          "holders": [ "sandor.vass", "benedek.vamosi", "istvan.kiss" ]
+        },
+        {
+          "level": "4",
+          "description": "I can come up with brand new processes that have high impact on the company (i.e. Húli)",
+          "holders": [ "balazs.istvan", "kati.istvan", "istvan.jozsef" ]
+        }
+      ]
+    },
+    {
+      "version": "v1.1",
+      "name": "English speaker",
+      "tag": "mentor",
+      "levels": [
+        {
+          "level": "0",
+          "description": "I can follow processes and internal English sessions and occasionally speak with preparation.",
+          "holders": [ "sandor.vass", "benedek.vamosi", "istvan.kiss" ]
+        },
+        {
+          "level": "1",
+          "description": "I can present/facilitate sessions in English yet not always fluently.",
+          "holders": [ "sandor.benedek", "benedek.sandor", "istvan.nagy", "sandor.kiss" ]
+        },
+        {
+          "level": "2",
+          "description": "I can confidently present/facilitate sessions in English.",
+          "holders": [ "zoltan.katona" ]
+        },
+        {
+          "level": "3",
+          "description": "I can express and understand nuanced opinions, needs and feelings (i.e. partner meeting, interviewing, profiling, coaching, event presentation)Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate",
+          "holders": [ "kati.lajos", "zoltan.nagy" ]
+        },
+        {
+          "level": "4",
+          "description": "I can negotiate with clients and partners, using sophisticated, grammaticaly correct English",
+          "holders": [ "kati.istvan" ]
+        }
+      ]
+    },
+    {
+      "version": "v1.1",
+      "name": "Feedback receiver",
+      "tag": "general",
+      "levels": [
+        {
+          "level": "1",
+          "description": "I usually receive feedback even if I get triggered while receiving it.",
+          "holders": [ "sandor.benedek", "benedek.sandor", "istvan.nagy", "sandor.kiss" ]
+        },
+        {
+          "level": "2",
+          "description": "I usually receive feedback without interrupting, getting defensive, trying to find excuses, lashing out, and integrate it upon reflection.",
+          "holders": [ "kati.lajos", "zoltan.nagy" ]
+        },
+        {
+          "level": "3",
+          "description": "I proactively seek feedback on projects or my general work and choose how to integrate it.",
+          "holders": [ "sandor.vass", "benedek.vamosi", "istvan.kiss" ]
+        },
+        {
+          "level": "4",
+          "description": "When you give me feedback, I help you get specific on: what I did, why that matters, what could we do about it",
+          "holders": [ "balazs.jozsef", "geza.vamosi" ]
+        },
+        {
+          "level": "5",
+          "description": "I am a role-model for how to receive and process feedback.",
+          "holders": [ "lajos.nagy" ]
+        }
+      ]
+    },
+    {
+      "version": "v1.1",
+      "name": "Feedback giver",
+      "tag": "marketing",
+      "levels": [
+        {
+          "level": "0",
+          "description": "When I have a problem, I usually let you know by expressing it clearly instead of keeping to myself",
+          "holders": [ "balazs.jozsef", "geza.vamosi" ]
+        },
+        {
+          "level": "1",
+          "description": "I proactively give specific, easy to understand observations, and make a request to you",
+          "holders": [ "sandor.benedek", "benedek.sandor", "istvan.nagy", "sandor.kiss" ]
+        },
+        {
+          "level": "2",
+          "description": "I describe my feelings and needs in conflict situations with most of my team mates (not only with whom I feel comfortable with)",
+          "holders": [ "kati.lajos", "zoltan.nagy" ]
+        },
+        {
+          "level": "3",
+          "description": "I am confident in describing my feelings and needs considering the feedback receivers feelings and suggest a constructive solution",
+          "holders": [ "sandor.vass", "benedek.vamosi", "istvan.kiss" ]
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "name": "test.user",
+      "tokenAuth": "testusertoken",
+      "pic": "base64://dwabi24632gdkje8549632...",
+      "badges": [
+        {
+          "name": "Process improver",
+          "level": "2"
+        },
+        {
+          "name": "English speaker",
+          "level": "1"
+        },
+        {
+          "name": "Feedback giver",
+          "level": "1"
+        }
+      ]
+    },
+    {
+      "name": "test.admin:",
+      "tokenAuth": "testadmin:token",
+      "pic": "base64://dwabi24632gdkje8549632...",
+      "admin": true,
+      "badges": [
+        {
+          "name": "Process improver",
+          "level": "2"
+        },
+        {
+          "name": "English speaker",
+          "level": "1"
+        },
+        {
+          "name": "Feedback giver",
+          "level": "1"
+        }
+      ]
+    },
+    {
+      "name": "balazs.barna",
+      "tokenAuth": "verysecuretokendjawuidguowa76795432",
+      "pic": "base64://dwabi24632gdkje8549632...",
+      "email": "balogh.botond8@gmail.com",
+      "badges": [
+        {
+          "name": "Feedback giver",
+          "level": "3"
+        },
+        {
+          "name": "Feedback receiver",
+          "level": "1"
+        },
+        {
+          "name": "English speaker",
+          "level": "3"
+        }
+      ]
+    },
+    {
+      "name": "sandor.vass",
+      "tokenAuth": "sandor542ghd237tiguk3",
+      "pic": "base64://dwabi24632gdkje8549632...",
+      "email": "laszlo.molnar25@gmail.com",
+      "badges": [
+        {
+          "name": "Feedback giver",
+          "level": "1"
+        },
+        {
+          "name": "Feedback receiver",
+          "level": "2"
+        },
+        {
+          "name": "English speaker",
+          "level": "3"
+        }
+      ]
+    },
+    {
+      "name": "alajos.katona",
+      "tokenAuth": "verysecuretokendnj32t7853t2iugkjds",
+      "pic": "base64://dwabi24632gdkje8549632...",
+      "badges": [
+        {
+          "name": "Process improver",
+          "level": "2"
+        },
+        {
+          "name": "English speaker",
+          "level": "1"
+        },
+        {
+          "name": "Feedback giver",
+          "level": "1"
+        }
+      ]
+    }
+  ],
+  "archetypes": [
+    {
+      "name": "Junior mentor",
+      "badges": [
+        {
+          "name": "Process improver/initator",
+          "level": "1"
+        },
+        {
+          "name": "English speaker",
+          "level": "1"
+        },
+        {
+          "name": "Feedback receiver",
+          "level": "1"
+        },
+        {
+          "name": "Feedback giver",
+          "level": "1"
+        }
+      ]
+    },
+    {
+      "name": "Medior mentor",
+      "badges": [
+        {
+          "name": "Process improver/initator",
+          "level": "2"
+        },
+        {
+          "name": "English speaker",
+          "level": "2"
+        },
+        {
+          "name": "Feedback receiver",
+          "level": "2"
+        },
+        {
+          "name": "Feedback giver",
+          "level": "2"
+        }
+      ]
+    },
+    {
+      "name": "Senior mentor",
+      "badges": [
+        {
+          "name": "Process improver/initator",
+          "level": "3"
+        },
+        {
+          "name": "English speaker",
+          "level": "3"
+        },
+        {
+          "name": "Feedback receiver",
+          "level": "3"
+        },
+        {
+          "name": "Feedback giver",
+          "level": "3"
+        }
+      ]
+    }
+  ],
+  "pitches": [
+    {
+      "username": "berei.daniel",
+      "badgeName": "English speaker",
+      "oldLevel": "2",
+      "pitchedLevel": "3",
+      "pitchMessage": "I was working abroad for six years, so I can speak english very well. Pls improve my badge level to 3.",
+      "holders": [
+        {
+          "name": "balazs.jozsef",
+          "message": "Yes, you are able to speak english",
+          "pitchStatus": true
+        },
+        {
+          "name": "balazs.barna",
+          "message": "Please improve your english",
+          "pitchStatus": false
+        },
+        {
+          "name": "sandor.benedek",
+          "message": "null",
+          "pitchStatus": true
+        }
+      ],
+      "timestamp": "2018-11-29 13:10:47"
+    },
+    {
+      "username": "berei.daniel",
+      "badgeName": "Process Improver",
+      "oldLevel": "1",
+      "pitchedLevel": "5",
+      "pitchMessage": "I can see through processes and propose relevant and doable ideas for improvement. I can create improved definition / accountibility / documentation and communicate it to the team",
+      "holders": [
+        {
+          "name": "balazs.barna",
+          "message": "Ok, I think he is ready for this job",
+          "pitchStatus": true
+        },
+        {
+          "name": "sandor.benedek",
+          "message": "Surely he can do it",
+          "pitchStatus": true
+        },
+        {
+          "name": "balazs.jozsef",
+          "message": "null",
+          "pitchStatus": false
+        }
+      ],
+      "timestamp": "2018-11-29 14:10:47"
+    },
+    {
+      "username": "berei.daniel",
+      "badgeName": "Feedback receiver",
+      "oldLevel": "1",
+      "pitchedLevel": "3",
+      "pitchMessage": "I proactively seek feedback on projects or my general work and choose how to integrate it.",
+      "holders": [
+        {
+          "name": "sandor.benedek",
+          "message": "null",
+          "pitchStatus": true
+        },
+        {
+          "name": "balazs.jozsef",
+          "message": "Awesome person with awesome personality",
+          "pitchStatus": true
+        },
+        {
+          "name": "balazs.barna",
+          "message": "It cant be serious",
+          "pitchStatus": false
+        }
+      ],
+      "timestamp": "2018-11-29 15:10:47"
+    },
+    {
+      "username": "berei.daniel",
+      "badgeName": "Feedback giver",
+      "oldLevel": "4",
+      "pitchedLevel": "5",
+      "pitchMessage": "When I have a problem, I usually let you know by expressing it clearly instead of keeping to myself",
+      "holders": [
+        {
+          "name": "balazs.jozsef",
+          "message": "Best feedback giver ever",
+          "pitchStatus": true
+        },
+        {
+          "name": "balazs.barna",
+          "message": "No, I think he should improve",
+          "pitchStatus": false
+        },
+        {
+          "name": "sandor.benedek",
+          "message": "null",
+          "pitchStatus": false
+        }
+      ],
+      "timestamp": "2018-11-29 16:10:47"
+    },
+    {
+      "username": "balazs.barna",
+      "badgeName": "Programming",
+      "oldLevel": "2",
+      "pitchedLevel": "3",
+      "pitchMessage": "I improved in React, Redux, basic JS, NodeJS, Express and in LowDB, pls give me more money",
+      "holders": [
+        {
+          "name": "sandor.vass",
+          "message": "null",
+          "pitchStatus": false
+        },
+        {
+          "name": "berei.daniel",
+          "message": "null",
+          "pitchStatus": false
+        },
+        {
+          "name": "balazs.jozsef",
+          "message": "null",
+          "pitchStatus": false
+        }
+      ],
+      "timestamp": "2018-11-29 17:10:47"
+    },
+    {
+      "username": "sandor.vass",
+      "badgeName": "Programmer",
+      "oldLevel": "4",
+      "pitchedLevel": "5",
+      "pitchMessage": "I am confident in describing my feelings and needs considering the feedback receivers feelings and suggest a constructive solution",
+      "holders": [
+        {
+          "name": "balazs.barna",
+          "message": "null",
+          "pitchStatus": false
+        },
+        {
+          "name": "berei.daniel",
+          "message": "null",
+          "pitchStatus": false
+        },
+        {
+          "name": "balazs.jozsef",
+          "message": "null",
+          "pitchStatus": false
+        }
+      ],
+      "timestamp": "2018-11-29 17:10:47"
+    }
+  ]
 }

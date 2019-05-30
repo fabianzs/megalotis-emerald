@@ -1,5 +1,9 @@
 ﻿using ASP.NET_Core_Webapp.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.Data
 {
@@ -13,8 +17,6 @@ namespace ASP.NET_Core_Webapp.Data
         public DbSet<Badge> Badges { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<UserLevel> UserLevels { get; set; }
-
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

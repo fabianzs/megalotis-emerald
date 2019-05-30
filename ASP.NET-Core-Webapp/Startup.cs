@@ -97,6 +97,7 @@ namespace ASP.NET_Core_Webapp
 
             services.AddScoped<HttpClient>();
             services.AddScoped<IHelloService, HelloService>();
+            services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IBadgeService, BadgeService>();
             services.AddScoped<IPitchService, PitchService>();
@@ -109,6 +110,7 @@ namespace ASP.NET_Core_Webapp
 
         public void ConfigureTestingServices(IServiceCollection services)
         {
+
             services.AddDbContext<ApplicationContext>(builder =>
                 builder.UseInMemoryDatabase("InMemoryDatabase"));
 
@@ -131,17 +133,20 @@ namespace ASP.NET_Core_Webapp
 
             services.AddScoped<HttpClient>();
             services.AddScoped<IHelloService, HelloService>();
+            services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<IAuthService, MockAuthService>();
             services.AddScoped<IBadgeService, BadgeService>();
             services.AddScoped<IPitchService, PitchService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IGoogleSheetService, MockGoogleSpreadSheetService>();
+            services.AddScoped<HttpClient>();
             services.AddScoped<ISlackService, MockSlackService>();
             services.AddHttpClient<SlackService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationContext applicationContext)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

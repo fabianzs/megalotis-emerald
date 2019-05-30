@@ -1,4 +1,6 @@
-﻿using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
+﻿using ASP.NET_Core_Webapp.DTO;
+using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
@@ -57,18 +59,9 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task Pitch_PostNewPitch_ReturnOK()
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
-            using (StreamReader sr = new StreamReader("../../../PitchPostTest.json"))
-            {
-                string contentLoad = await sr.ReadToEndAsync();
-                request.Content = new StringContent(contentLoad,
-                    Encoding.UTF8,
-                    "application/json"
-                    );
-            }
-
-            var response = await testContext.Client.SendAsync(request);
-
+            PitchDTO pitch = new PitchDTO() { BadgeName = "English speaker", OldLVL = 2, PitchedLVL = 3, PitchMessage = "test" };
+            var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");         
+            var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
             Assert.Equal<HttpStatusCode>(HttpStatusCode.Created, response.StatusCode);
         }
     }

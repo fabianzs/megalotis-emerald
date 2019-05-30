@@ -1,12 +1,15 @@
-﻿using ASP.NET_Core_Webapp.Entities;
+﻿using ASP.NET_Core_Webapp.DTO;
+using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.IntegrationTests.Fixtures;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 using Xunit;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
 {
@@ -20,42 +23,73 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             this.testContext = testContext;
         }
 
-        readonly List<Review> Holders = new List<Review>{
-            new Review("Good", true),
-            new Review("Good", true),
-            new Review("Good", true),
-            };
-
         [Fact]
-        public async Task CreateNewPitchSuccessTest()
+        public async Task CreateNewPitch_Should_Return201()
         {
-            Pitch pitch = new Pitch("Boti", "English speaker", 1, 2, "I have been improving", Holders);
-
-            var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
-            var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
-
-
+            PitchDTO pitch = new PitchDTO() { BadgeName = "English speaker", OldLVL =2, PitchedLVL= 3, PitchMessage ="test" };
+            var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
+            var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));          
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
         }
 
         [Fact]
         public async Task CreateNewPitchIsNullTest()
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
-            var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json"));
-
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+            var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
+            var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json"));
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Fact]
         public async Task CreateNewPitchPitchAlreadyExist()
         {
-            Pitch pitch = new Pitch("Boti", "C#", 1, 2, "I have been improving", Holders);
-            var request = new HttpRequestMessage(HttpMethod.Post, "/api/pitches");
-            var response = await testContext.Client.PostAsync("/api/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
+            List<Review> Holders = new List<Review>();
+            Pitch pitch = new Pitch(new Badge("kaka"),2,3, "English speaker", Holders);
+            testContext.context.Add(pitch);
+            testContext.context.SaveChanges();
 
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");
+            var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
+        [Fact]
+        public async Task PutPitch_NoBodyContent_ShouldReturn404()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put, "/pitch/1")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(null), Encoding.UTF8, "application/json")
+            };
+
+            var response = await testContext.Client.SendAsync(request);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task UserHasNoPitch_ShouldReturn404()
+        {
+            PitchDTO pitch = new PitchDTO() { BadgeName = "English speaker", OldLVL = 2, PitchedLVL = 3, PitchMessage = "test" };
+            var request = new HttpRequestMessage(HttpMethod.Put, "/pitch/3")
+            {
+                Content = (new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"))
+            };
+
+            var response = await testContext.Client.SendAsync(request);
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task PitchUpdated_ShouldReturn200()
+        {
+            PitchDTO pitch = new PitchDTO() { BadgeName = "Programming", OldLVL = 2, PitchedLVL = 3, PitchMessage = "test" };
+
+            var request = new HttpRequestMessage(HttpMethod.Put, "/pitch/5")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json")
+            };
+
+            var response = await testContext.Client.SendAsync(request);
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
     }
 }
