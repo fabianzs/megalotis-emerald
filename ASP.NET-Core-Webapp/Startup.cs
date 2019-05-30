@@ -60,9 +60,9 @@ namespace ASP.NET_Core_Webapp
 
             services.AddAuthorization(auth =>
             {
-                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                auth.DefaultPolicy = new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-                    .RequireAuthenticatedUser().Build());
+                    .RequireAuthenticatedUser().Build();
             });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -120,9 +120,9 @@ namespace ASP.NET_Core_Webapp
 
             services.AddAuthorization(auth =>
             {
-                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                auth.DefaultPolicy = new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
-                    .RequireAuthenticatedUser().Build());
+                    .RequireAuthenticatedUser().Build();
             });
 
             services.AddAuthentication(options =>

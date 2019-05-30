@@ -31,7 +31,7 @@ namespace ASP.NET_Core_Webapp.Controllers
 
         }
 
-        [Authorize("Bearer")]
+        [Authorize]
         [HttpGet("pitches")]
         public IActionResult GetPitch()
         {
@@ -41,7 +41,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Accepted(pitches);
         }
 
-        [Authorize("Bearer")]
+        [Authorize]
         [HttpPost("pitches")]
         public async Task<IActionResult> SendEmailWhenPitchCreated([FromBody] PitchDTO pitchDTO)
         {
@@ -58,12 +58,11 @@ namespace ASP.NET_Core_Webapp.Controllers
             return NotFound(new { error = "NotFound" });
         }
 
-        [Authorize("Bearer")]
+        //[Authorize]
         [HttpPut("pitch/{id}")]
         public IActionResult EditPitch([FromRoute] long id, [FromBody] PitchDTO pitchDTO)
         {
             if (pitchDTO == null)
-
             {
                 return StatusCode(404, new { error = "There is no such pitch" });
             }

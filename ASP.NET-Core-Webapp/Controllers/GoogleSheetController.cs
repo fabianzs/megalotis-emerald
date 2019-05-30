@@ -18,7 +18,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             this.googleSheetService = googleSheetService;
         }
 
-        //[Authorize("Bearer")]
+        [Authorize]
         [HttpGet("spreadsheet")]
         public async Task<IActionResult> SpreadSheet()
         {

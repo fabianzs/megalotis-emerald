@@ -23,7 +23,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             this.applicationContext = applicationContext;
         }
 
-        [Authorize("Bearer")]
+        [Authorize]
         [HttpGet("mybadges")]
         public IActionResult MyBadges()
         {
@@ -31,6 +31,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Ok(badgeService.GetMyBadges(openId));
         }
 
+        [Authorize]
         [HttpPost("badges")]
         public IActionResult RecieveBadge([FromBody] BadgeDTO badgeDTO)
         {

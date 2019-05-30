@@ -59,7 +59,14 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             testContext.context.Add(user);
             testContext.context.SaveChanges();
 
-            ReviewDTO review = new ReviewDTO() { Message = "testreview", Status = true, PitchId = 7 };
+            ReviewDTO review = new ReviewDTO()
+            {
+                Message = "testreview", Status = true,
+                PitchId = (int) testContext.context.Pitches
+                                                        .Include(p => p.User)
+                                                        .FirstOrDefault(p => p.User.Email.Equals("fabian.zsofia.eszter@gmail.com"))
+                                                        .PitchId
+            };
 
             var request = new HttpRequestMessage(HttpMethod.Post, "/review")
             {
@@ -81,7 +88,7 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
             };
 
             var response = await testContext.Client.SendAsync(request);
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [Fact]

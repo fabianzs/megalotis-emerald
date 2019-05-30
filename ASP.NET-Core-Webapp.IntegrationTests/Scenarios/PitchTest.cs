@@ -59,7 +59,13 @@ namespace ASP.NET_Core_Webapp.IntegrationTests.Scenarios
         [Fact]
         public async Task Pitch_PostNewPitch_ReturnOK()
         {
-            PitchDTO pitch = new PitchDTO() { BadgeName = "English speaker", OldLVL = 2, PitchedLVL = 3, PitchMessage = "test" };
+            PitchDTO pitch = new PitchDTO()
+            {
+                BadgeName = "Feedback receiver",
+                OldLVL = 2,
+                PitchedLVL = 3,
+                PitchMessage = "test"
+            };
             var request = new HttpRequestMessage(HttpMethod.Post, "/pitches");         
             var response = await testContext.Client.PostAsync("/pitches", new StringContent(JsonConvert.SerializeObject(pitch), Encoding.UTF8, "application/json"));
             Assert.Equal<HttpStatusCode>(HttpStatusCode.Created, response.StatusCode);
