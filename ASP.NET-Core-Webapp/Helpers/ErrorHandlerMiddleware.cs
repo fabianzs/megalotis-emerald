@@ -41,7 +41,7 @@ namespace ASP.NET_Core_Webapp.Helpers
             }
             else if (exception is NotAllowedToReviewException)
             {
-                statusCode = (int)HttpStatusCode.Unauthorized;
+                statusCode = (int)HttpStatusCode.BadRequest;
                 errorMessage.Error = "You are not allowed to give a review, because you either lack the necessary badge, or you are trying to review your own pitch.";
             }
             else if(exception is ReviewIsNullException)

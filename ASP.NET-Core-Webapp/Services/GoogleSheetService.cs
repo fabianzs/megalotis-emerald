@@ -12,9 +12,9 @@ namespace ASP.NET_Core_Webapp.Services
 {
     public class GoogleSheetService : IGoogleSheetService
     {
-        IConfiguration configuration;
-        ApplicationContext applictionContext;
-        HttpClient httpClient;
+        private readonly IConfiguration configuration;
+        private readonly ApplicationContext applictionContext;
+        private readonly HttpClient httpClient;
         private static string StaticAccesToken;
 
         public string AccesToken

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ASP.NET_Core_Webapp.DTO;
 using ASP.NET_Core_Webapp.Helpers;
 using ASP.NET_Core_Webapp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Core_Webapp.Controllers
@@ -18,6 +19,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             this.reviewService = reviewService;
         }
 
+        [Authorize]
         [HttpPost("review")]
         public async Task<IActionResult> PostReview([FromBody]ReviewDTO reviewDTO)
         {
@@ -35,6 +37,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Created("/review", new { message = "Success" });
         }
 
+        [Authorize]
         [HttpPut("review/{id}")]
         public async Task<IActionResult> PutReview([FromRoute] long id, [FromBody] ReviewDTO reviewDTO)
         {

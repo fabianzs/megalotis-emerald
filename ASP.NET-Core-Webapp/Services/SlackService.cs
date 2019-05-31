@@ -27,8 +27,10 @@ namespace ASP.NET_Core_Webapp.Services
             //Create an email user lookup request:
             var emailLookupRequest = new HttpRequestMessage(HttpMethod.Post, "https://slack.com/api/users.lookupByEmail");
 
-            var list = new List<KeyValuePair<string, string>>();
-            list.Add(new KeyValuePair<string, string>("email", email));
+            var list = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("email", email)
+            };
 
             emailLookupRequest.Content = new FormUrlEncodedContent(list);
             var response = await httpClient.SendAsync(emailLookupRequest);
@@ -42,9 +44,11 @@ namespace ASP.NET_Core_Webapp.Services
             //Create the post message request:
             var postMessageRequest = new HttpRequestMessage(HttpMethod.Post, "https://slack.com/api/chat.postMessage");
 
-            var messageRequestBody = new List<KeyValuePair<string, string>>();
-            messageRequestBody.Add(new KeyValuePair<string, string>("channel", responseObject.user.id));
-            messageRequestBody.Add(new KeyValuePair<string, string>("text", messageToSend));
+            var messageRequestBody = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("channel", responseObject.user.id),
+                new KeyValuePair<string, string>("text", messageToSend)
+            };
             postMessageRequest.Content = new FormUrlEncodedContent(messageRequestBody);
 
             await httpClient.SendAsync(postMessageRequest);

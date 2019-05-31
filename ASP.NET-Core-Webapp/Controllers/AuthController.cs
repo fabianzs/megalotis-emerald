@@ -54,7 +54,7 @@ namespace ASP.NET_Core_Webapp.Controllers
             }
         }
 
-        [Authorize("Bearer")]
+        [Authorize]
         [HttpGet("heartbeat")]
         public IActionResult Test()
         {
