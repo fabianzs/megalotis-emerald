@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace ASP.NET_Core_Webapp.DTO
 {
-    public class MyBadgeDTO
+    public class MyBadgesDTO
     {
         public string Name { get; set; }
         public int Level { get; set; }
 
-        public MyBadgeDTO(string name, int level)
+        public MyBadgesDTO(string name, int level)
         {
             Name = name;
             Level = level;
