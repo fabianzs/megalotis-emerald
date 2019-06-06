@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
+    [Authorize]
     public class ReviewController : Controller
     {
         private readonly IAuthService authService;
@@ -19,7 +20,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             this.reviewService = reviewService;
         }
 
-        [Authorize]
         [HttpPost("review")]
         public async Task<IActionResult> PostReview([FromBody]ReviewDTO reviewDTO)
         {
@@ -37,7 +37,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Created("/review", new { message = "Success" });
         }
 
-        [Authorize]
         [HttpPut("review/{id}")]
         public async Task<IActionResult> PutReview([FromRoute] long id, [FromBody] ReviewDTO reviewDTO)
         {

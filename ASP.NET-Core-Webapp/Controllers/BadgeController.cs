@@ -10,20 +10,18 @@ using ASP.NET_Core_Webapp.Helpers;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
+    [Authorize]
     public class BadgeController : Controller
     {
         private readonly IAuthService authService;
         private readonly IBadgeService badgeService;
-        private readonly ApplicationContext applicationContext;
 
-        public BadgeController(IAuthService authService, IBadgeService badgeService, ApplicationContext applicationContext)
+        public BadgeController(IAuthService authService, IBadgeService badgeService)
         {
             this.authService = authService;
             this.badgeService = badgeService;
-            this.applicationContext = applicationContext;
         }
 
-        [Authorize]
         [HttpGet("mybadges")]
         public IActionResult MyBadges()
         {
@@ -31,7 +29,6 @@ namespace ASP.NET_Core_Webapp.Controllers
             return Ok(badgeService.GetMyBadges(openId));
         }
 
-        [Authorize]
         [HttpPost("badges")]
         public IActionResult RecieveBadge([FromBody] BadgeDTO badgeDTO)
         {

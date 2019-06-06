@@ -1,6 +1,7 @@
 using ASP.NET_Core_Webapp.Data;
 using ASP.NET_Core_Webapp.Entities;
 using ASP.NET_Core_Webapp.Helpers;
+using ASP.NET_Core_Webapp.Helpers.Exceptions;
 using ASP.NET_Core_Webapp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +12,10 @@ namespace ASP.NET_Core_Webapp.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService authService;
-        private readonly ApplicationContext applicationContext;
 
-        public AuthController(IAuthService authService, ApplicationContext applicationContext)
+        public AuthController(IAuthService authService)
         {
             this.authService = authService;
-            this.applicationContext = applicationContext;
         }
 
         [HttpGet("")]
@@ -33,24 +32,13 @@ namespace ASP.NET_Core_Webapp.Controllers
             bool isValid = tokenInfo.email_verified;
             if (isValid)
             {
-                if(applicationContext.Users.FirstOrDefault(u => u.OpenId == tokenInfo.sub) == null)
-                {
-                    Entities.User user = new Entities.User
-                    {
-                        Name = $"{tokenInfo.family_name} {tokenInfo.given_name}",
-                        Picture = tokenInfo.picture,
-                        Email = tokenInfo.email,
-                        OpenId = tokenInfo.sub
-                    };
-                    applicationContext.Users.Add(user);
-                    applicationContext.SaveChanges();
-                }
+                authService.AddUserIfNotExist(tokenInfo);
                 string tokenstring = authService.CreateJwtToken(tokenInfo.sub, $"{tokenInfo.family_name} {tokenInfo.given_name}", tokenInfo.email, tokenInfo.picture);
                 return Ok(tokenstring);
             }
             else
             {
-                return BadRequest();
+                throw new InvalidEmailException();
             }
         }
 

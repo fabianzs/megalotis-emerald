@@ -1,4 +1,6 @@
-﻿using ASP.NET_Core_Webapp.Helpers;
+﻿using ASP.NET_Core_Webapp.Data;
+using ASP.NET_Core_Webapp.Helpers;
+using ASP.NET_Core_Webapp.Helpers.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -19,12 +21,14 @@ namespace ASP.NET_Core_Webapp.Services
         private readonly IConfiguration configuration;
         private readonly IGoogleSheetService googleSheetService;
         private readonly HttpClient httpClient;
+        private readonly ApplicationContext applicationContext;
 
-        public AuthService(IConfiguration configuration, IGoogleSheetService googleSheetService, HttpClient httpClient)
+        public AuthService(IConfiguration configuration, IGoogleSheetService googleSheetService, HttpClient httpClient, ApplicationContext applicationContext)
         {
             this.configuration = configuration;
             this.googleSheetService = googleSheetService;
             this.httpClient = httpClient;
+            this.applicationContext = applicationContext;
         }
 
         public string GetGoogleLogin()
@@ -82,10 +86,30 @@ namespace ASP.NET_Core_Webapp.Services
 
         public string GetOpenIdFromJwtToken(HttpRequest request)
         {
+            if (request.Headers == null || ((string) request.Headers["Authorization"]).Equals(null))
+            {
+                throw new MissingHeaderException();
+            }
             string tokenString = request.Headers["Authorization"];
             string token = tokenString.Split(" ")[1];
             JwtSecurityToken jwtToken = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
             return jwtToken.Claims.First(claim => claim.Type == "OpenID").Value;
+        }
+
+        public void AddUserIfNotExist(TokenInfo tokenInfo)
+        {
+            if (applicationContext.Users.FirstOrDefault(u => u.OpenId == tokenInfo.sub) == null)
+            {
+                Entities.User user = new Entities.User
+                {
+                    Name = $"{tokenInfo.family_name} {tokenInfo.given_name}",
+                    Picture = tokenInfo.picture,
+                    Email = tokenInfo.email,
+                    OpenId = tokenInfo.sub
+                };
+                applicationContext.Users.Add(user);
+                applicationContext.SaveChanges();
+            }
         }
     }
 }

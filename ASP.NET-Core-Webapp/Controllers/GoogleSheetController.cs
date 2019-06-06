@@ -9,16 +9,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ASP.NET_Core_Webapp.Controllers
 {
+    [Authorize]
     public class SpreadsheetController : Controller
     {
-        IGoogleSheetService googleSheetService;
+        private readonly IGoogleSheetService googleSheetService;
 
         public SpreadsheetController(IGoogleSheetService googleSheetService)
         {
             this.googleSheetService = googleSheetService;
         }
 
-        [Authorize]
         [HttpGet("spreadsheet")]
         public async Task<IActionResult> SpreadSheet()
         {
